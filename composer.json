@@ -1,0 +1,26 @@
+{
+	"name": "tooezweb/core",
+	"description": "Yii 2 Theme and Small CMS Module",
+	"keywords": ["yii", "yii2", "cms", "theme"],
+	"type": "yii2-theme",
+	"license": "BSD-3-Clause",
+	"support": {
+		"issues": "https://github.com/Mihai-P/yii2theme-brain/issues?state=open",
+		"forum": "http://www.yiiframework.com/forum/",
+		"wiki": "http://www.yiiframework.com/wiki/",
+		"source": "https://github.com/Mihai-P/yii2theme-brain"
+	},
+	"authors": [
+		{
+			"name": "Mihai-P",
+			"email": "mihai@2ezweb.com.au",
+			"homepage": "http://2ezweb.com.au",
+			"role": "Author"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"core\\": ""
+		}
+	}
+}
