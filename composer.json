@@ -1,14 +1,14 @@
 {
 	"name": "tez/core",
-	"description": "Yii 2 Theme and Small CMS Module",
+	"description": "Yii 2 Small CMS Module",
 	"keywords": ["yii", "yii2", "cms", "theme"],
 	"type": "yii2-theme",
 	"license": "BSD-3-Clause",
 	"support": {
-		"issues": "https://github.com/Mihai-P/yii2theme-brain/issues?state=open",
+		"issues": "https://github.com/Mihai-P/yii2-core/issues?state=open",
 		"forum": "http://www.yiiframework.com/forum/",
 		"wiki": "http://www.yiiframework.com/wiki/",
-		"source": "https://github.com/Mihai-P/yii2theme-brain"
+		"source": "https://github.com/Mihai-P/yii2-core"
 	},
 	"authors": [
 		{
