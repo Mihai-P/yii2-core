@@ -7,9 +7,11 @@
 
 namespace core\components;
 
+use Yii;
 use yii\web\IdentityInterface;
-use yii\web\User as BaseUser;
 use yii\db\Expression;
+use core\components\DbManager;
+use yii\db\Query;
 
 /**
  * User is the class for the "user" application component that manages the user authentication status.
@@ -19,7 +21,7 @@ use yii\db\Expression;
  *
  * @author Ricardo Obregón <robregonm@gmail.com>
  */
-class User extends BaseUser
+class User extends \yii\web\User
 {
 	/**
 	 * @inheritdoc
@@ -46,6 +48,10 @@ class User extends BaseUser
 		$this->identity->setAttribute('last_visit_time', new Expression('CURRENT_TIMESTAMP'));
 		// $this->identity->setAttribute('login_ip', ip2long(\Yii::$app->getRequest()->getUserIP()));
 		$this->identity->save(false);
+		$r = new DbManager;
+		$r->revokeAll($this->identity->id);
+		$role = $r->getRole($this->identity->Group_id);
+		$r->assign($role, $this->identity->id);
 	}
 
 	public function getIsSuperAdmin()
@@ -58,10 +64,23 @@ class User extends BaseUser
 
 	public function checkAccess($operation, $params = [], $allowCaching = true)
 	{
+		//disable the super admins
 		// Always return true when SuperAdmin user
-		if ($this->getIsSuperAdmin()) {
+		/*if ($this->getIsSuperAdmin()) {
 			return true;
+		}*/
+		if(!$operation)
+			return true;
+		$key = $operation . serialize($params);
+		$can = Yii::$app->cache->get($key);
+		if(!$can) {
+			//Yii::trace('Calculating permission ' . $operation);
+			$can = parent::can($operation, $params, $allowCaching);
+			Yii::$app->cache->set($key, $can);
+		} else {
+			//Yii::trace('Permission from cache ' . $operation);
 		}
-		return parent::checkAccess($operation, $params, $allowCaching);
+		
+		return $can;
 	}
 }

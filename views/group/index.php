@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use core\widgets\GridView;
+use theme\widgets\GridView;
 
 /**
  * @var yii\web\View $this

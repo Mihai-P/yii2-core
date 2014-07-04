@@ -12,11 +12,16 @@ use core\models\Contact;
  */
 class ContactSearch extends Contact
 {
+    /**
+     * @var string search keyword for the model
+     */    
+    var $keyword;
+
     public function rules()
     {
         return [
-            [['id', 'Group_id', 'is_admin', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['title', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['keyword', 'title', 'type', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
         ];
     }
 
@@ -28,7 +33,7 @@ class ContactSearch extends Contact
 
     public function search($params)
     {
-        $query = Contact::find()->where('is_admin = 0');;
+        $query = Contact::find()->where('type = "Contact" AND status <> "deleted"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -40,11 +45,17 @@ class ContactSearch extends Contact
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-
+        if($this->keyword) {
+            if(preg_match("/[A-Za-z]+/", $this->keyword) == true) {
+                $query->andFilterWhere(['like', 'LOWER(name)', strtolower($this->keyword)]);
+            } else {
+                $query->andFilterWhere(['id' => $this->keyword]);
+            }            
+        }
         $query->andFilterWhere([
             'id' => $this->id,
             'Group_id' => $this->Group_id,
-            'is_admin' => $this->is_admin,
+            'type' => $this->type,
             'last_visit_time' => $this->last_visit_time,
             'Postcode_id' => $this->Postcode_id,
             'Administrator_id' => $this->Administrator_id,
@@ -57,6 +68,7 @@ class ContactSearch extends Contact
             'update_by' => $this->update_by,
             'create_time' => $this->create_time,
             'create_by' => $this->create_by,
+            'status' => $this->status,
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])

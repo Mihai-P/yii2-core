@@ -11,11 +11,21 @@ use yii\captcha\Captcha;
 $this->title = \Yii::t('core.user', 'Login');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="site-login center-block col-lg-3 col-md-4 col-sm-6" style="float:none;">
-	<div class="form-signin-heading">
-		<h1><?= Html::encode($this->title) ?></h1>
-	</div>
 
+
+<!-- Login wrapper -->
+<div class="login-wrapper">
+	<?php $form = ActiveForm::begin([
+		'id' => 'login-form',
+		'options' => ['role' => 'form'],
+		'fieldConfig' => [
+			'template' => "{input}",
+			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
+		],
+	]); ?>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> User login</h6></div>
+            <div class="panel-body">
 	<?php $form = ActiveForm::begin([
 		'id' => 'login-form',
 		'options' => ['class' => 'form-horizontal'],
@@ -33,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		$form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
 	<?php endif; ?>
 
-	<?= $form->field($model, 'rememberMe')->checkbox() ?>
+	<?= $form->field($model, 'rememberMe')->checkbox(['class' => 'styled']) ?>
 
 	<div class="form-group">
 		<div class="text-center">
@@ -42,4 +52,14 @@ $this->params['breadcrumbs'][] = $this->title;
 	</div>
 
 	<?php ActiveForm::end(); ?>
+            </div>
+        </div>
+    <?php ActiveForm::end(); ?>
+</div>  
+<!-- /login wrapper -->  
+
+
+<div class="site-login center-block col-lg-3 col-md-4 col-sm-6" style="float:none;">
+
+
 </div>

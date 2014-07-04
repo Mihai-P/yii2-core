@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'title',
             'Group_id',
             'username',
-            'is_admin',
+            'type',
             'password',
             'password_hash',
             'password_reset_token',

@@ -238,11 +238,14 @@ class Generator extends \yii\gii\Generator
             }
         }
         $column = $tableSchema->columns[$attribute];
+        
         if (stripos($attribute,'_id') !== false) {
             $otherModelName = str_replace('_id', '', $attribute);
-            return "\$form->field(\$model, '$attribute')->dropDownList(ArrayHelper::map(".$otherModelName."::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select-full'])";
+            return "\$form->field(\$model, '$attribute')->dropDownList(ArrayHelper::map(".$otherModelName."::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select2'])";
         } elseif ($column->phpType === 'boolean') {
             return "\$form->field(\$model, '$attribute')->checkbox()";
+        } elseif ($column->name === 'text' || $column->name === 'description') {
+            return "\$form->field(\$model, '$attribute')->textarea(['class' => 'editor'])";
         } elseif (stripos($column->name, 'date') !== false) {
             //return "DatePicker::widget(['model' => \$model, 'clientOptions' => ,])";
             return "\$form->field(\$model, '$attribute')->field(\yii\jui\DatePicker::classname(), ['dateFormat' => 'yy-mm-dd',])";
@@ -321,6 +324,7 @@ class Generator extends \yii\gii\Generator
             return ["[['" . implode("', '", $this->getColumnNames()) . "'], 'safe']"];
         }
         $types = [];
+        $types['safe'][] = 'keyword';
         foreach ($table->columns as $column) {
             switch ($column->type) {
                 case Schema::TYPE_SMALLINT:
@@ -412,25 +416,27 @@ class Generator extends \yii\gii\Generator
         }
 
         $likeConditions = [];
-        $hashConditions = [];
+        $hashConditions[] = "'status' => \$this->status,";
         foreach ($columns as $column => $type) {
-            switch ($type) {
-                case Schema::TYPE_SMALLINT:
-                case Schema::TYPE_INTEGER:
-                case Schema::TYPE_BIGINT:
-                case Schema::TYPE_BOOLEAN:
-                case Schema::TYPE_FLOAT:
-                case Schema::TYPE_DECIMAL:
-                case Schema::TYPE_MONEY:
-                case Schema::TYPE_DATE:
-                case Schema::TYPE_TIME:
-                case Schema::TYPE_DATETIME:
-                case Schema::TYPE_TIMESTAMP:
-                    $hashConditions[] = "'{$column}' => \$this->{$column},";
-                    break;
-                default:
-                    $likeConditions[] = "->andFilterWhere(['like', '{$column}', \$this->{$column}])";
-                    break;
+            if($column!="status") {
+                switch ($type) {
+                    case Schema::TYPE_SMALLINT:
+                    case Schema::TYPE_INTEGER:
+                    case Schema::TYPE_BIGINT:
+                    case Schema::TYPE_BOOLEAN:
+                    case Schema::TYPE_FLOAT:
+                    case Schema::TYPE_DECIMAL:
+                    case Schema::TYPE_MONEY:
+                    case Schema::TYPE_DATE:
+                    case Schema::TYPE_TIME:
+                    case Schema::TYPE_DATETIME:
+                    case Schema::TYPE_TIMESTAMP:
+                        $hashConditions[] = "'{$column}' => \$this->{$column},";
+                        break;
+                    default:
+                        $likeConditions[] = "->andFilterWhere(['like', '{$column}', \$this->{$column}])";
+                        break;
+                }
             }
         }
 

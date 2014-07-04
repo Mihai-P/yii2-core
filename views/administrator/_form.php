@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Group_id')->textInput() ?>
 
-    <?= $form->field($model, 'is_admin')->textInput() ?>
+    <?= $form->field($model, 'type')->textInput() ?>
 
     <?= $form->field($model, 'Postcode_id')->textInput() ?>
 

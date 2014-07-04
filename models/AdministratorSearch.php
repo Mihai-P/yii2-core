@@ -8,15 +8,20 @@ use yii\data\ActiveDataProvider;
 use core\models\Administrator;
 
 /**
- * AdministratorSearch represents the model behind the search form about `core\models\Administrator`.
+ * AdministratorSearch represents the model behind the search form about `\core\models\Administrator`.
  */
 class AdministratorSearch extends Administrator
 {
+    /**
+     * @var string search keyword for the model
+     */    
+    var $keyword;
+
     public function rules()
     {
         return [
-            [['id', 'Group_id', 'is_admin', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['title', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['keyword', 'title', 'type', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
         ];
     }
 
@@ -28,23 +33,31 @@ class AdministratorSearch extends Administrator
 
     public function search($params)
     {
-        $query = Administrator::find()->where('is_admin = 1');
+        $query = Administrator::find()->where('status <> "deleted" AND type = "Administrator"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
                 'pageSize' => Yii::$app->session->get(get_parent_class($this) . 'Pagination'),
-            ],            
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
-        
+
+        if($this->keyword) {
+            if(preg_match("/[A-Za-z]+/", $this->keyword) == true) {
+                $query->andFilterWhere(['like', 'LOWER(name)', strtolower($this->keyword)]);
+            } else {
+                $query->andFilterWhere(['id' => $this->keyword]);
+            }            
+        }
         $query->andFilterWhere([
+            'status' => $this->status,
             'id' => $this->id,
             'Group_id' => $this->Group_id,
-            'is_admin' => $this->is_admin,
+            'type' => $this->type,
             'last_visit_time' => $this->last_visit_time,
             'Postcode_id' => $this->Postcode_id,
             'Administrator_id' => $this->Administrator_id,
@@ -80,8 +93,7 @@ class AdministratorSearch extends Administrator
             ->andFilterWhere(['like', 'ignore_activity', $this->ignore_activity])
             ->andFilterWhere(['like', 'sms_subscription', $this->sms_subscription])
             ->andFilterWhere(['like', 'email_subscription', $this->email_subscription])
-            ->andFilterWhere(['like', 'validation_key', $this->validation_key])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'validation_key', $this->validation_key]);
 
         return $dataProvider;
     }

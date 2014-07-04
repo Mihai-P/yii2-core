@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use core\widgets\GridView;
+use theme\widgets\GridView;
 
 /**
  * @var yii\web\View $this
@@ -13,18 +13,21 @@ $this->title = 'Administrators';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="administrator-index">
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php \yii\widgets\Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'title',
-            'Group_id',
-            'username',
-            'is_admin',
+            ['class' => 'theme\widgets\CheckboxColumn'],
+            ['class' => 'theme\widgets\IdColumn'],
+            ['class' => 'theme\widgets\NameColumn'],
+            // 'id',
+            // 'title',
+            // 'Group_id',
+            // 'username',
+            // 'type',
             // 'password',
             // 'password_hash',
             // 'password_reset_token',
@@ -58,9 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'update_by',
             // 'create_time',
             // 'create_by',
-
-            ['class' => 'core\widgets\ActionColumn'],
+            ['class' => 'theme\widgets\StatusColumn'],
+            ['class' => 'theme\widgets\ActionColumn'],
         ],
     ]); ?>
-
+    <?php \yii\widgets\Pjax::end(); ?>
 </div>

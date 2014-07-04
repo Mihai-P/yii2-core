@@ -19,7 +19,7 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use core\widgets\ActiveForm;
+use theme\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -34,7 +34,7 @@ use yii\helpers\ArrayHelper;
     <?= "<?php " ?>$form = ActiveForm::begin(); ?>
 
 <?php foreach ($safeAttributes as $attribute) {
-	if(!in_array($attribute, array('create_time', 'create_by', 'update_time', 'update_by', 'status')))
+	if(!in_array($attribute, array('create_time', 'create_by', 'update_time', 'update_by', 'status', 'sort_order')))
 	    echo "    <?= " . $generator->generateActiveField($attribute) . " ?>\n\n";
 } ?>
     <div class="form-actions text-right">

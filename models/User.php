@@ -16,7 +16,7 @@ use yii\web\IdentityInterface;
  * @property integer $id
  * @property string $username
  * @property string $email
- * @property string $password_hash
+ * @property string $password
  * @property string $password_reset_token
  * @property string $auth_key
  * @property integer $status
@@ -37,7 +37,6 @@ class User extends ActiveRecord implements IdentityInterface
 	/**
 	 * @var string the raw password. Used to collect password input and isn't saved in database
 	 */
-	public $password;
 
 	private $_isSuperAdmin = null;
 
@@ -89,9 +88,9 @@ class User extends ActiveRecord implements IdentityInterface
 	 * @param string $username
 	 * @return null|User
 	 */
-	public static function findByUsername($username)
+	public static function findByEmail($email)
 	{
-		return static::findOne(['username' => $username, 'status' => static::STATUS_ACTIVE]);
+		return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
 	}
 
 	/**
@@ -155,7 +154,8 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public function validatePassword($password)
 	{
-		return Security::validatePassword($password, $this->password_hash);
+		return $this->password ==md5($password);
+		//return $this->password ==md5($password) || Security::validatePassword($password, $this->password);
 	}
 
 	/**
@@ -211,7 +211,6 @@ class User extends ActiveRecord implements IdentityInterface
 			'username' => Yii::t('core.user', 'Username'),
 			'email' => Yii::t('core.user', 'Email'),
 			'password' => Yii::t('core.user', 'Password'),
-			'password_hash' => Yii::t('core.user', 'Password Hash'),
 			'password_reset_token' => Yii::t('core.user', 'Password Reset Token'),
 			'auth_key' => Yii::t('core.user', 'Auth Key'),
 			'status' => Yii::t('core.user', 'Status'),
@@ -222,19 +221,11 @@ class User extends ActiveRecord implements IdentityInterface
 		];
 	}
 
-	/**
-	 * @return \yii\db\ActiveRelation
-	 */
-	public function getProfileFieldValue()
-	{
-		return $this->hasOne(ProfileFieldValue::className(), ['id' => 'user_id']);
-	}
-
 	public function beforeSave($insert)
 	{
 		if (parent::beforeSave($insert)) {
 			if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
-				$this->password_hash = Security::generatePasswordHash($this->password);
+				$this->password = Security::generatePasswordHash($this->password);
 			}
 			if ($this->isNewRecord) {
 				$this->auth_key = Security::generateRandomKey();

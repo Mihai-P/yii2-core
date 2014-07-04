@@ -11,7 +11,7 @@ use Yii;
  * @property string $title
  * @property integer $Group_id
  * @property string $username
- * @property integer $is_admin
+ * @property string $type
  * @property string $password
  * @property string $password_hash
  * @property string $password_reset_token
@@ -74,10 +74,10 @@ class Contact extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Group_id', 'is_admin', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
             [['last_visit_time', 'email'], 'required'],
             [['last_visit_time', 'break_from', 'break_to', 'dob_date', 'update_time', 'create_time'], 'safe'],
-            [['comments', 'internal_comments', 'ignore_activity', 'sms_subscription', 'email_subscription', 'status'], 'string'],
+            [['comments', 'type', 'internal_comments', 'ignore_activity', 'sms_subscription', 'email_subscription', 'status'], 'string'],
             [['title', 'username', 'password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'validation_key'], 'string', 'max' => 255],
             [['password_hash', 'auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
@@ -94,7 +94,7 @@ class Contact extends \yii\db\ActiveRecord
             'title' => 'Title',
             'Group_id' => 'Group ID',
             'username' => 'Username',
-            'is_admin' => 'Is Admin',
+            'type' => 'Type',
             'password' => 'Password',
             'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',

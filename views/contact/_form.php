@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use core\widgets\ActiveForm;
+use theme\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use core\models\Group;
 use core\models\Administrator;
@@ -20,7 +20,7 @@ use core\models\Contact;
 
     <?= $form->field($model, 'Group_id')->dropDownList(ArrayHelper::map(Group::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select-full']) ?>
 
-    <?= $form->field($model, 'is_admin')->textInput() ?>
+    <?= $form->field($model, 'type')->textInput() ?>
 
     <?//= $form->field($model, 'Postcode_id')->dropDownList(ArrayHelper::map(Postcode::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select-full']) ?>
 

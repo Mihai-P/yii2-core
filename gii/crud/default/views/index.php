@@ -15,7 +15,7 @@ echo "<?php\n";
 ?>
 
 use yii\helpers\Html;
-use <?= $generator->indexWidgetType === 'grid' ? "core\\widgets\\GridView" : "yii\\widgets\\ListView" ?>;
+use <?= $generator->indexWidgetType === 'grid' ? "theme\\widgets\\GridView" : "yii\\widgets\\ListView" ?>;
 
 /**
  * @var yii\web\View $this
@@ -28,38 +28,33 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-index">
 <?php if(!empty($generator->searchModelClass)): ?>
-<?= "    <?php " . ($generator->indexWidgetType === 'grid' ? "// " : "") ?>echo $this->render('_search', ['model' => $searchModel]); ?>
+<?= "    <?php " ?>echo $this->render('_search', ['model' => $searchModel]); ?>
 <?php endif; ?>
-<?= "    <?php \yii\widgets\Pjax::begin(); ?>\n"; ?>
+<?= "    <?php \yii\widgets\Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>\n"; ?>
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <?= "<?= " ?>GridView::widget([
+        'id' => 'main-grid',
         'dataProvider' => $dataProvider,
+        'buttons' => $this->context->bulkButtons(),
         <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n"; ?>
-            ['class' => 'yii\grid\SerialColumn'],
-
+            ['class' => 'theme\widgets\CheckboxColumn'],
+            ['class' => 'theme\widgets\IdColumn'],
+            ['class' => 'theme\widgets\NameColumn'],
 <?php
 $count = 0;
 if (($tableSchema = $generator->getTableSchema()) === false) {
     foreach ($generator->getColumnNames() as $name) {
-        if (++$count < 6) {
-            echo "            '" . $name . "',\n";
-        } else {
-            echo "            // '" . $name . "',\n";
-        }
+        echo "            // '" . $name . "',\n";
     }
 } else {
     foreach ($tableSchema->columns as $column) {
         $format = $generator->generateColumnFormat($column);
-        if (++$count < 6) {
-            echo "            '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
-        } else {
-            echo "            // '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
-        }
+        echo "            // '" . $column->name . ($format === 'text' ? "" : ":" . $format) . "',\n";
     }
 }
 ?>
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'theme\widgets\StatusColumn'],
+            ['class' => 'theme\widgets\ActionColumn'],
         ],
     ]); ?>
 <?php else: ?>

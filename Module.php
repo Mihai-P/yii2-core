@@ -22,17 +22,11 @@ class Module extends \yii\base\Module
 
     public $tableMap = array(
         'User' => 'User',
-        'UserStatus' => 'UserStatus',
-        'ProfileFieldValue' => 'ProfileFieldValue',
-        'ProfileField' => 'ProfileField',
-        'ProfileFieldType' => 'ProfileFieldType',
     );
 
     public $layoutLogged;
 
     public $attemptsBeforeCaptcha = 3; // Unsuccessful Login Attempts before Captcha
-
-    public $referralParam = 'ref';
 
 	public $superAdmins = ['admin'];
 

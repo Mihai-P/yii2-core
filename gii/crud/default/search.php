@@ -35,6 +35,11 @@ use <?= ltrim($generator->modelClass, '\\') . (isset($modelAlias) ? " as $modelA
 class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $modelClass ?>
 
 {
+    /**
+     * @var string search keyword for the model
+     */    
+    var $keyword;
+
     public function rules()
     {
         return [
@@ -50,16 +55,26 @@ class <?= $searchModelClass ?> extends <?= isset($modelAlias) ? $modelAlias : $m
 
     public function search($params)
     {
-        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find();
+        $query = <?= isset($modelAlias) ? $modelAlias : $modelClass ?>::find()->where('status <> "deleted"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => Yii::$app->session->get(get_parent_class($this) . 'Pagination'),
+            ],
         ]);
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
+        if($this->keyword) {
+            if(preg_match("/[A-Za-z]+/", $this->keyword) == true) {
+                $query->andFilterWhere(['like', 'LOWER(name)', strtolower($this->keyword)]);
+            } else {
+                $query->andFilterWhere(['id' => $this->keyword]);
+            }            
+        }
         <?= implode("\n        ", $searchConditions) ?>
 
         return $dataProvider;

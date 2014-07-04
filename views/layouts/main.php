@@ -51,7 +51,7 @@ AppAsset::register($this);
                             <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
                             <li><a href="#"><i class="fa fa-tasks"></i> Tasks</a></li>
                             <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                            <li><a href="#"><i class="fa fa-mail-forward"></i> Logout</a></li>
+                            <li><a href="/core/default/logout"><i class="fa fa-mail-forward"></i> Logout</a></li>
                         </ul>
                     </li>
                     <li><a class="nav-icon sidebar-toggle"><i class="fa fa-bars"></i></a></li>
@@ -106,18 +106,19 @@ AppAsset::register($this);
     foreach($menus as $menu) {
         $submenus = array();
         foreach($menu->adminMenus as $submenu)
-            //if($submenu->checkAccess() || 1==1)
+            if(Yii::$app->user->checkAccess($submenu->ap))
                 $submenus[] = '<li><a href="'.change_url($submenu->url).'">'.$submenu->name . '</a></li>';
 
-        //if($menu->checkAccess() || 1==1) {
-        if(count($submenus)) {
-            echo '
-                <li>
-                    <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> '.$menu->name . '</a>
-                    <ul style="display: none;">'.implode('', $submenus).'</ul>
-                </li>';
-        } else {
-            echo '<li><a href="'.change_url($menu->url).'"><i class="fa fa-bar-chart-o"></i> '.$menu->name.'</a></li>';
+        if(Yii::$app->user->checkAccess($menu->ap)) {
+            if(count($submenus)) {
+                echo '
+                    <li>
+                        <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> '.$menu->name . '</a>
+                        <ul style="display: none;">'.implode('', $submenus).'</ul>
+                    </li>';
+            } else {
+                echo '<li><a href="'.change_url($menu->url).'"><i class="fa fa-bar-chart-o"></i> '.$menu->name.'</a></li>';
+            }
         }
     }
 ?>            

@@ -13,7 +13,6 @@ namespace core\components;
 
 use Yii;
 use yii\base\Action;
-use yii\base\ActionFilter;
 
 /**
  * Auth AccessControl provides RBAC access control.
@@ -39,7 +38,7 @@ use yii\base\ActionFilter;
  * @author Ricardo Obregón <robregonm@gmail.com>
  * @since 2.0
  */
-class AccessControl extends ActionFilter
+class AccessControl extends \yii\filters\AccessControl
 {
 	/**
 	 * @var array name-value pairs that would be passed to business rules associated
@@ -61,46 +60,11 @@ class AccessControl extends ActionFilter
 	 */
 	public $denyCallback;
 
-	private $separator = '.';
+	private $separator = '::';
 
 	private function getItemName($component)
 	{
-		return strtr($component->getUniqueId(), '/', $this->separator);
-	}
-
-	/**
-	 * This method is invoked right before an action is to be executed (after all possible filters.)
-	 * You may override this method to do last-minute preparation for the action.
-	 *
-	 * @param Action $action the action to be executed.
-	 * @return boolean whether the action should continue to be executed.
-	 */
-	public function beforeAction($action)
-	{
-		$user = Yii::$app->getUser();
-
-		$controller = $action->controller;
-
-		if ($controller->module !== null) {
-			if ($user->checkAccess($this->getItemName($controller->module) . $this->separator . '*', $this->params)) {
-				return true;
-			}
-		}
-
-		if ($user->checkAccess($this->getItemName($controller) . $this->separator . '*', $this->params)) {
-			return true;
-		}
-
-		if ($user->checkAccess($itemName = $this->getItemName($action), $this->params)) {
-			return true;
-		}
-
-		if (isset($this->denyCallback)) {
-			call_user_func($this->denyCallback, $itemName, $action);
-		} else {
-			$this->denyAccess($user);
-		}
-		return false;
+		return strtr(ucfirst($component->getUniqueId()), '::', $this->separator);
 	}
 
 	/**

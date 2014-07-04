@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use core\widgets\ActiveForm;
+use theme\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
 /**

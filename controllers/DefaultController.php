@@ -56,6 +56,7 @@ class DefaultController extends Controller
 
 	public function actionLogin()
 	{
+		$this->layout = '//login';
 		if (!\Yii::$app->user->isGuest) {
 			$this->goHome();
 		}
