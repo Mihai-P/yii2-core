@@ -6,6 +6,11 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
+use Goodby\CSV\Export\Standard\Exporter;
+use Goodby\CSV\Export\Standard\ExporterConfig;
+use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
+
 
 /**
  * FaqController implements the CRUD actions for Faq model.
@@ -87,13 +92,15 @@ class Controller extends \yii\web\Controller
         if(count(Yii::$app->request->queryParams)) {
             $queryParams = array_merge($queryParams, Yii::$app->request->queryParams);
         }
+        if(Yii::$app->request->getIsPjax()) {
+            $this->layout = false;
+        }
         Yii::$app->session->set($this->MainModel.'QueryParams',$queryParams);
         $searchModel = new $this->MainModelSearch;
         $dataProvider = $searchModel->search($queryParams);
         switch(Yii::$app->request->get('format')) {
             case 'pdf':
                 $this->layout = '//blank';
-                //Yii::$app->response->format = 'pdf';
                 $dataProvider->pagination = false;
                 $content =  $this->render('pdf', [
                     'dataProvider' => $dataProvider,
@@ -103,20 +110,26 @@ class Controller extends \yii\web\Controller
                 $mpdf->WriteHTML($content);
 
                 Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
-                Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="InvoicesReport.pdf"');
-                return $mpdf->Output('InvoicesReport.pdf', 'S');
-
-                
+                Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.pdf"');
+                return $mpdf->Output($this->getCompatibilityId().'.pdf', 'S');
+                break;
             case 'csv':
+                $dataProvider->pagination = false;
+                $query = $dataProvider->query;
+                $query->select('id, name, status');
+                
+                $config = new ExporterConfig();
+                $exporter = new Exporter($config);
+                Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
+                Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.csv"');
+
+                $exporter->export('php://output', $query->asArray()->all());
+                break;
+            default: 
                 return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
                 ]);
-            default: 
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
         }
     }
 
@@ -211,7 +224,7 @@ class Controller extends \yii\web\Controller
                 $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "active";
-                    $model->save();
+                    $model->save(false);
                 }
             }
         }
@@ -231,7 +244,7 @@ class Controller extends \yii\web\Controller
                 $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "inactive";
-                    print_r($model->save());
+                    $model->save(false);
                 }
             }
         }
@@ -252,9 +265,13 @@ class Controller extends \yii\web\Controller
         } else {
             $model->status = "active";
         }
-        $model->save();
-        $this->redirect( ['index'] );
-        //return $this->actionIndex();
+        $model->save(false);
+        if(Yii::$app->request->getIsAjax()) {
+            \Yii::$app->response->format = 'json';
+            return ['success' => true];
+        } else {
+            return $this->redirect(['index']);
+        }
     }
 
     /**
@@ -266,8 +283,12 @@ class Controller extends \yii\web\Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        if(Yii::$app->request->getIsAjax()) {
+            \Yii::$app->response->format = 'json';
+            return ['success' => true];
+        } else {
+            return $this->redirect(['index']);
+        }
     }
 
     /**
@@ -326,5 +347,33 @@ class Controller extends \yii\web\Controller
             ];
         }
         return $buttons;
-    }    
+    }
+
+
+    /**
+     * Sets the bulk actions that can be performed on the table of models
+     * @param string $grid the ID of the grid that will be updated
+     */
+    public function allButtons($grid ='')
+    {
+        $buttons = array();
+        if(\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {
+            $buttons['pdf'] = [
+                'text' => 'Download PDF', 
+                'url' => Url::toRoute(['index', 'format' => 'pdf']), 
+                'options' => [
+                    'target' => '_blank',
+                ]
+            ];
+            $buttons['csv'] = [
+                'text' => 'Download CSV', 
+                'url' => Url::toRoute(['index', 'format' => 'csv']), 
+                'options' => [
+                    'target' => '_blank',
+                ]
+            ];
+        }
+        return $buttons;
+    }
+
 }

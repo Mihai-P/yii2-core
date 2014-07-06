@@ -30,8 +30,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function delete()
     {
         $this->status = 'deleted';
-        $this->save(true);
-        return 1;
+        $this->save(false);
+        return true;
     }   
 
     public function behaviors()
