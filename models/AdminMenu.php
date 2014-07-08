@@ -93,6 +93,6 @@ class AdminMenu extends \yii\db\ActiveRecord
      */
     public function getAdminMenus()
     {
-        return $this->hasMany(AdminMenu::className(), ['AdminMenu_id' => 'id']);
+        return $this->hasMany(AdminMenu::className(), ['AdminMenu_id' => 'id'])->orderby('order ASC');
     }
 }

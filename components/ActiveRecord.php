@@ -37,7 +37,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function behaviors()
     {
         return [
-            [
+            'blameable' => [
                 'class' => BlameableBehavior::className(),
                 'attributes' => [
                     \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['create_by', 'update_by'], 
