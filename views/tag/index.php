@@ -6,23 +6,33 @@ use theme\widgets\Pjax;
 
 /**
  * @var yii\web\View $this
- * @var core\models\ContactSearch $searchModel
+ * @var core\models\TagSearch $searchModel
  * @var yii\data\ActiveDataProvider $dataProvider
  */
 
-$this->title = 'Contacts';
+$this->title = 'Tags';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="contact-index">
+<div class="tag-index">
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>    
+    <?php Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>
     <?= GridView::widget([
         'id' => 'main-grid',
         'dataProvider' => $dataProvider,
+        'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
         'columns' => [
+            ['class' => 'theme\widgets\CheckboxColumn'],
             ['class' => 'theme\widgets\IdColumn'],
             ['class' => 'theme\widgets\NameColumn'],
+            // 'id',
+            // 'name',
+            'type',
+            // 'status',
+            // 'update_time',
+            // 'update_by',
+            // 'create_time',
+            // 'create_by',
             ['class' => 'theme\widgets\StatusColumn'],
             ['class' => 'theme\widgets\ActionColumn'],
         ],

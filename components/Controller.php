@@ -202,13 +202,10 @@ class Controller extends \yii\web\Controller
     public function actionDeleteAll()
     {
         if(isset($_POST['items'])) {
-            //change the status of each item
             foreach($_POST['items'] as $id) {
-                //check here if neede the APs
                 $this->findModel($id)->delete();
             }
         }
-        //echo \Message::create()->send();
     }
 
     /**
@@ -218,9 +215,7 @@ class Controller extends \yii\web\Controller
     public function actionActivateAll()
     {
         if(isset($_POST['items'])) {
-            //change the status of each item
             foreach($_POST['items'] as $id) {
-                //check here if neede the APs
                 $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "active";
@@ -228,7 +223,6 @@ class Controller extends \yii\web\Controller
                 }
             }
         }
-        //echo \Message::create()->send();
     }
 
     /**
@@ -238,9 +232,7 @@ class Controller extends \yii\web\Controller
     public function actionDeactivateAll()
     {
         if(isset($_POST['items'])) {
-            //change the status of each item
             foreach($_POST['items'] as $id) {
-                //check here if neede the APs
                 $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "inactive";
@@ -248,7 +240,6 @@ class Controller extends \yii\web\Controller
                 }
             }
         }
-        //echo \Message::create()->send();
     }
 
     /**

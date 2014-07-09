@@ -8,8 +8,11 @@ $allButtons = $this->context->allButtons();
 	<div class="panel panel-default">
         <div class="panel-heading">
         	<h6 class="panel-title"><?= Html::encode($this->title) ?></h6>
-        	<?= Html::a('Add new', ['create'], ['class' => 'pull-right btn btn-xs btn-success']) ?>
-<?php       if(count($allButtons)) { ?>
+<?php 
+            if(\Yii::$app->user->checkAccess('create::' . $this->context->getCompatibilityId())) {
+                echo Html::a('Add new', ['create'], ['class' => 'pull-right btn btn-xs btn-success']); 
+            }
+            if(count($allButtons)) { ?>
 			<div class="dropdown pull-right">
                 <a href="#" class="dropdown-toggle btn btn-link btn-icon" data-toggle="dropdown">
                     <i class="fa fa-cogs"></i>

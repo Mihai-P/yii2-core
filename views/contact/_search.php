@@ -49,6 +49,5 @@ use yii\widgets\ActiveForm;
         <span class="pull-right" style="text-align: right">
             <?= $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', 'deleted' => 'Deleted', ], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
-    </div>
     <?php ActiveForm::end(); ?>
 </div>
