@@ -27,6 +27,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
         <?= Html::activeTextInput($model, 'keyword', ['class'=>'form-control','autocomplete'=>'off','placeholder'=>'Keyword']); ?>
         <div class="form-group">
+            <?=  Html::submitButton('Search', ['class' => 'btn btn-primary start-search']) ?>
             <!-- Advance search -->
 <?php /* 
              <div class="btn-group">
@@ -45,7 +46,6 @@ use yii\widgets\ActiveForm;
                 </ul>
             </div>
 */?>
-            <?=  Html::submitButton('Search', ['class' => 'btn btn-primary start-search']) ?>
             <?=  Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">

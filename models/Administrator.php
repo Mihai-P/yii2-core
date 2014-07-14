@@ -3,6 +3,9 @@
 namespace core\models;
 
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "User".
@@ -58,8 +61,28 @@ use Yii;
  * @property Group $group
  * @property Postcode $postcode
  */
-class Administrator extends \yii\db\ActiveRecord
+class Administrator extends \core\components\ActiveRecord implements IdentityInterface
 {
+    const STATUS_DELETED = 'deleted';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_ACTIVE = 'active';
+
+    var $password_repeat;
+
+    private $statuses = [
+        self::STATUS_DELETED => 'Deleted',
+        self::STATUS_INACTIVE => 'Inactive',
+        self::STATUS_ACTIVE => 'Active',
+    ];  
+
+    public function getStatus($status = null)
+    {
+        if ($status === null) {
+            return Yii::t('auth.user', $this->statuses[$this->status]);
+        }
+        return Yii::t('auth.user', $this->statuses[$status]);
+    }
+
     /**
      * @inheritdoc
      */
@@ -74,16 +97,30 @@ class Administrator extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['last_visit_time', 'email'], 'required'],
-            [['last_visit_time', 'break_from', 'break_to', 'dob_date', 'update_time', 'create_time'], 'safe'],
-            [['comments', 'type', 'internal_comments', 'ignore_activity', 'sms_subscription', 'email_subscription', 'status'], 'string'],
-            [['title', 'username', 'password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'validation_key'], 'string', 'max' => 255],
+            [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['password'], 'compare', 'on' => ['resetPassword'], 'operator' => '=='],
+            [['email'], 'required'],
+            [['update_time', 'create_time'], 'safe'],
+            [['type', 'status'], 'string'],
+            [['password', 'password_repeat', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
             [['password_hash', 'auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        return [
+            'signup' => ['email', 'password'],
+            'profile' => ['email', 'password'],
+            'resetPassword' => ['password', 'password_repeat'],
+            'requestPasswordResetToken' => ['email'],
+            'login' => ['last_visit_time'],
+        ] + parent::scenarios();
+    }
     /**
      * @inheritdoc
      */
@@ -93,34 +130,16 @@ class Administrator extends \yii\db\ActiveRecord
             'id' => 'ID',
             'title' => 'Title',
             'Group_id' => 'Group ID',
-            'username' => 'Username',
-            'type' => 'Type',
             'password' => 'Password',
-            'password_hash' => 'Password Hash',
+            'password_repeat' => 'Repeat Password',
             'password_reset_token' => 'Password Reset Token',
             'auth_key' => 'Auth Key',
-            'last_visit_time' => 'Last Visit Time',
-            'name' => 'Name',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
             'picture' => 'Picture',
             'email' => 'Email',
             'phone' => 'Phone',
             'mobile' => 'Mobile',
-            'fax' => 'Fax',
-            'company' => 'Company',
-            'address' => 'Address',
-            'Postcode_id' => 'Postcode ID',
-            'Administrator_id' => 'Administrator ID',
-            'Contact_id' => 'Contact ID',
-            'comments' => 'Comments',
-            'internal_comments' => 'Internal Comments',
-            'break_from' => 'Break From',
-            'break_to' => 'Break To',
-            'dob_date' => 'Dob Date',
-            'ignore_activity' => 'Ignore Activity',
-            'sms_subscription' => 'Sms Subscription',
-            'email_subscription' => 'Email Subscription',
             'validation_key' => 'Validation Key',
             'login_attempts' => 'Login Attempts',
             'status' => 'Status',
@@ -146,4 +165,127 @@ class Administrator extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Group::className(), ['id' => 'Group_id']);
     }
+
+    /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|integer $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
+
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return null|User
+     */
+    public static function findByUsername($username)
+    {
+        return static::find()
+        ->andWhere(['and', ['or', ['username' => $username], ['email' => $username]], ['status' => static::STATUS_ACTIVE]])
+        ->one();
+    }
+
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $parts = explode('_', $token);
+        $timestamp = (int)end($parts);
+        if ($timestamp + $expire < time()) {
+            // token expired
+            return null;
+        }
+
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
+
+    /**
+     * @return int|string current user ID
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string current user auth key
+     */
+    public function getAuthKey()
+    {
+        return $this->auth_key;
+    }
+
+    /**
+     * @param string $authKey
+     * @return boolean if auth key is valid for current user
+     */
+    public function validateAuthKey($authKey)
+    {
+        return $this->auth_key === $authKey;
+    }
+
+    /**
+     * @param string $password password to validate
+     * @return bool if password provided is valid for current user
+     */
+    public function validatePassword($password)
+    {
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
+    }
+
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
+                $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+            }
+            if ($this->isNewRecord) {
+                $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
+            }
+            if ($this->getScenario() !== \yii\web\User::EVENT_AFTER_LOGIN) {
+                $this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    public function login($duration = 0)
+    {
+        return Yii::$app->user->login($this, $duration);
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+    }
+    
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return null|User
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
+    }    
 }

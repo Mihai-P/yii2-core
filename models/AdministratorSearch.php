@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use core\models\Administrator;
 
 /**
- * AdministratorSearch represents the model behind the search form about `\core\models\Administrator`.
+ * AdministratorSearch represents the model behind the search form about `core\models\Administrator`.
  */
 class AdministratorSearch extends Administrator
 {
@@ -20,7 +20,7 @@ class AdministratorSearch extends Administrator
     public function rules()
     {
         return [
-            [['keyword', 'title', 'type', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['keyword', 'title', 'username', 'type', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
             [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
         ];
     }
@@ -33,7 +33,7 @@ class AdministratorSearch extends Administrator
 
     public function search($params)
     {
-        $query = Administrator::find()->where('status <> "deleted" AND type = "Administrator"');
+        $query = Administrator::find()->where('status <> "deleted" AND type="Administrator"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,7 +57,6 @@ class AdministratorSearch extends Administrator
             'status' => $this->status,
             'id' => $this->id,
             'Group_id' => $this->Group_id,
-            'type' => $this->type,
             'last_visit_time' => $this->last_visit_time,
             'Postcode_id' => $this->Postcode_id,
             'Administrator_id' => $this->Administrator_id,
@@ -74,6 +73,7 @@ class AdministratorSearch extends Administrator
 
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'password_hash', $this->password_hash])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])

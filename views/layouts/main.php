@@ -5,6 +5,7 @@ use yii\bootstrap\Nav;
 use core\models\AdminMenu;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use core\models\History;
 
 /**
  * @var \yii\web\View $this
@@ -43,21 +44,18 @@ AppAsset::register($this);
                 <ul class="nav navbar-nav navbar-left-custom">
                     <li class="user dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown">
-                            <img src="http://placehold.it/500" alt="">
-                            <span>Eugene Kopyov</span>
+                            <span><?= Yii::$app->user->getIdentity()->name?></span>
                             <i class="caret"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                            <li><a href="#"><i class="fa fa-tasks"></i> Tasks</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
                             <li><a href="/core/default/logout"><i class="fa fa-mail-forward"></i> Logout</a></li>
                         </ul>
                     </li>
                     <li><a class="nav-icon sidebar-toggle"><i class="fa fa-bars"></i></a></li>
                 </ul>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 hidden-xs hidden-sm hidden-md">
                 <?= Breadcrumbs::widget([
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]) ?>
@@ -70,20 +68,27 @@ AppAsset::register($this);
                         <strong class="label label-danger">15</strong>
                     </a>
                 </li>
-
+<?php
+                $history = History::find()->where('create_by = "'.Yii::$app->user->id.'"')->orderBy('create_time DESC')->groupBy('url')->limit(10)->all();
+                if(count($history)) {
+?>
                 <li>
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-comments"></i>
-                        <span>Messages</span>
-                        <strong class="label label-danger">7</strong>
+                        <span>History</span>
+                        <strong class="label label-danger"><?= count($history);?></strong>
                     </a>
                     <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                            <li><a href="#"><i class="fa fa-tasks"></i> Tasks</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                            <li><a href="#"><i class="fa fa-mail-forward"></i> Logout</a></li>
+<?php
+                    foreach($history as $link) {
+                        echo '<li>' . Html::a($link->name, $link->url) . '</li>';
+                    }
+?>
                     </ul>
                 </li>
+<?php                 
+                }
+?>                
 
                 <li>
                     <a href="#">

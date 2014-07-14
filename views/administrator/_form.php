@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use theme\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use core\models\Group;
 
 /**
  * @var yii\web\View $this
@@ -14,55 +16,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'Group_id')->textInput() ?>
-
-    <?= $form->field($model, 'type')->textInput() ?>
-
-    <?= $form->field($model, 'Postcode_id')->textInput() ?>
-
-    <?= $form->field($model, 'Administrator_id')->textInput() ?>
-
-    <?= $form->field($model, 'Contact_id')->textInput() ?>
-
-    <?= $form->field($model, 'login_attempts')->textInput() ?>
-
-    <?= $form->field($model, 'update_by')->textInput() ?>
-
-    <?= $form->field($model, 'create_by')->textInput() ?>
-
-    <?= $form->field($model, 'last_visit_time')->textInput() ?>
+    <?= $form->field($model, 'Group_id')->dropDownList(ArrayHelper::map(Group::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select2']) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'break_from')->textInput() ?>
-
-    <?= $form->field($model, 'break_to')->textInput() ?>
-
-    <?= $form->field($model, 'dob_date')->textInput() ?>
-
-    <?= $form->field($model, 'update_time')->textInput() ?>
-
-    <?= $form->field($model, 'create_time')->textInput() ?>
-
-    <?= $form->field($model, 'comments')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'internal_comments')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'ignore_activity')->dropDownList([ '0', '1', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'sms_subscription')->dropDownList([ '0', '1', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'email_subscription')->dropDownList([ '0', '1', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'status')->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', 'deleted' => 'Deleted', ], ['prompt' => '']) ?>
-
-    <?= $form->field($model, 'title')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'username')->textInput(['maxlength' => 255]) ?>
-
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
 
@@ -74,21 +32,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'mobile')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'fax')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'company')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'address')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'validation_key')->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => 128]) ?>
-
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => 128]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => 32]) ?>
-
-    <div class="form-group">
+    <div class="form-actions text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use theme\widgets\GridView;
+use theme\widgets\Pjax;
+use core\models\Group;
 
 /**
  * @var yii\web\View $this
@@ -14,8 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="administrator-index">
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php \yii\widgets\Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>
+    <?php Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>
     <?= GridView::widget([
+        'id' => 'main-grid',
         'dataProvider' => $dataProvider,
         'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
@@ -65,5 +68,5 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'theme\widgets\ActionColumn'],
         ],
     ]); ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 </div>

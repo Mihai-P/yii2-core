@@ -6,10 +6,9 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use Goodby\CSV\Export\Standard\Exporter;
-use Goodby\CSV\Export\Standard\ExporterConfig;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
+use core\models\History;
 
 
 /**
@@ -20,6 +19,8 @@ class Controller extends \yii\web\Controller
     var $MainModel = '';
     var $MainModelSearch = '';
     var $defaultQueryParams = ['status' => 'active'];
+    var $searchModel;
+    var $dataProvider;
     /**
      * @inheritdoc
      */
@@ -57,7 +58,17 @@ class Controller extends \yii\web\Controller
            ],
         ];
     }
-
+    /**
+     * @inheritdoc
+     */
+    public function actions()
+    {
+        return [
+            'csv' => [
+                'class' => 'core\components\CsvAction',
+            ],
+        ];
+    }
     /**
      * Lists all Faq models.
      * @return mixed
@@ -69,14 +80,9 @@ class Controller extends \yii\web\Controller
             $controller = substr($controller, strpos($controller, "/") + 1);
         }        
         return str_replace(' ', '', ucwords(str_replace('-', ' ', $controller)));
-    }    
-    /**
-     * Lists all Faq models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $this->layout = '//table';
+    }
+
+    public function getSearchCriteria() {
         /* setting the default pagination for the page */
         if(!Yii::$app->session->get($this->MainModel.'Pagination')) {
             Yii::$app->session->set($this->MainModel.'Pagination', 10);
@@ -96,43 +102,62 @@ class Controller extends \yii\web\Controller
             $this->layout = false;
         }
         Yii::$app->session->set($this->MainModel.'QueryParams',$queryParams);
-        $searchModel = new $this->MainModelSearch;
-        $dataProvider = $searchModel->search($queryParams);
-        switch(Yii::$app->request->get('format')) {
-            case 'pdf':
-                $this->layout = '//blank';
-                $dataProvider->pagination = false;
-                $content =  $this->render('pdf', [
-                    'dataProvider' => $dataProvider,
-                ]);
-
-                $mpdf = new \mPDF();
-                $mpdf->WriteHTML($content);
-
-                Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
-                Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.pdf"');
-                return $mpdf->Output($this->getCompatibilityId().'.pdf', 'S');
-                break;
-            case 'csv':
-                $dataProvider->pagination = false;
-                $query = $dataProvider->query;
-                $query->select('id, name, status');
-                
-                $config = new ExporterConfig();
-                $exporter = new Exporter($config);
-                Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
-                Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.csv"');
-
-                $exporter->export('php://output', $query->asArray()->all());
-                break;
-            default: 
-                return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
-                ]);
-        }
+        $this->searchModel = new $this->MainModelSearch;
+        $this->dataProvider = $this->searchModel->search($queryParams);
+    }
+    /**
+     * Lists all Faq models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $this->getSearchCriteria();
+        $this->layout = '//table';
+        return $this->render('index', [
+            'searchModel' => $this->searchModel,
+            'dataProvider' => $this->dataProvider,
+        ]);
     }
 
+    /**
+     * Lists all Faq models.
+     * @return mixed
+     */
+    public function actionPdf()
+    {
+        $this->getSearchCriteria();
+        $this->layout = '//blank';
+        $this->dataProvider->pagination = false;
+        $content =  $this->render('pdf', [
+            'dataProvider' => $this->dataProvider,
+        ]);
+
+        $mpdf = new \mPDF();
+        $mpdf->WriteHTML($content);
+
+        Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
+        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.pdf"');
+        return $mpdf->Output($this->getCompatibilityId().'.pdf', 'S');
+    }
+
+    /**
+     * Lists all Faq models.
+     * @return mixed
+     
+    public function actionCsv()
+    {
+        $this->getSearchCriteria();
+        $this->dataProvider->pagination = false;
+        $query = $this->dataProvider->query;
+        
+        $config = new ExporterConfig();
+        $exporter = new Exporter($config);
+        Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
+        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.csv"');
+
+        $exporter->export('php://output', $query->asArray()->all());
+    }
+    */    
     /**
      * Lists all Faq models.
      * @return mixed
@@ -351,14 +376,14 @@ class Controller extends \yii\web\Controller
         if(\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {
             $buttons['pdf'] = [
                 'text' => 'Download PDF', 
-                'url' => Url::toRoute(['index', 'format' => 'pdf']), 
+                'url' => Url::toRoute(['pdf']), 
                 'options' => [
                     'target' => '_blank',
                 ]
             ];
             $buttons['csv'] = [
                 'text' => 'Download CSV', 
-                'url' => Url::toRoute(['index', 'format' => 'csv']), 
+                'url' => Url::toRoute(['csv']), 
                 'options' => [
                     'target' => '_blank',
                 ]

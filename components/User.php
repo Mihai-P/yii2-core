@@ -47,6 +47,7 @@ class User extends \yii\web\User
 		$this->identity->setScenario(self::EVENT_AFTER_LOGIN);
 		$this->identity->setAttribute('last_visit_time', new Expression('CURRENT_TIMESTAMP'));
 		// $this->identity->setAttribute('login_ip', ip2long(\Yii::$app->getRequest()->getUserIP()));
+		$this->identity->setAttribute('name', $this->identity->name);
 		$this->identity->save(false);
 		$r = new DbManager;
 		$r->revokeAll($this->identity->id);
@@ -74,11 +75,8 @@ class User extends \yii\web\User
 		$key = $operation . serialize($params);
 		$can = Yii::$app->cache->get($key);
 		if(!$can) {
-			//Yii::trace('Calculating permission ' . $operation);
 			$can = parent::can($operation, $params, $allowCaching);
 			Yii::$app->cache->set($key, $can);
-		} else {
-			//Yii::trace('Permission from cache ' . $operation);
 		}
 		
 		return $can;

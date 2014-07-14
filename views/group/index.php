@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use theme\widgets\GridView;
+use theme\widgets\Pjax;
 
 /**
  * @var yii\web\View $this
@@ -13,24 +14,27 @@ $this->title = 'Groups';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="group-index">
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?php \yii\widgets\Pjax::begin(); ?>
+    <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php Pjax::begin(['options' => ['id'=>'main-pjax']]); ?>
     <?= GridView::widget([
+        'id' => 'main-grid',
         'dataProvider' => $dataProvider,
+        'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'name',
-            'status',
-            'update_time',
-            'update_by',
+            ['class' => 'theme\widgets\CheckboxColumn'],
+            ['class' => 'theme\widgets\IdColumn'],
+            ['class' => 'theme\widgets\NameColumn'],
+            // 'id',
+            // 'name',
+            // 'status',
+            // 'update_time',
+            // 'update_by',
             // 'create_time',
             // 'create_by',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'theme\widgets\StatusColumn'],
+            ['class' => 'theme\widgets\ActionColumn'],
         ],
     ]); ?>
-    <?php \yii\widgets\Pjax::end(); ?>
+    <?php Pjax::end(); ?>
 </div>

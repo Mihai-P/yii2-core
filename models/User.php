@@ -7,7 +7,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\db\Expression;
-use yii\helpers\Security;
+use yii\base\Security;
 use yii\web\IdentityInterface;
 
 /**
@@ -154,8 +154,8 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public function validatePassword($password)
 	{
-		return $this->password ==md5($password);
-		//return $this->password ==md5($password) || Security::validatePassword($password, $this->password);
+		//return $this->password ==md5($password);
+		return Security::validatePassword($password, $this->password);
 	}
 
 	/**

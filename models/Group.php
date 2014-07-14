@@ -3,6 +3,7 @@
 namespace core\models;
 
 use Yii;
+use core\models\AuthItem;
 
 /**
  * This is the model class for table "Group".
@@ -17,8 +18,9 @@ use Yii;
  *
  * @property User[] $users
  */
-class Group extends \yii\db\ActiveRecord
+class Group extends \core\components\ActiveRecord
 {
+    var $privileges;
     /**
      * @inheritdoc
      */
@@ -33,7 +35,8 @@ class Group extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['update_time', 'create_time'], 'safe'],
+            [['name'], 'required'],
+            [['update_time', 'create_time', 'privileges'], 'safe'],
             [['name', 'status', 'update_by', 'create_by'], 'string', 'max' => 255]
         ];
     }
@@ -61,4 +64,49 @@ class Group extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['Group_id' => 'id']);
     }
+
+    public function afterFind()
+    {
+
+        $roles = Yii::$app->authManager->getChildren($this->id);
+        $this->privileges = array_keys($roles);
+        parent::afterFind();
+    }
+
+    public function afterSave()
+    {
+        $auth = Yii::$app->authManager;
+        $post = Yii::$app->request->post();
+        if(isset($post['Group']['privileges'])) {
+            $this->privileges = $post['Group']['privileges'];
+            
+            $auth_item = AuthItem::find()->where('name = :name' , array(':name' => $this->id))->one();
+
+            if ($this->isNewRecord || !isset($auth_item->name)) {
+                $role=$auth->createRole($this->id);
+                $auth->add($role);
+            } else {
+                $role=$auth->getRole($this->id);
+            }
+            
+            if(isset($role)) {
+                if(isset($this->privileges)) {
+                    $item_children = $auth->getChildren($this->id);
+                    if(count($item_children)) {
+                        foreach($item_children as $item_child) {
+                            $auth->removeChild($role, $item_child);
+                        }
+                    }
+                    
+                    if(is_array($this->privileges) && count($this->privileges)) {
+                        foreach($this->privileges as $value) {
+                            $assignment_role = AuthItem::find()->where('name = :name' , array(':name' => $value))->one();
+                            if(!$auth->hasChild($role, $assignment_role))
+                                $auth->addChild($role, $assignment_role);
+                        }
+                    }               
+                }
+            }
+        }
+    }    
 }

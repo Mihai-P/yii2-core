@@ -3,6 +3,7 @@ namespace core\components;
 
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use core\components\HistoryBehavior;
 use yii\db\Expression;
 
 
@@ -51,6 +52,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
                     \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_time',
                 ],
                 'value' => new Expression('NOW()'),
+            ],
+            'history' => [
+                'class' => HistoryBehavior::className(),
             ],
         ];
     }    

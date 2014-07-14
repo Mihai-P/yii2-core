@@ -3,7 +3,7 @@
 namespace core\models;
 
 use Yii;
-
+use common\models\Postcode;
 /**
  * This is the model class for table "User".
  *
