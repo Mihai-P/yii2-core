@@ -53,9 +53,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 ],
                 'value' => new Expression('NOW()'),
             ],
-            'history' => [
-                'class' => HistoryBehavior::className(),
-            ],
         ];
     }    
 }

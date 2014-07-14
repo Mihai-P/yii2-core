@@ -21,6 +21,8 @@ class Controller extends \yii\web\Controller
     var $defaultQueryParams = ['status' => 'active'];
     var $searchModel;
     var $dataProvider;
+    var $historyField = "name";
+
     /**
      * @inheritdoc
      */
@@ -192,6 +194,7 @@ class Controller extends \yii\web\Controller
         $model = new $this->MainModel;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->saveHistory($model);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -206,12 +209,32 @@ class Controller extends \yii\web\Controller
      * @param integer $id
      * @return mixed
      */
+    private function saveHistory($model)
+    {
+        if(isset($model->{$this->historyField})) {
+            $url_components = explode("\\", get_class($model));
+            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");                
+
+            $history = new History;
+            $history->name = $model->{$this->historyField} . ' ('.$url_components[2].')';
+            $history->url = Url::toRoute(['update', 'id' => $model->id]) ;
+            $history->save();
+        }            
+    }
+
+    /**
+     * Updates an existing Faq model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
     public function actionUpdate($id)
     {
         $this->layout = '//form';
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->saveHistory($model);
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [

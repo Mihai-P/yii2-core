@@ -125,6 +125,9 @@ class DefaultController extends Controller
 		$model->scenario = 'resetPassword';
 		if ($model->load($_POST) && $model->save()) {
 			Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+			$model->password_reset_token = null;
+			$model->save();
+			$this->setLoginAttempts(0); //if login is successful, reset the attempts
 			return $this->goHome();
 		}
 		$model->password = null;
