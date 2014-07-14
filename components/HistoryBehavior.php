@@ -1,6 +1,7 @@
 <?php
 namespace core\components;
 
+use Yii;
 use yii\base\Behavior;
 use core\components\ActiveRecord;
 use core\models\History;
@@ -28,7 +29,7 @@ class HistoryBehavior extends Behavior
 
     private function createHistory() {
         $model = $this->owner;
-        if(isset($model->{$this->attr})) {
+        if(isset($model->{$this->attr}) && isset(Yii::$app->user->id)) {
             $url_components = explode("\\", get_class($model));
             $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");
 

@@ -97,6 +97,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     public function rules()
     {
         return [
+            ['type', 'default', 'value' => 'Administrator'],
             [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
             [['password'], 'compare', 'on' => ['resetPassword'], 'operator' => '=='],
             [['email'], 'required'],
@@ -250,6 +251,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
+            $this->name = $this->firstname . ' ' . $this->lastname;
             if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
                 $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
             }
