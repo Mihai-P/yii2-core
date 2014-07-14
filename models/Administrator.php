@@ -290,5 +290,18 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->scenario='';
+        $this->password_reset_token = null;
+        $this->detachBehavior('blameable');
+        $this->detachBehavior('timestamp');        
+        $this->save(false);
+        return true;
     }    
 }
