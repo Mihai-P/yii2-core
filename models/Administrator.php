@@ -73,7 +73,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
         self::STATUS_DELETED => 'Deleted',
         self::STATUS_INACTIVE => 'Inactive',
         self::STATUS_ACTIVE => 'Active',
-    ];  
+    ];
 
     public function getStatus($status = null)
     {
@@ -96,10 +96,11 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
      */
     public function rules()
     {
-        return [
+        $rules = [
             ['type', 'default', 'value' => 'Administrator'],
             [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['password'], 'compare', 'on' => ['resetPassword'], 'operator' => '=='],
+            [['password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
+            [['password', 'password_repeat'], 'validatePasswordInput'],
             [['firstname', 'lastname', 'Group_id', 'email'], 'required'],
             [['update_time', 'create_time'], 'safe'],
             [['email'], 'email'],
@@ -108,6 +109,26 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             [['password_hash', 'auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
+
+        if($this->isNewRecord) {
+            $rules[] = [['password', 'password_repeat'], 'required'];
+        }
+        return $rules;
+
+    }
+
+    public function validatePasswordInput($attribute, $params)
+    {
+        if($this->isNewRecord && (empty($this->password) || empty($this->password_repeat)))  {
+            $this->addError('password', 'The password is required');
+            $this->addError('password_repeat', 'The password is required');
+            return;
+        }
+        if($this->password != $this->password_repeat) {
+            die('The password repeat');
+            $this->addError('password', 'You have to repeat the password');
+            $this->addError('password_repeat', 'You have to repeat the password');
+        }
     }
 
     /**
@@ -253,8 +274,10 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     {
         if (parent::beforeSave($insert)) {
             $this->name = $this->firstname . ' ' . $this->lastname;
-            if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
+            if (!empty($this->password_repeat)) {
                 $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+            } else {
+                unset($this->password);
             }
             if ($this->isNewRecord) {
                 $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();

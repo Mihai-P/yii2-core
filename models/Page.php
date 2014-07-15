@@ -5,7 +5,7 @@ namespace core\models;
 use Yii;
 
 /**
- * This is the model class for table "page".
+ * This is the model class for table "Page".
  *
  * @property integer $id
  * @property string $name
@@ -18,14 +18,14 @@ use Yii;
  * @property string $create_time
  * @property integer $create_by
  */
-class Page extends \yii\db\ActiveRecord
+class Page extends \core\components\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%Page}}';
+        return 'Page';
     }
 
     /**
@@ -35,10 +35,10 @@ class Page extends \yii\db\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['content'], 'string'],
+            [['content', 'status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['update_by', 'create_by'], 'integer'],
-            [['name', 'url', 'template', 'status'], 'string', 'max' => 255]
+            [['name', 'url', 'template'], 'string', 'max' => 255]
         ];
     }
 
@@ -59,5 +59,18 @@ class Page extends \yii\db\ActiveRecord
             'create_time' => 'Create Time',
             'create_by' => 'Create By',
         ];
+    }
+    
+    public function getObjects()
+    {
+        return $this->hasMany(Object::className(), ['Model_id' => 'id'])->where('Model = "Page"');
+    }
+
+    public function object($name)
+    {
+        foreach($this->objects as $object) {
+            if($object->name == $name)
+                return $object; 
+        }
     }
 }

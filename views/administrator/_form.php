@@ -10,17 +10,26 @@ use core\models\Group;
  * @var core\models\Administrator $model
  * @var yii\widgets\ActiveForm $form
  */
+if(!$model->hasErrors()) {
+    $model->password = '';
+    $model->password_repeat = '';
+}
 ?>
 
 <div class="administrator-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'enableClientValidation' => false,
+        'validateOnSubmit' => false,
+        'validateOnChange' => false,
+    ]); ?>
 
     <?= $form->field($model, 'Group_id')->dropDownList(ArrayHelper::map(Group::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select2']) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'password_repeat')->passwordInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
 

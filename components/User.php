@@ -63,8 +63,9 @@ class User extends \yii\web\User
 		return $this->identity->getIsSuperAdmin();
 	}
 
-	public function checkAccess($operation, $params = [], $allowCaching = true)
+	public function checkAccess($operation, $params = [], $allowCaching = false)
 	{
+
 		//disable the super admins
 		// Always return true when SuperAdmin user
 		/*if ($this->getIsSuperAdmin()) {
@@ -73,12 +74,12 @@ class User extends \yii\web\User
 		if(!$operation)
 			return true;
 		$key = $operation . serialize($params);
-		$can = Yii::$app->cache->get($key);
+		
+		$can = Yii::$app->session->get($key);
 		if(!$can) {
 			$can = parent::can($operation, $params, $allowCaching);
-			Yii::$app->cache->set($key, $can);
+			Yii::$app->session->set($key, $can);
 		}
-		
 		return $can;
 	}
 }

@@ -1,0 +1,1 @@
+<?= $form->field($model, 'content')->textarea(['class' => 'editor']) ?>

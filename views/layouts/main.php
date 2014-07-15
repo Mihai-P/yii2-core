@@ -61,13 +61,6 @@ AppAsset::register($this);
                 ]) ?>
             </div>
             <ul class="nav navbar-nav navbar-right collapse" id="navbar-right">
-                <li>
-                    <a href="#">
-                        <i class="fa fa-rotate-right"></i>
-                        <span>Updates</span>
-                        <strong class="label label-danger">15</strong>
-                    </a>
-                </li>
 <?php
                 $history = History::find()->where('create_by = "'.Yii::$app->user->id.'"')->orderBy('create_time DESC')->groupBy('url')->limit(10)->all();
                 if(count($history)) {
@@ -91,9 +84,9 @@ AppAsset::register($this);
 ?>                
 
                 <li>
-                    <a href="#">
-                        <i class="fa fa-tasks"></i>
-                        <span>Notifications</span>
+                    <a href="/core/default/logout">
+                        <i class="fa fa-mail-forward"></i>
+                        <span>Logout</span>
                     </a>
                 </li>
             </ul>
