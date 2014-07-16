@@ -209,7 +209,7 @@ class Controller extends \yii\web\Controller
      * @param integer $id
      * @return mixed
      */
-    private function saveHistory($model)
+    public function saveHistory($model)
     {
         if(isset($model->{$this->historyField})) {
             $url_components = explode("\\", get_class($model));
@@ -243,6 +243,23 @@ class Controller extends \yii\web\Controller
         }
     }
 
+    /**
+     * Deletes an existing Faq model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+        if(Yii::$app->request->getIsAjax()) {
+            \Yii::$app->response->format = 'json';
+            return ['success' => true];
+        } else {
+            return $this->redirect(['index']);
+        }
+    }
+    
     /**
      * Deletes a list of models
      * @return mixed
@@ -305,23 +322,6 @@ class Controller extends \yii\web\Controller
             $model->status = "active";
         }
         $model->save(false);
-        if(Yii::$app->request->getIsAjax()) {
-            \Yii::$app->response->format = 'json';
-            return ['success' => true];
-        } else {
-            return $this->redirect(['index']);
-        }
-    }
-
-    /**
-     * Deletes an existing Faq model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
         if(Yii::$app->request->getIsAjax()) {
             \Yii::$app->response->format = 'json';
             return ['success' => true];

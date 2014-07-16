@@ -4,11 +4,55 @@ namespace core\components;
 use Yii;
 use yii\base\Behavior;
 use core\components\ActiveRecord;
-use core\models\History;
+use core\models\Object;
 
-class HistoryBehavior extends Behavior
+class ObjectsBehavior extends Behavior
 {
-    public $attr = "name";
+    public function short_model($model)
+    {
+        $model = $this->owner;
+        $url_components = explode("\\", get_class($model));
+        return $url_components[2];
+    }
+
+
+    public function getObjects()
+    {
+        return $this->owner->hasMany(Object::className(), ['Model_id' => 'id'])->where('Model = :Model', ['Model' => $this->short_model($this->owner)]);
+    }
+
+    public function object($name)
+    {
+        foreach($this->owner->objects as $object) {
+            if($object->name == $name)
+                return $object; 
+        } 
+        $object = new Object;
+        $object->name = $name;
+        return $object;
+    }
+
+    public function saveObjects()
+    {
+        $post = Yii::$app->request->post();
+        $model = $this->owner;
+        $url_components = explode("\\", get_class($model));
+        $model_name = $url_components[2];
+
+        if(isset($post['Object'])) {
+            foreach($post['Object'] as $name => $content) {
+                $object = Object::find()->where('Model = :Model and Model_id = :Model_id and name = :name', ['Model'=>$model_name, 'Model_id'=>$model->id, 'name'=>$name])->one();
+                if(!$object) {
+                    $object = new Object;
+                    $object->name = $name;
+                    $object->Model = $model_name;
+                    $object->Model_id = $model->id;
+                }
+                $object->content = $content;
+                $object->save();
+            }
+        }
+    }
 
     public function events()
     {
@@ -20,39 +64,10 @@ class HistoryBehavior extends Behavior
     }
 
     public function afterInsert() {
-        $this->createHistory();
+        $this->saveObjects();
     }
 
     public function afterUpdate() {
-        $this->createHistory();
+        $this->saveObjects();
     }
-
-    private function createHistory() {
-        $model = $this->owner;
-        if(isset($model->{$this->attr}) && isset(Yii::$app->user->id)) {
-            $url_components = explode("\\", get_class($model));
-            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");
-
-            $history = new History;
-            $history->name = $model->{$this->attr} . ' ('.$url_components[2].')';
-            $history->url = $this->guessUrl($model);
-            $history->detachBehavior('history');
-            $history->save();
-        }        
-    }
-
-    private function guessUrl($model) {
-
-        $url_components = explode("\\", get_class($model));
-        $url_components[2] = trim(preg_replace("([A-Z])", "-$0", $url_components[2]), "-");
-        switch($url_components[0]) {
-            case "common":
-            case "backend":
-                $url = $url_components[2] . "/update?id=" . $model->id;
-                break;
-            default: 
-                $url = $url_components[0] . "/" . $url_components[2] . "/update?id=" . $model->id;
-        }
-        return strtolower($url);
-    }    
 }

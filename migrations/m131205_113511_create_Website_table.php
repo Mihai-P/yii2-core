@@ -11,6 +11,7 @@ class m131205_113511_create_Website_table extends Migration
             'name' => 'string NOT NULL',
             'host' => 'string NOT NULL',
             'theme' => 'string NOT NULL',
+            'template' => 'string NOT NULL',
             'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
             'update_time' => 'datetime DEFAULT NULL',
             'update_by' => 'int(11) DEFAULT NULL',

@@ -7,27 +7,27 @@ use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
 
 /**
- * This is the model class for table "Page".
+ * This is the model class for table "Website".
  *
  * @property integer $id
  * @property string $name
- * @property string $url
- * @property string $template
- * @property string $content
+ * @property string $host
+ * @property string $theme
+ * @property string $template 
  * @property string $status
  * @property string $update_time
  * @property integer $update_by
  * @property string $create_time
  * @property integer $create_by
  */
-class Page extends \core\components\ActiveRecord
+class Website extends \core\components\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'Page';
+        return 'Website';
     }
 
     /**
@@ -37,10 +37,10 @@ class Page extends \core\components\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['content', 'status'], 'string'],
+            [['status', 'host', 'theme', 'template'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['update_by', 'create_by'], 'integer'],
-            [['name', 'url', 'template'], 'string', 'max' => 255]
+            [['name', 'host', 'theme', 'template'], 'string', 'max' => 255]
         ];
     }
 
@@ -52,9 +52,9 @@ class Page extends \core\components\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
-            'url' => 'Url',
+            'host' => 'Host',
+            'theme' => 'Theme',
             'template' => 'Template',
-            'content' => 'Content',
             'status' => 'Status',
             'update_time' => 'Update Time',
             'update_by' => 'Update By',
@@ -76,5 +76,5 @@ class Page extends \core\components\ActiveRecord
             ],
             parent::behaviors()
         );
-    }
+    }    
 }
