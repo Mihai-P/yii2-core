@@ -252,7 +252,10 @@ class Generator extends \yii\gii\Generator
             //return "\$form->field(\$model, '$attribute')->textInput(['class' => 'datepicker form-control'])";
             //Select2::classname(), ['language' => 'de','data' => array_merge(["" => ""], $data),'options' => ['placeholder' => 'Select a state ...'],'pluginOptions' => ['allowClear' => true],]        } elseif ($column->type === 'text') {
             //return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";
+        } elseif (stripos($column->name, 'picture') !== false) {
+            return "\$form->field(\$model, '$attribute')->widget(\\theme\widgets\InputFile::classname())";
         } else {
+
             if (preg_match('/^(password|pass|passwd|passcode)$/i', $column->name)) {
                 $input = 'passwordInput';
             } else {
