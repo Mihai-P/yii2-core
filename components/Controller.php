@@ -95,10 +95,13 @@ class Controller extends \yii\web\Controller
         } else {
             $queryParams = [substr($this->MainModelSearch, strrpos($this->MainModelSearch, "\\") + 1) => $this->defaultQueryParams];
         }
-
         /* use the same filters as before */
         if(count(Yii::$app->request->queryParams)) {
             $queryParams = array_merge($queryParams, Yii::$app->request->queryParams);
+        }
+
+        if(isset($queryParams['page'])) {
+            $_GET['page'] = $queryParams['page'];
         }
         if(Yii::$app->request->getIsPjax()) {
             $this->layout = false;
@@ -337,7 +340,7 @@ class Controller extends \yii\web\Controller
      * @return Faq the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
+    public function findModel($id)
     {
         $model = call_user_func_array(array($this->MainModel, 'findOne'), array($id));
         if ($model !== null) {

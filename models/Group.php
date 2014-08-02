@@ -67,7 +67,6 @@ class Group extends \core\components\ActiveRecord
 
     public function afterFind()
     {
-
         $roles = Yii::$app->authManager->getChildren($this->id);
         $this->privileges = array_keys($roles);
         parent::afterFind();
@@ -108,5 +107,5 @@ class Group extends \core\components\ActiveRecord
                 }
             }
         }
-    }    
+    }
 }

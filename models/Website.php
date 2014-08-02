@@ -77,4 +77,13 @@ class Website extends \core\components\ActiveRecord
             parent::behaviors()
         );
     }    
+
+    /**
+     * get the details of a website
+     * returns Website Model
+     */
+    public static function details()
+    {
+        return self::find()->one();
+    }
 }

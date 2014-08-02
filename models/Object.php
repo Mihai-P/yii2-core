@@ -49,7 +49,7 @@ class Object extends \core\components\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'content' => $this->name,
+            'content' => trim(preg_replace("([A-Z])", " $0", $this->name)),
         ];
     }
 }

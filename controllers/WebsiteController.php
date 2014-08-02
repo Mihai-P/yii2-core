@@ -21,7 +21,7 @@ class WebsiteController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = '//form';
+        $this->layout = '//main';
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -29,9 +29,15 @@ class WebsiteController extends Controller
             Yii::$app->getSession()->setFlash('success', 'The changes have been saved.');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if($model->template) {
+                return $this->render($model->template, [
+                    'model' => $model,
+                ]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
         }
     }    
 }
