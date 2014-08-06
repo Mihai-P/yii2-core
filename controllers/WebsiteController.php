@@ -21,7 +21,7 @@ class WebsiteController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = '//main';
+        $this->layout = static::MAIN_LAYOUT;
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

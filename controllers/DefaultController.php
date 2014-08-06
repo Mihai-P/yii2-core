@@ -40,7 +40,7 @@ class DefaultController extends Controller
 
 	public function actionUpload()
 	{
-		$this->layout = '//form';
+		$this->layout = static::FORM_LAYOUT;
 		return $this->render('upload', []);
 	}
 
@@ -59,7 +59,7 @@ class DefaultController extends Controller
 
 	public function actionLogin()
 	{
-		$this->layout = '//login';
+		$this->layout = '@core/views/layouts/login';
 		if (!\Yii::$app->user->isGuest) {
 			$this->goHome();
 		}
@@ -101,7 +101,7 @@ class DefaultController extends Controller
 
 	public function actionRequestPasswordReset()
 	{
-		$this->layout = '//login';
+		$this->layout = '@core/views/layouts/login';
 		$model = new Administrator();
 		$model->scenario = 'requestPasswordResetToken';
 		if ($model->load($_POST) && $model->validate()) {
@@ -119,7 +119,7 @@ class DefaultController extends Controller
 
 	public function actionResetPassword($token)
 	{
-		$this->layout = '//login';
+		$this->layout = '@core/views/layouts/login';
 		$model = Administrator::findOne([
 			'password_reset_token' => $token,
 			'status' => Administrator::STATUS_ACTIVE,

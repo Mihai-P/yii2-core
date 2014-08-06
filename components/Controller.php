@@ -24,6 +24,20 @@ class Controller extends \yii\web\Controller
     var $historyField = "name";
 
     /**
+     * @const string the default layout for the controller view. Defaults to '//core./main',
+     * meaning using the normal. See 'protected/views/layouts/main.php'.
+     */
+    const MAIN_LAYOUT = '@core/views/layouts/main';
+    const FORM_LAYOUT = '@core/views/layouts/form';
+    const TABLE_LAYOUT = '@core/views/layouts/table';
+    const BLANK_LAYOUT = '@core/views/layouts/blank';
+    const POPUP_LAYOUT = '@core/views/layouts/popup';
+    const PRINT_LAYOUT = '@core/views/layouts/print';
+    const SIMPLE_LAYOUT = '@core/views/layouts/simple';
+    const SIDEBAR_LAYOUT = '@core/views/layouts/sidebar';
+
+    var $layout = '@core/views/layouts/main';
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -117,7 +131,7 @@ class Controller extends \yii\web\Controller
     public function actionIndex()
     {
         $this->getSearchCriteria();
-        $this->layout = '//table';
+        $this->layout = static::TABLE_LAYOUT;
         return $this->render('index', [
             'searchModel' => $this->searchModel,
             'dataProvider' => $this->dataProvider,
@@ -131,7 +145,7 @@ class Controller extends \yii\web\Controller
     public function actionPdf()
     {
         $this->getSearchCriteria();
-        $this->layout = '//blank';
+        $this->layout = static::BLANK_LAYOUT;
         $this->dataProvider->pagination = false;
         $content =  $this->render('pdf', [
             'dataProvider' => $this->dataProvider,
@@ -145,24 +159,6 @@ class Controller extends \yii\web\Controller
         return $mpdf->Output($this->getCompatibilityId().'.pdf', 'S');
     }
 
-    /**
-     * Lists all Faq models.
-     * @return mixed
-     
-    public function actionCsv()
-    {
-        $this->getSearchCriteria();
-        $this->dataProvider->pagination = false;
-        $query = $this->dataProvider->query;
-        
-        $config = new ExporterConfig();
-        $exporter = new Exporter($config);
-        Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
-        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.csv"');
-
-        $exporter->export('php://output', $query->asArray()->all());
-    }
-    */    
     /**
      * Lists all Faq models.
      * @return mixed
@@ -180,7 +176,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionView($id)
     {
-        $this->layout = '//form';
+        $this->layout = static::TABLE_LAYOUT;
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -193,7 +189,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionCreate()
     {
-        $this->layout = '//form';
+        $this->layout = static::FORM_LAYOUT;
         $model = new $this->MainModel;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -233,7 +229,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = '//form';
+        $this->layout = static::FORM_LAYOUT;
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {

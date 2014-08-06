@@ -248,7 +248,7 @@ class Generator extends \yii\gii\Generator
             return "\$form->field(\$model, '$attribute')->textarea(['class' => 'editor'])";
         } elseif (stripos($column->name, 'date') !== false) {
             //return "DatePicker::widget(['model' => \$model, 'clientOptions' => ,])";
-            return "\$form->field(\$model, '$attribute')->field(\\theme\widgets\DatePicker::classname(), ['options' => ['class'=>'form-control'], 'clientOptions' => ['dateFormat' => 'M d, yy']])";
+            return "\$form->field(\$model, '$attribute')->widget(\\theme\widgets\DatePicker::classname(), ['options' => ['class'=>'form-control'], 'clientOptions' => ['dateFormat' => 'M d, yy']])";
             //return "\$form->field(\$model, '$attribute')->textInput(['class' => 'datepicker form-control'])";
             //Select2::classname(), ['language' => 'de','data' => array_merge(["" => ""], $data),'options' => ['placeholder' => 'Select a state ...'],'pluginOptions' => ['allowClear' => true],]        } elseif ($column->type === 'text') {
             //return "\$form->field(\$model, '$attribute')->textarea(['rows' => 6])";

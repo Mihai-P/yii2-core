@@ -45,7 +45,7 @@ class MenuController extends Controller
      */
     public function actionCreate()
     {
-        $this->layout = '//form';
+        $this->layout = static::FORM_LAYOUT;
         $model = new $this->MainModel;
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -72,7 +72,7 @@ class MenuController extends Controller
      */
     public function actionUpdate($id)
     {
-        $this->layout = '//form';
+        $this->layout = static::FORM_LAYOUT;
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
