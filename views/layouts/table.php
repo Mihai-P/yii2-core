@@ -12,6 +12,20 @@ $allButtons = $this->context->allButtons();
             if(\Yii::$app->user->checkAccess('create::' . $this->context->getCompatibilityId())) {
                 echo Html::a('Add new', ['create'], ['class' => 'pull-right btn btn-xs btn-success']); 
             }
+            if(\Yii::$app->user->checkAccess('update::' . $this->context->getCompatibilityId()) && method_exists($this->context, 'isSortable')) {
+                $sortable = $this->context->isSortable();
+                if($sortable->sortable) {
+                    echo Html::a('Sort', $sortable->link, ['class' => 'pull-right btn btn-xs btn-success']); 
+                } elseif(!empty($sortable->message)) {
+                    echo Html::button('Not Sortable', [
+                        'class' => 'pull-right btn btn-xs btn-warning',
+                        'data-toggle' => "popover",
+                        'data-placement' => "bottom",
+                        'data-content' => $sortable->message,
+                        'data-original-title' => "Not Sortable"
+                    ]); 
+                }
+            }
             if(count($allButtons)) { ?>
 			<div class="dropdown pull-right">
                 <a href="#" class="dropdown-toggle btn btn-link btn-icon" data-toggle="dropdown">
