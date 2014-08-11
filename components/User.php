@@ -55,22 +55,8 @@ class User extends \yii\web\User
 		$r->assign($role, $this->identity->id);
 	}
 
-	public function getIsSuperAdmin()
-	{
-		if ($this->isGuest) {
-			return false;
-		}
-		return $this->identity->getIsSuperAdmin();
-	}
-
 	public function checkAccess($operation, $params = [], $allowCaching = false)
 	{
-
-		//disable the super admins
-		// Always return true when SuperAdmin user
-		/*if ($this->getIsSuperAdmin()) {
-			return true;
-		}*/
 		if(!$operation)
 			return true;
 		$key = $operation . serialize($params);

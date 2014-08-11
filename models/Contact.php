@@ -4,6 +4,11 @@ namespace core\models;
 
 use Yii;
 use common\models\Postcode;
+use yii\helpers\ArrayHelper;
+use core\components\TagsBehavior;
+use yii\db\Expression;
+use core\models\Tag;
+
 /**
  * This is the model class for table "User".
  *
@@ -60,6 +65,7 @@ use common\models\Postcode;
  */
 class Contact extends \yii\db\ActiveRecord
 {
+    var $tags;
     /**
      * @inheritdoc
      */
@@ -76,7 +82,7 @@ class Contact extends \yii\db\ActiveRecord
         return [
             [['Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
             [['last_visit_time', 'email'], 'required'],
-            [['last_visit_time', 'break_from', 'break_to', 'dob_date', 'update_time', 'create_time'], 'safe'],
+            [['tags', 'last_visit_time', 'break_from', 'break_to', 'dob_date', 'update_time', 'create_time'], 'safe'],
             [['comments', 'type', 'internal_comments', 'ignore_activity', 'sms_subscription', 'email_subscription', 'status'], 'string'],
             [['title', 'username', 'password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'validation_key'], 'string', 'max' => 255],
             [['password_hash', 'auth_key'], 'string', 'max' => 128],
@@ -217,5 +223,31 @@ class Contact extends \yii\db\ActiveRecord
     public function getPostcode()
     {
         return $this->hasOne(Postcode::className(), ['id' => 'Postcode_id']);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            [
+                'tags' => [
+                    'class' => TagsBehavior::className(),
+                ]
+            ],
+            parent::behaviors()
+        );
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getModelTags()
+    {
+        return $this->hasMany(Tag::className(), ['id' => 'Tag_id'])
+            ->viaTable('Contact_Tag', ['Contact_id' => 'id'], function($query) {
+                return $query->where('Contact_Tag.status = "active"');
+            });
     }
 }

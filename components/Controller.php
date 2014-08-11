@@ -9,7 +9,7 @@ use yii\helpers\Url;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use core\models\History;
-
+use core\components\ControllerEvent;
 
 /**
  * FaqController implements the CRUD actions for Faq model.
@@ -35,6 +35,16 @@ class Controller extends \yii\web\Controller
     const PRINT_LAYOUT = '@core/views/layouts/print';
     const SIMPLE_LAYOUT = '@core/views/layouts/simple';
     const SIDEBAR_LAYOUT = '@core/views/layouts/sidebar';
+
+    /**
+     * @event Event an event that is triggered after a record is inserted.
+     */
+    const EVENT_AFTER_CREATE = 'afterCreate';
+    /**
+     * @event Event an event that is triggered after a record is updated.
+     */
+    const EVENT_AFTER_UPDATE = 'afterUpdate';
+
 
     var $layout = '@core/views/layouts/main';
     /**
@@ -193,7 +203,7 @@ class Controller extends \yii\web\Controller
         $model = new $this->MainModel;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->saveHistory($model);
+            $this->afterCreate($model);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -208,17 +218,35 @@ class Controller extends \yii\web\Controller
      * @param integer $id
      * @return mixed
      */
-    public function saveHistory($model)
+    public function actionUpdate($id)
     {
-        if(isset($model->{$this->historyField})) {
-            $url_components = explode("\\", get_class($model));
-            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");                
+        $this->layout = static::FORM_LAYOUT;
+        $model = $this->findModel($id);
 
-            $history = new History;
-            $history->name = $model->{$this->historyField} . ' ('.$url_components[2].')';
-            $history->url = Url::toRoute(['update', 'id' => $model->id]) ;
-            $history->save();
-        }            
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $this->afterUpdate($model);
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    public function afterCreate($model) {
+        $this->saveHistory($model, $this->historyField);
+        $this->trigger(self::EVENT_AFTER_CREATE, new ControllerEvent([
+                'model' => $model,
+                'controller' => $this
+        ]));
+    }
+
+    public function afterUpdate($model) {
+        $this->saveHistory($model, $this->historyField);
+        $this->trigger(self::EVENT_AFTER_UPDATE, new ControllerEvent([
+                'model' => $model,
+                'controller' => $this
+        ]));
     }
 
     /**
@@ -227,19 +255,17 @@ class Controller extends \yii\web\Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
+    public function saveHistory($model, $historyField)
     {
-        $this->layout = static::FORM_LAYOUT;
-        $model = $this->findModel($id);
+        if(isset($model->{$historyField})) {
+            $url_components = explode("\\", get_class($model));
+            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");                
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->saveHistory($model);
-            return $this->redirect(['index']);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+            $history = new History;
+            $history->name = $model->{$historyField} . ' ('.$url_components[2].')';
+            $history->url = Url::toRoute(['update', 'id' => $model->id]) ;
+            $history->save();
+        }            
     }
 
     /**

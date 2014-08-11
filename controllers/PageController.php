@@ -13,4 +13,14 @@ class PageController extends Controller
 {
     var $MainModel = 'core\models\Page';
     var $MainModelSearch = 'core\models\PageSearch';
+
+    public function afterCreate($model) {
+    	$model->saveObjects();
+        parent::afterCreate($model);
+    }
+
+    public function afterUpdate($model) {
+        $model->saveObjects();
+        parent::afterUpdate($model);
+    }    
 }

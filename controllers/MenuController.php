@@ -55,7 +55,7 @@ class MenuController extends Controller
                 $parent_node = Menu::findOne($model->Menu_id);
                 $model->appendTo($parent_node);
             }
-            $this->saveHistory($model);
+            $this->saveHistory($model, $this->historyField);
             return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -85,7 +85,7 @@ class MenuController extends Controller
                 $model->saveNode(false);
             }
 
-            $this->saveHistory($model);
+            $this->saveHistory($model, $this->historyField);
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [

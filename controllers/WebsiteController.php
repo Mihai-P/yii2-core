@@ -25,7 +25,7 @@ class WebsiteController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->saveHistory($model);
+            $this->afterUpdate($model);
             Yii::$app->getSession()->setFlash('success', 'The changes have been saved.');
             return $this->redirect(['update', 'id' => $model->id]);
         } else {
@@ -39,5 +39,16 @@ class WebsiteController extends Controller
                 ]);
             }
         }
+    }
+
+    public function afterCreate($model) {
+        $model->saveObjects();
+        parent::afterCreate($model);
+    }
+
+    public function afterUpdate($model) {
+        $model->saveObjects();
+        parent::afterUpdate($model);
     }    
+
 }

@@ -24,6 +24,6 @@ class m140709_000727_create_Contact_Tag_table extends Migration
 
     public function down()
     {
-    	$this->dropTable('Product_Tag');
+    	$this->dropTable('Contact_Tag');
     }
 }

@@ -53,21 +53,4 @@ class ObjectsBehavior extends Behavior
             }
         }
     }
-
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_AFTER_INSERT => 'afterInsert',
-            ActiveRecord::EVENT_AFTER_UPDATE => 'afterUpdate',
-            
-        ];
-    }
-
-    public function afterInsert() {
-        $this->saveObjects();
-    }
-
-    public function afterUpdate() {
-        $this->saveObjects();
-    }
 }
