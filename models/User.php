@@ -225,10 +225,10 @@ class User extends ActiveRecord implements IdentityInterface
 	{
 		if (parent::beforeSave($insert)) {
 			if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
-				$this->password = Security::generatePasswordHash($this->password);
+				$this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
 			}
 			if ($this->isNewRecord) {
-				$this->auth_key = Security::generateRandomKey();
+				$this->auth_key = Yii::$app->getSecurity()->generateRandomString();
 			}
 			if ($this->getScenario() !== \yii\web\User::EVENT_AFTER_LOGIN) {
 				$this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));

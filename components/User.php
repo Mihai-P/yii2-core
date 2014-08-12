@@ -8,6 +8,7 @@
 namespace core\components;
 
 use Yii;
+use yii\web\User as BaseUser;
 use yii\web\IdentityInterface;
 use yii\db\Expression;
 use core\components\DbManager;
@@ -21,7 +22,7 @@ use yii\db\Query;
  *
  * @author Ricardo Obregón <robregonm@gmail.com>
  */
-class User extends \yii\web\User
+class User extends BaseUser
 {
 	/**
 	 * @inheritdoc
