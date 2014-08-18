@@ -78,9 +78,9 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     public function getStatus($status = null)
     {
         if ($status === null) {
-            return Yii::t('auth.user', $this->statuses[$this->status]);
+            return $this->statuses[$this->status];
         }
-        return Yii::t('auth.user', $this->statuses[$status]);
+        return $this->statuses[$status];
     }
 
     /**
@@ -214,6 +214,17 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     }
 
     /**
+     * Finds user by email
+     *
+     * @param string $email
+     * @return null|User
+     */
+    public static function findByEmail($email)
+    {
+        return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
+    }
+
+    /**
      * Finds user by password reset token
      *
      * @param string $token password reset token
@@ -304,17 +315,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
     
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return null|User
-     */
-    public static function findByEmail($email)
-    {
-        return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
-    }
-
     /**
      * Removes password reset token
      */

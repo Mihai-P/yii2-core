@@ -27,7 +27,7 @@ class User extends BaseUser
 	/**
 	 * @inheritdoc
 	 */
-	public $identityClass = '\core\models\User';
+	public $identityClass = '\core\models\Administrator';
 
 	/**
 	 * @inheritdoc

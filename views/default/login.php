@@ -38,27 +38,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel panel-default">
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> User login</h6></div>
             <div class="panel-body">
-	<?= $form->field($model, 'username', ['options' => ['class' => 'form-group input-group input-group-lg'], 'template' => '<span class="input-group-addon"><i class=" glyphicon glyphicon-user"></i></span>{input}'])->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+				<?= $form->field($model, 'username', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
 
-	<?= $form->field($model, 'password', ['options' => ['class' => 'form-group input-group input-group-lg'], 'template' => '<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>{input}'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
-	<?php if ($model->scenario == 'withCaptcha'): ?>
-		<?=
-		$form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
-	<?php endif; ?>
+				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+				<?php if ($model->scenario == 'withCaptcha'): ?>
+					<?=
+					$form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
+				<?php endif; ?>
+				<div class="row form-actions">
+					<div class="col-xs-6">
+						<?= $form->field($model, 'rememberMe')->checkbox(['class' => 'styled']) ?>
+					</div>
+					<div class="col-xs-6">
+						<?= Html::submitButton(\Yii::t('core.user', '<i class="fa fa-bars"></i> Login'), ['class' => 'btn btn-success pull-right']) ?>
+					</div>
+				</div>
 
-	<?= $form->field($model, 'rememberMe')->checkbox(['class' => 'styled']) ?>
-
-	<div class="form-group">
-		<div class="text-center">
-			<?= Html::submitButton(\Yii::t('core.user', 'Login'), ['class' => 'btn btn-primary btn-lg btn-block']) ?>
-		</div>
-	</div>
-
-	<div class="form-group">
-		<div class="text-center">
-			<?= Html::a(\Yii::t('core.user', 'Forgot Password'), ['request-password-reset'], ['class' => 'btn btn-default btn-lg btn-block']) ?>
-		</div>
-	</div>
+				<div class="form-group">
+					<div class="text-center">
+						<?= Html::a(\Yii::t('core.user', 'Forgot Password'), ['request-password-reset'], ['class' => 'btn btn-default btn-lg btn-block']) ?>
+					</div>
+				</div>
             </div>
         </div>
     <?php ActiveForm::end(); ?>
