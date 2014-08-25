@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use core\models\PageTemplate;
 
 /**
  * @var yii\web\View $this
@@ -23,7 +25,7 @@ use yii\widgets\ActiveForm;
         'validateOnChange' => false,
         'fieldConfig' => [
             'template' => "<div class=\"col-sm-4\">{label}</div>\n<div class=\"col-sm-6\">{input}</div>",
-        ]        
+        ]
     ]); ?>
         <?= Html::activeTextInput($model, 'keyword', ['class'=>'form-control','autocomplete'=>'off','placeholder'=>'Keyword']); ?>
         <div class="form-group">
@@ -49,7 +51,8 @@ use yii\widgets\ActiveForm;
             <?=  Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">
-            <?=  $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
+            <?= $form->field($model, 'PageTemplate_id', array('template' => "{input}"))->dropDownList(ArrayHelper::map(PageTemplate::find()->asArray()->orderby('name ASC')->all(), 'id', 'name'), ['prompt' => 'Filter by Template', 'placeholder' => 'Filter by Template', 'data-default' => '']) ?>
+            <?= $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
     <?php // echo $form->field($model, 'id') ?>
 

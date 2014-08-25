@@ -21,7 +21,7 @@ class PageSearch extends Page
     {
         return [
             [['keyword', 'name', 'url', 'template', 'content', 'status', 'update_time', 'create_time'], 'safe'],
-            [['id', 'update_by', 'create_by'], 'integer'],
+            [['id', 'PageTemplate_id', 'update_by', 'create_by'], 'integer'],
         ];
     }
 
@@ -56,6 +56,7 @@ class PageSearch extends Page
         $query->andFilterWhere([
             'status' => $this->status,
             'id' => $this->id,
+            'PageTemplate_id' => $this->PageTemplate_id,
             'update_time' => $this->update_time,
             'update_by' => $this->update_by,
             'create_time' => $this->create_time,

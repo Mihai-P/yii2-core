@@ -5,12 +5,14 @@ namespace core\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
+use core\models\PageTemplate;
 
 /**
  * This is the model class for table "Page".
  *
  * @property integer $id
  * @property string $name
+ * @property integer $PageTemplate_id 
  * @property string $url
  * @property string $template
  * @property string $content
@@ -19,6 +21,8 @@ use core\components\ObjectsBehavior;
  * @property integer $update_by
  * @property string $create_time
  * @property integer $create_by
+ * 
+ * @property PageTemplate $pageTemplate 
  */
 class Page extends \core\components\ActiveRecord
 {
@@ -39,7 +43,7 @@ class Page extends \core\components\ActiveRecord
             [['name'], 'required'],
             [['content', 'status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
-            [['update_by', 'create_by'], 'integer'],
+            [['PageTemplate_id', 'update_by', 'create_by'], 'integer'],
             [['name', 'url', 'template'], 'string', 'max' => 255]
         ];
     }
@@ -52,6 +56,7 @@ class Page extends \core\components\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'PageTemplate_id' => 'Template',
             'url' => 'Url',
             'template' => 'Template',
             'content' => 'Content',
@@ -77,4 +82,12 @@ class Page extends \core\components\ActiveRecord
             parent::behaviors()
         );
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPageTemplate()
+    {
+        return $this->hasOne(PageTemplate::className(), ['id' => 'PageTemplate_id']);
+    }    
 }

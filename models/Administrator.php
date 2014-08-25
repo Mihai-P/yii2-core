@@ -16,7 +16,6 @@ use yii\web\IdentityInterface;
  * @property string $username
  * @property string $type
  * @property string $password
- * @property string $password_hash
  * @property string $password_reset_token
  * @property string $auth_key
  * @property string $last_visit_time
@@ -106,7 +105,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             [['email'], 'email'],
             [['type', 'status'], 'string'],
             [['password', 'password_repeat', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
-            [['password_hash', 'auth_key'], 'string', 'max' => 128],
+            [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
 

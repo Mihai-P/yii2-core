@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'theme\widgets\NameColumn'],
             // 'id',
             // 'name',
-            // 'url:url',
+            'url',
             // 'template',
             // 'content:ntext',
             // 'status',
