@@ -12,6 +12,7 @@ class m131207_234948_create_Email_table extends Migration
             'from_name' => 'string NOT NULL',
             'to_email' => 'string NOT NULL',
             'to_name' => 'string NOT NULL',
+            'reply_to' => 'string NULL',
             'subject' => 'string DEFAULT ""',
             'text' => 'text',
             'html' => 'text',

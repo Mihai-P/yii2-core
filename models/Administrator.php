@@ -154,7 +154,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             'Group_id' => 'Group ID',
             'password' => 'Password',
             'password_repeat' => 'Repeat Password',
-            'password_reset_token' => 'Password Reset Token',
             'auth_key' => 'Auth Key',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',

@@ -46,7 +46,7 @@ class Email extends \core\components\ActiveRecord
     {
         return [
             [['from_email', 'from_name'], 'required'],
-            [['text', 'html', 'route', 'status'], 'string'],
+            [['text', 'reply_to', 'html', 'route', 'status'], 'string'],
             [['tries', 'update_by', 'create_by'], 'integer'],
             [['update_time', 'create_time'], 'safe'],
             [['from_email', 'from_name', 'to_email', 'to_name', 'subject'], 'string', 'max' => 255]
@@ -64,6 +64,7 @@ class Email extends \core\components\ActiveRecord
             'from_name' => 'From Name',
             'to_email' => 'To Email',
             'to_name' => 'To Name',
+            'reply_to' => 'Reply To',
             'subject' => 'Subject',
             'text' => 'Text',
             'html' => 'Html',
@@ -108,19 +109,38 @@ class Email extends \core\components\ActiveRecord
     }
 
     /**
+     * Sets the from fields
+     *
+     * Usage:
+     * $email->from('name', 'name@test.com');
+     *
+     * @access  public
+     * @param string $name the name of the receiver
+     * @param string $email array with the keys email, name
+     * @return  this
+     */ 
+
+    public function from($name, $email) {
+        $this->from_email = $email;
+        $this->from_name = $name;
+
+        return $this;
+    }
+
+    /**
      * Allows sending to multiple recipients
      *
      * Usage:
      * $email
-     *      ->send_to(array("email" = > "test@test.com", "name"=>"Test User"))
-     *      ->send_to(array("email" = > "test2@test.com", "name"=>"Test User"));
+     *      ->to(array("email" = > "test@test.com", "name"=>"Test User"))
+     *      ->to(array("email" = > "test2@test.com", "name"=>"Test User"));
      *
      * @access  public
      * @param array $recipient array with the keys email, name
      * @return  this
      */ 
 
-    public function send_to($recipient) {
+    public function to($recipient) {
         $this->multiple_repicients[] = $recipient;
         return $this;
     }
@@ -132,8 +152,8 @@ class Email extends \core\components\ActiveRecord
      * $success = \Email::create()
      *          ->html("Hello World!!!")
      *          ->subject("Hello");
-     *          ->send_to(array('email' => 'recipient1@biti.ro', 'name' => 'Recipient1'))
-     *          ->send_to(array('email' => 'recipient2@biti.ro', 'name' => 'Recipient2'))
+     *          ->to(array('email' => 'recipient1@biti.ro', 'name' => 'Recipient1'))
+     *          ->to(array('email' => 'recipient2@biti.ro', 'name' => 'Recipient2'))
      *          ->send()
      * if($success) {}
      *

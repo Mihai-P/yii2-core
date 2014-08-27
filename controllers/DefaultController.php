@@ -153,12 +153,12 @@ class DefaultController extends Controller
 			return false;
 		}
 
-		$user->password_reset_token = Yii::$app->getSecurity()->generateRandomKey();
+		$user->password_reset_token = md5(Yii::$app->getSecurity()->generateRandomKey());
 		if ($user->save(false)) {
 			Email::create()
 				->html($this->renderPartial('/emails/passwordResetToken', ['user' => $user]))
 				->subject("Reset Password")
-				->send_to(['email' => $user->email, 'name'=> $user->name])
+				->to(['email' => $user->email, 'name'=> $user->name])
 				->send();
 			return true;
 		}
