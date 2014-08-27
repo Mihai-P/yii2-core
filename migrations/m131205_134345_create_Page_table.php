@@ -10,6 +10,7 @@ class m131205_134345_create_Page_table extends Migration
             'id' => 'pk',
             'name' => 'string NOT NULL',
             'url' => 'string DEFAULT NULL',
+            'h1' => 'string DEFAULT NULL',
             'template' => 'string DEFAULT NULL',
             'content' => 'text',
             'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',

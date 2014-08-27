@@ -13,6 +13,7 @@ use core\models\PageTemplate;
  * @property integer $id
  * @property string $name
  * @property integer $PageTemplate_id 
+ * @property string $h1
  * @property string $url
  * @property string $template
  * @property string $content
@@ -41,7 +42,7 @@ class Page extends \core\components\ActiveRecord
     {
         return [
             [['name'], 'required'],
-            [['content', 'status'], 'string'],
+            [['h1', 'content', 'status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['PageTemplate_id', 'update_by', 'create_by'], 'integer'],
             [['name', 'url', 'template'], 'string', 'max' => 255]
