@@ -177,7 +177,7 @@ class Email extends \core\components\ActiveRecord
                 $email_copy->to_email = $to;
                 $email_copy->to_name = '';
             }
-            $email_copy->save();
+            $email_copy->save(false);
         }
         return true;        
     } 
