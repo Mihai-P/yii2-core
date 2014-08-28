@@ -4,7 +4,6 @@ namespace core\controllers;
 use Yii;
 use yii\db\Query;
 use core\models\Email;
-use Mandrill;
 /**
  * Import controller
  */
@@ -14,28 +13,18 @@ class NotificationController extends \yii\console\Controller
     {
         $emails = Email::find()->where('status="pending" AND tries<10')->all();
         foreach($emails as $email) {
-            $mandrill = new Mandrill(Yii::$app->params['mandrill']['key']);
-            $message = array(
-                'html' => $email->html,
-                'text' => $email->text,
-                'subject' => $email->subject,
-                'from_email' => $email->from_email,
-                'from_name' => $email->from_name,
-                'track_opens' => true,
-                'track_clicks' => true,
-                'auto_text' => true,
-                'to'=>array(array('email' => $email->to_email, 'name' => $email->to_name))
-            ); 
-            $email->detachBehavior('blameable');
-              
-            $result = $mandrill->messages->send($message);
-            
-            if($result[0]['status'] == 'sent') {
+            if(\Yii::$app->mailer->compose()
+                ->setHtmlBody($email->html)
+                ->setFrom($email->from_email)
+                ->setTo($email->to_email)
+                ->setSubject($email->subject)
+                ->send()) {
                 $email->status = 'sent';
             } else {
                 $email->tries++;
             }
+            $email->detachBehavior('blameable');
             $email->save(false);
-        }
+        }   
     }    
 }
