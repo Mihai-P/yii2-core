@@ -320,8 +320,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     {
         $this->scenario='';
         $this->password_reset_token = null;
-        $this->detachBehavior('blameable');
-        $this->detachBehavior('timestamp');        
+        $this->detachBehaviors();        
         $this->save(false);
         return true;
     }    

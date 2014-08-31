@@ -24,6 +24,7 @@ class NotificationController extends \yii\console\Controller
                 $email->tries++;
             }
             $email->detachBehavior('blameable');
+            $email->detachBehavior('audit');
             $email->save(false);
         }   
     }    

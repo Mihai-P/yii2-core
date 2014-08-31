@@ -4,6 +4,7 @@ namespace core\components;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use core\components\HistoryBehavior;
+use sammaye\audittrail\LoggableBehavior;
 use yii\db\Expression;
 
 
@@ -52,6 +53,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
                     \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_time',
                 ],
                 'value' => new Expression('NOW()'),
+            ],
+            'audit' => [
+                'class' => LoggableBehavior::className(),
+                'ignoredClasses' => ['core\models\History'],
+                'ignored' => ['id', 'update_time', 'update_by', 'create_time', 'create_by'],
             ],
         ];
     }    
