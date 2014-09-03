@@ -76,8 +76,6 @@ use core\models\Contact;
 
     <?= $form->field($model, 'validation_key')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => 128]) ?>
-
     <?= $form->field($model, 'auth_key')->textInput(['maxlength' => 128]) ?>
 
     <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => 32]) ?>

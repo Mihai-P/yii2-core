@@ -244,6 +244,11 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
         ]);
     }
 
+    public static function find()
+    {
+        return parent::find()->where('type = "Administrator" AND status <> "deleted"');
+    }
+
     /**
      * @return int|string current user ID
      */

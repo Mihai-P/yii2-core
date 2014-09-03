@@ -21,7 +21,7 @@ class ContactSearch extends Contact
     {
         return [
             [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['keyword', 'title', 'type', 'username', 'password', 'password_hash', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['keyword', 'title', 'type', 'username', 'password', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
         ];
     }
 
@@ -74,7 +74,6 @@ class ContactSearch extends Contact
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'auth_key', $this->auth_key])
             ->andFilterWhere(['like', 'name', $this->name])

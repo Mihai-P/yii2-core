@@ -306,7 +306,6 @@ class Controller extends \yii\web\Controller
     {
         if(isset($_POST['items'])) {
             foreach($_POST['items'] as $id) {
-                $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "active";
                     $model->save(false);
@@ -323,7 +322,6 @@ class Controller extends \yii\web\Controller
     {
         if(isset($_POST['items'])) {
             foreach($_POST['items'] as $id) {
-                $model = $this->findModel($id);
                 if($model = $this->findModel($id)) {
                     $model->status = "inactive";
                     $model->save(false);
@@ -439,5 +437,4 @@ class Controller extends \yii\web\Controller
         }
         return $buttons;
     }
-
 }

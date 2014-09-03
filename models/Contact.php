@@ -18,7 +18,6 @@ use core\models\Tag;
  * @property string $username
  * @property string $type
  * @property string $password
- * @property string $password_hash
  * @property string $password_reset_token
  * @property string $auth_key
  * @property string $last_visit_time
@@ -85,7 +84,7 @@ class Contact extends \yii\db\ActiveRecord
             [['tags', 'last_visit_time', 'break_from', 'break_to', 'dob_date', 'update_time', 'create_time'], 'safe'],
             [['comments', 'type', 'internal_comments', 'ignore_activity', 'sms_subscription', 'email_subscription', 'status'], 'string'],
             [['title', 'username', 'password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'validation_key'], 'string', 'max' => 255],
-            [['password_hash', 'auth_key'], 'string', 'max' => 128],
+            [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
     }
@@ -102,7 +101,6 @@ class Contact extends \yii\db\ActiveRecord
             'username' => 'Username',
             'type' => 'Type',
             'password' => 'Password',
-            'password_hash' => 'Password Hash',
             'password_reset_token' => 'Password Reset Token',
             'auth_key' => 'Auth Key',
             'last_visit_time' => 'Last Visit Time',

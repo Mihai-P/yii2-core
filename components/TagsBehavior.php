@@ -12,17 +12,6 @@ class TagsBehavior extends Behavior
 {
     var $tagType;
 
-    public function afterFind() {
-        $this->owner->tags = $this->getTags();
-    }
-
-    public function events()
-    {
-        return [
-            ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
-        ];
-    }
-
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -44,7 +33,7 @@ class TagsBehavior extends Behavior
         return $relationship_table;
     }
 
-    public function saveTags()
+    public function saveTags($add = false)
     {
         $model_name = $this->owner->formName();
         $relationship_table = $this->tagsRelationTable();
@@ -95,9 +84,10 @@ class TagsBehavior extends Behavior
                         $existing_ids[] = $insertedRelation['id'];
                     }
                 }
-                \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id . " AND id NOT IN (" .implode(',', $existing_ids).")")->execute();
+                if(!$add)
+                    \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id . " AND id NOT IN (" .implode(',', $existing_ids).")")->execute();
                 /*Yii::app()->db->createCommand("UPDATE {$relationship_table} SET status = 'deleted', update_time = NOW(), update_by = :user_id WHERE {$own_column} = :own_id AND id NOT IN (" .implode(',', $existing_ids).")")->execute(array(":own_id"=>$this->owner->id, ":user_id"=>Yii::app()->user->getId()));*/
-            } else {
+            } elseif(!$add) {
                 \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id)->execute();
             }
         }
