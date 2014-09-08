@@ -20,6 +20,7 @@ class m140709_000727_create_Contact_Tag_table extends Migration
         'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
         $this->addForeignKey('Contact_Tag_Tag_id', 'Contact_Tag', 'Tag_id', 'Tag', 'id', 'CASCADE', 'CASCADE');        
         $this->addForeignKey('Contact_Tag_Contact_id', 'Contact_Tag', 'Contact_id', 'User', 'id', 'CASCADE', 'CASCADE');
+        $this->createIndex('Contact_Tag_unique', 'Contact_Tag', ['Tag_id', 'Contact_id', 'status'], true);
     }
 
     public function down()
