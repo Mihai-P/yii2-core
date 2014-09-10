@@ -51,5 +51,5 @@ class TagController extends Controller
     	}
         Yii::$app->response->format = 'json';
         return $response;
-    }    
+    }
 }
