@@ -23,10 +23,18 @@ class ObjectsBehavior extends Behavior
 
     public function object($name)
     {
-        foreach($this->owner->objects as $object) {
-            if($object->name == $name)
-                return $object; 
-        } 
+        $objects = Yii::$app->cache->get(get_class($this->owner) . $this->owner->id);
+
+        if ($objects === false) {
+            $objectModels = $this->owner->objects;
+            foreach($objectModels as $objectModel) {
+                $objects[$objectModel['name']] = $objectModel;
+            }
+            Yii::$app->cache->set(get_class($this->owner) . $this->owner->id, $objects);
+        }
+        if(isset($objects[$name])) {
+            return $objects[$name];
+        }
         $object = new Object;
         $object->name = $name;
         return $object;
@@ -52,5 +60,6 @@ class ObjectsBehavior extends Behavior
                 $object->save();
             }
         }
+        Yii::$app->cache->delete(get_class($this->owner) . $this->owner->id);
     }
 }
