@@ -24,7 +24,7 @@
         "mihaildev/yii2-elfinder": "*",
 		"nickcv/yii2-mandrill": "*",
 		"sammaye/yii2-audittrail": "dev-master",
-		"FortAwesome/Font-Awesome": "*",
+		"FortAwesome/Font-Awesome": "*"
     },	
 	"autoload": {
 		"psr-4": {
