@@ -71,5 +71,5 @@ Auth module is released under the BSD-3 License. See the bundled `LICENSE.md` fo
 * Login: `yourhost/core/default/login`
 * Logout: `yourhost/core/default/logout`
 * Sign-up: `yourhost/core/default/signup`
-* Reset Password: `yourhost/core/default/reset-password`
+* Reset Password: `yourhost/core/default/request-password-reset`
 * User management: `yourhost/core/user/index`
