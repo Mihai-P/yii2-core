@@ -18,6 +18,14 @@
 			"role": "Author"
 		}
 	],
+    "require": {
+        "yiisoft/yii2": "dev-master",
+        "tez/yii2-brain-theme": "dev-master",
+        "mihaildev/yii2-elfinder": "*",
+		"nickcv/yii2-mandrill": "*",
+		"sammaye/yii2-audittrail": "dev-master",
+		"FortAwesome/Font-Awesome": "*",
+    },	
 	"autoload": {
 		"psr-4": {
 			"core\\": ""
