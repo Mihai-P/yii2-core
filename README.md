@@ -34,13 +34,7 @@ return [
 	    ...
 	        'core' => [
 	            'class' => 'core\Module',
-	            'layout' => '//homepage', // Layout when not logged in yet
-	            'layoutLogged' => '//main', // Layout for logged in users
 	            'attemptsBeforeCaptcha' => 3, // Optional
-	            'superAdmins' => ['admin'], // SuperAdmin users
-	            'tableMap' => [ // Optional, but if defined, all must be declared
-	                'User' => 'user',
-	            ],
 	        ],
 	    ...
 	],
