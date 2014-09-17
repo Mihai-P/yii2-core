@@ -1,7 +1,10 @@
-Auth Module
+THIS IS AN ALPHA STATE DO NOT USE IT FOR PRODUCTION
 ===========
 
-CMS Module is the start for a CMS built on Yii.It provides user authentication, registration and RBAC support to your Yii2 site.
+CMS Module
+===========
+
+CMS Module is the start for a CMS built on Yii 2. It provides user authentication, registration and RBAC support to your Yii2 site.
 
 ## Installation
 
@@ -29,7 +32,7 @@ Once the extension is installed, modify your application configuration to includ
 return [
 	'modules' => [
 	    ...
-	        'auth' => [
+	        'core' => [
 	            'class' => 'core\Module',
 	            'layout' => '//homepage', // Layout when not logged in yet
 	            'layoutLogged' => '//main', // Layout for logged in users
@@ -45,7 +48,7 @@ return [
 	'components' => [
 	    ...
 	    'user' => [
-	        'class' => 'auth\components\User',
+	        'class' => 'core\components\User',
 	    ],
 	    ...
 	]
@@ -70,6 +73,5 @@ Auth module is released under the BSD-3 License. See the bundled `LICENSE.md` fo
 
 * Login: `yourhost/core/default/login`
 * Logout: `yourhost/core/default/logout`
-* Sign-up: `yourhost/core/default/signup`
 * Reset Password: `yourhost/core/default/request-password-reset`
-* User management: `yourhost/core/user/index`
+* User management: `yourhost/core/administrator/`
