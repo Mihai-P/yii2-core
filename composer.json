@@ -1,5 +1,5 @@
 {
-	"name": "tez/yii2-cms-core",
+	"name": "tez/yii2-cms-module",
 	"description": "Yii 2 Small CMS Module",
 	"keywords": ["yii2", "cms"],
 	"type": "yii2-module",
