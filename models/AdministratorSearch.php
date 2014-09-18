@@ -20,8 +20,8 @@ class AdministratorSearch extends Administrator
     public function rules()
     {
         return [
-            [['keyword', 'title', 'username', 'type', 'password', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
-            [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['keyword', 'username', 'type', 'password', 'password_reset_token', 'auth_key', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['id', 'Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
         ];
     }
 
@@ -57,13 +57,6 @@ class AdministratorSearch extends Administrator
             'status' => $this->status,
             'id' => $this->id,
             'Group_id' => $this->Group_id,
-            'last_visit_time' => $this->last_visit_time,
-            'Postcode_id' => $this->Postcode_id,
-            'Administrator_id' => $this->Administrator_id,
-            'Contact_id' => $this->Contact_id,
-            'break_from' => $this->break_from,
-            'break_to' => $this->break_to,
-            'dob_date' => $this->dob_date,
             'login_attempts' => $this->login_attempts,
             'update_time' => $this->update_time,
             'update_by' => $this->update_by,
@@ -71,8 +64,7 @@ class AdministratorSearch extends Administrator
             'create_by' => $this->create_by,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'username', $this->username])
+        $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
@@ -84,14 +76,6 @@ class AdministratorSearch extends Administrator
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'fax', $this->fax])
-            ->andFilterWhere(['like', 'company', $this->company])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'comments', $this->comments])
-            ->andFilterWhere(['like', 'internal_comments', $this->internal_comments])
-            ->andFilterWhere(['like', 'ignore_activity', $this->ignore_activity])
-            ->andFilterWhere(['like', 'sms_subscription', $this->sms_subscription])
-            ->andFilterWhere(['like', 'email_subscription', $this->email_subscription])
             ->andFilterWhere(['like', 'validation_key', $this->validation_key]);
 
         return $dataProvider;

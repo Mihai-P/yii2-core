@@ -24,6 +24,7 @@
         "mihaildev/yii2-elfinder": "*",
 		"nickcv/yii2-mandrill": "*",
 		"sammaye/yii2-audittrail": "dev-master",
+		"creocoder/yii2-nested-set-behavior": "*",
 		"FortAwesome/Font-Awesome": "*"
     },	
 	"autoload": {

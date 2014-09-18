@@ -21,9 +21,7 @@ namespace core\components;
  * You may change the names of the three tables used to store the authorization data by setting [[itemTable]],
  * [[itemChildTable]] and [[assignmentTable]].
  *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @author Alexander Kochetov <creocoder@gmail.com>
- * @since 2.0
+ * @author Mihai Petrescu <mihai@2ezweb.com.au>
  */
 class DbManager extends \yii\rbac\DbManager
 {
