@@ -50,7 +50,12 @@ return [
             'showScriptName' => false,
         ],
 	    ...
-	]
+	],
+    'controllerMap' => [
+        'site' => [
+            'class' => 'core\controllers\SiteController',
+        ]
+    ],
 ];
 ```
 

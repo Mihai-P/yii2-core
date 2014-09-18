@@ -11,14 +11,12 @@ use yii\web\IdentityInterface;
  * This is the model class for table "User".
  *
  * @property integer $id
- * @property string $title
  * @property integer $Group_id
  * @property string $username
  * @property string $type
  * @property string $password
  * @property string $password_reset_token
  * @property string $auth_key
- * @property string $last_visit_time
  * @property string $name
  * @property string $firstname
  * @property string $lastname
@@ -26,20 +24,6 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $phone
  * @property string $mobile
- * @property string $fax
- * @property string $company
- * @property string $address
- * @property integer $Postcode_id
- * @property integer $Administrator_id
- * @property integer $Contact_id
- * @property string $comments
- * @property string $internal_comments
- * @property string $break_from
- * @property string $break_to
- * @property string $dob_date
- * @property string $ignore_activity
- * @property string $sms_subscription
- * @property string $email_subscription
  * @property string $validation_key
  * @property integer $login_attempts
  * @property string $status
@@ -48,17 +32,6 @@ use yii\web\IdentityInterface;
  * @property string $create_time
  * @property integer $create_by
  *
- * @property Address[] $addresses
- * @property ContactCredit[] $contactCredits
- * @property Delivery[] $deliveries
- * @property Feedback[] $feedbacks
- * @property Invoice[] $invoices
- * @property Order[] $orders
- * @property Administrator $administrator
- * @property Administrator[] $administrators
- * @property Administrator $contact
- * @property Group $group
- * @property Postcode $postcode
  */
 class Administrator extends \core\components\ActiveRecord implements IdentityInterface
 {
@@ -140,7 +113,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             'profile' => ['email', 'password'],
             'resetPassword' => ['password', 'password_repeat'],
             'requestPasswordResetToken' => ['email'],
-            'login' => ['last_visit_time'],
         ] + parent::scenarios();
     }
     /**
@@ -150,7 +122,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     {
         return [
             'id' => 'ID',
-            'title' => 'Title',
             'Group_id' => 'Group ID',
             'password' => 'Password',
             'password_repeat' => 'Repeat Password',

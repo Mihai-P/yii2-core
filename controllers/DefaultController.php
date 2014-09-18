@@ -25,23 +25,16 @@ class DefaultController extends Controller
 		return [
 			'access' => [
 				'class' => \yii\filters\AccessControl::className(),
-				'only' => ['logout', 'upload'],
+				'only' => ['logout'],
 				'rules' => [
 					[
-						'actions' => ['logout', 'upload'],
+						'actions' => ['logout'],
 						'allow' => true,
 						'roles' => ['@'],
 					],
 				],
 			],
 		];
-	}
-
-
-	public function actionUpload()
-	{
-		$this->layout = static::FORM_LAYOUT;
-		return $this->render('upload', []);
 	}
 
 	public function actions()
