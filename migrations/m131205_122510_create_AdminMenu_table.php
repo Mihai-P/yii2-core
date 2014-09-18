@@ -6,22 +6,26 @@ class m131205_122510_create_AdminMenu_table extends Migration
 {
 	public function up()
 	{
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
 		$this->createTable('AdminMenu', array(
-            'id' => 'pk',
-            'AdminMenu_id' => 'int(11) DEFAULT NULL',
-            'name' => 'string NOT NULL',
-            'internal' => 'string NOT NULL',
-            'url' => 'string DEFAULT NULL',
-            'ap' => 'text',
-            'order' => 'int(11) NOT NULL',
-            'show_mobile' => 'enum("1","0") NOT NULL DEFAULT "1"',
-            'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
-            'update_time' => 'datetime DEFAULT NULL',
-            'update_by' => 'int(11) DEFAULT NULL',
-            'create_time' => 'datetime DEFAULT NULL',
-            'create_by' => 'int(11) DEFAULT NULL',
-        ),
-	    'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+            'id' => Schema::TYPE_PK,
+            'AdminMenu_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'internal' => Schema::TYPE_STRING . ' NOT NULL',
+            'url' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'ap' => Schema::TYPE_TEXT,
+            'order' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'show_mobile' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "1"',
+            'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
+            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+        ), $tableOptions);
         $this->addForeignKey('AdminMenu_ibfk_1', 'AdminMenu', 'AdminMenu_id', 'AdminMenu', 'id', 'CASCADE', 'CASCADE');
         $this->execute('
 INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `internal`, `url`, `ap`, `order`, `show_mobile`) VALUES(1, NULL, "Dashboard", "dashboard", "/", "", 1, "1");

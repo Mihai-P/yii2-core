@@ -7,25 +7,31 @@ class m131205_131516_create_Menu_table extends Migration
 {
 	public function up()
 	{
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
 		$this->createTable('Menu', array(
-            'id' => 'pk',
-            'Menu_id' => 'int(11) DEFAULT NULL',
-            'name' => 'string NOT NULL',
-            'internal' => 'string NOT NULL',
-            'url' => 'string DEFAULT NULL',
-            'ap' => 'text',
-            'order' => 'int(11) NOT NULL',
-            'root' => 'int(11) unsigned DEFAULT NULL',
-            'lft' => 'int(11) unsigned NOT NULL',
-            'rgt' => 'int(11) unsigned NOT NULL',
-            'level' => 'int(11) unsigned NOT NULL',
-            'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
-            'update_time' => 'datetime DEFAULT NULL',
-            'update_by' => 'int(11) DEFAULT NULL',
-            'create_time' => 'datetime DEFAULT NULL',
-            'create_by' => 'int(11) DEFAULT NULL',
-        ),
-	    'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+            'id' => Schema::TYPE_PK,
+            'Menu_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'internal' => Schema::TYPE_STRING . ' NOT NULL',
+            'url' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'rel' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'target' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'ap' => Schema::TYPE_TEXT,
+            'order' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'root' => Schema::TYPE_INTEGER . ' unsigned DEFAULT NULL',
+            'lft' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'rgt' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'level' => Schema::TYPE_INTEGER . ' unsigned NOT NULL',
+            'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
+            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+        ), $tableOptions);
         $this->addForeignKey('Menu_ibfk_1', 'Menu', 'Menu_id', 'Menu', 'id', 'CASCADE', 'CASCADE');
 	}
 

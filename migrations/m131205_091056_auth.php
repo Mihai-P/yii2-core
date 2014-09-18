@@ -7,23 +7,26 @@ class m131205_091056_auth extends Migration
 	// Use safeUp/safeDown to do migration with transaction
 	public function safeUp()
 	{
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }        
+
 		$this->createTable('AuthItem',
 	        array(
 		            'name' => 'varchar(64) COLLATE utf8_bin NOT NULL',
-		            'type' => 'int(11) NOT NULL',
+		            'type' => Schema::TYPE_INTEGER . ' NOT NULL',
 		            'description' => 'text COLLATE utf8_bin',
 	                'bizrule' => 'text COLLATE utf8_bin',
 	                'data' => 'text COLLATE utf8_bin',
 	                'PRIMARY KEY (`name`)', // primary item
-	        ),
-	        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+	        ), $tableOptions);
 		$this->createTable('AuthItemChild',
 	        array(
 		            'parent' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 		            'child' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 	                'PRIMARY KEY (`parent`,`child`)', // primary item
-	        ),
-	        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+	        ), $tableOptions);
 		$this->addForeignKey('AuthItemChild_ibfk_1', 'AuthItemChild', 'parent', 'AuthItem', 'name', 'CASCADE', 'CASCADE');
 		$this->addForeignKey('AuthItemChild_ibfk_2', 'AuthItemChild', 'child', 'AuthItem', 'name', 'CASCADE', 'CASCADE');
 
@@ -34,8 +37,7 @@ class m131205_091056_auth extends Migration
 	                'bizrule' => 'text COLLATE utf8_bin',
 	                'data' => 'text COLLATE utf8_bin',
 	                'PRIMARY KEY (`itemname`,`userid`)', // primary item
-	        ),
-	        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+	        ), $tableOptions);
 
 		$this->execute('INSERT INTO `AuthItem` VALUES("create::AdminMenu", 0, "create AdminMenu", NULL, \'a:2:{s:6:"module";s:14:"Administration";s:10:"controller";s:9:"AdminMenu";}\');');
 		$this->execute('INSERT INTO `AuthItem` VALUES("create::Button", 0, "create Button", NULL, \'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:6:"Button";}\');');
@@ -47,7 +49,6 @@ class m131205_091056_auth extends Migration
 		$this->execute('INSERT INTO `AuthItem` VALUES("create::Administrator", 0, "create User", NULL, \'a:2:{s:6:"module";s:13:"Administrator";s:10:"controller";s:13:"Administrator";}\');');
 
 
-
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::AdminMenu", 0, "delete AdminMenu", NULL, \'a:2:{s:6:"module";s:14:"Administration";s:10:"controller";s:9:"AdminMenu";}\');');
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::Button", 0, "delete Button", NULL, \'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:6:"Button";}\');');
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::Contact", 0, "delete Contact", NULL, \'a:2:{s:6:"module";s:7:"Contact";s:10:"controller";s:7:"Contact";}\');');
@@ -56,8 +57,6 @@ class m131205_091056_auth extends Migration
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::Page", 0, "delete Page", NULL, \'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:4:"Page";}\');');
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::Tag", 0, "delete Tag", NULL, \'a:2:{s:6:"module";s:4:"Misc";s:10:"controller";s:3:"Tag";}\');');
 		$this->execute('INSERT INTO `AuthItem` VALUES("delete::Administrator", 0, "delete User", NULL, \'a:2:{s:6:"module";s:13:"Administrator";s:10:"controller";s:13:"Administrator";}\');');
-
-
 
 
 		$this->execute('INSERT INTO `AuthItem` VALUES("read::AdminMenu", 0, "read AdminMenu", NULL, \'a:2:{s:6:"module";s:14:"Administration";s:10:"controller";s:9:"AdminMenu";}\');');
@@ -83,15 +82,14 @@ class m131205_091056_auth extends Migration
 
 		$this->createTable('Group',
 	        array(
-		            'id' => 'pk',
-		            'name' => 'string',
-		            'status' => 'string DEFAULT "active"',
-		            'update_time' => 'datetime DEFAULT NULL',
-		            'update_by' => 'string DEFAULT NULL',
-		            'create_time' => 'datetime DEFAULT NULL',
-		            'create_by' => 'string DEFAULT NULL',
-	        ),
-	        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+		            'id' => Schema::TYPE_PK,
+		            'name' => Schema::TYPE_STRING . '',
+		            'status' => Schema::TYPE_STRING . ' DEFAULT "active"',
+		            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+		            'update_by' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+		            'create_by' => Schema::TYPE_STRING . ' DEFAULT NULL',
+	        ), $tableOptions);
 		$this->execute('
 			INSERT INTO `Group` (`id`, `name`, `status`, `update_time`, `update_by`, `create_time`, `create_by`) VALUES
 			(1, "Admin", "active", NULL, NULL, NULL, NULL);');
@@ -136,33 +134,50 @@ class m131205_091056_auth extends Migration
 
 		$this->createTable('User',
 	        array(
-		            'id' => 'pk',
-		            'Group_id' => 'int(11) DEFAULT NULL',
-		            'username' => 'string DEFAULT NULL',
-		            'is_admin' => 'tinyint(1) NOT NULL DEFAULT "0"',
-		            'password' => 'string DEFAULT NULL',
-		            'name' => 'string DEFAULT NULL',
-		            'firstname' => 'string DEFAULT NULL',
-		            'lastname' => 'string DEFAULT NULL',
-		            'picture' => 'string DEFAULT NULL',
-		            'email' => 'string NOT NULL',
-		            'phone' => 'string DEFAULT NULL',
-		            'mobile' => 'string DEFAULT NULL',
-		            'validation_key' => 'string DEFAULT NULL',
+		            'id' => Schema::TYPE_PK,
+		            'Group_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+		            'username' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'type' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "Contact"',
+		            'password' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'password_reset_token' => Schema::TYPE_STRING . '(32)',
+		            'auth_key' => Schema::TYPE_STRING . '(128)',
+		            'name' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'firstname' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'lastname' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'picture' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'email' => Schema::TYPE_STRING . ' NOT NULL',
+		            'phone' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'mobile' => Schema::TYPE_STRING . ' DEFAULT NULL',
+		            'validation_key' => Schema::TYPE_STRING . ' DEFAULT NULL',
 		            'login_attempts' => 'int(10) NOT NULL DEFAULT "0"',
-		            'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
-		            'update_time' => 'datetime DEFAULT NULL',
-		            'update_by' => 'int(11) DEFAULT NULL',
-		            'create_time' => 'datetime DEFAULT NULL',
-		            'create_by' => 'int(11) DEFAULT NULL',
-	        ),
-	        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
-		$this->addForeignKey('User_ibfk_1', 'User', 'Group_id', 'Group', 'id', 'CASCADE', 'CASCADE');
-		$this->execute('
-			INSERT INTO `User` (`id`, `Group_id`, `is_admin`, `username`, `password`, `name`, `firstname`, `lastname`, `picture`, `email`, `phone`, `mobile`, `status`, `create_time`, `create_by`, `update_time`, `update_by`, `validation_key`, `login_attempts`) VALUES
-				(1, 1, "1", "webmaster@2ezweb.com.au", md5("web12#$"), "Webmaster 2EZ Web", "Webmaster", "2EZ Web", NULL, "webmaster@2ezweb.com.au", NULL, NULL, "active", NULL, NULL, NULL, NULL, NULL, 0);');
-		$this->execute('
-			INSERT INTO `AuthAssignment` (`itemname`, `userid`, `bizrule`, `data`) VALUES ("1", "1", NULL, NULL);');
+		            'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
+		            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+		            'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+		            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+		            'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+	        ), $tableOptions);
+		
+		$this->addForeignKey('User_Group_id', 'User', 'Group_id', 'Group', 'id', 'CASCADE', 'SET NULL');
+
+        $this->insert('User', [
+                'id' => 1,
+                'Group_id' => 1,
+                'type' => "Administrator",
+                'username' => "admin",
+                'password' => Yii::$app->getSecurity()->generatePasswordHash("admin"),
+                'auth_key' => Yii::$app->getSecurity()->generateRandomString(),
+                'name' => 'Firstname Lastname',
+                'firstname' => 'Firstname',
+                'lastname' => 'Lastname',
+                'email' => 'webmaster@2ezweb.com.au',
+        ]);
+
+ 		$this->insert('AuthAssignment', [
+                'itemname' => "1",
+                'userid' => "1",
+                'bizrule' => NULL,
+                'data' => NULL
+        ]);		
 	}
 
 	public function safeDown()

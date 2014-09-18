@@ -10,17 +10,21 @@ class m140822_021737_create_PageTemplate_table extends Migration
 
     public function up()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('PageTemplate', array(
-            'id' => 'pk',
-            'name' => 'string NOT NULL',
-            'template' => 'string DEFAULT NULL',
-            'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
-            'update_time' => 'datetime DEFAULT NULL',
-            'update_by' => 'int(11) DEFAULT NULL',
-            'create_time' => 'datetime DEFAULT NULL',
-            'create_by' => 'int(11) DEFAULT NULL',
-        ),
-        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'template' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
+            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+        ), $tableOptions);
 
         $this->insert('PageTemplate', [
                 'name' => 'Main',
@@ -66,6 +70,5 @@ class m140822_021737_create_PageTemplate_table extends Migration
 			'url' => '/core/Page/admin/',
 			'internal' => 'PageController'
 		], ['internal' => 'Pages']);
-
     }
 }

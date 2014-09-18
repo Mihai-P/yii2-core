@@ -2,7 +2,6 @@
 
 namespace core;
 
-
 class Module extends \yii\base\Module
 {
 	public $controllerNamespace = 'core\controllers';
@@ -13,22 +12,7 @@ class Module extends \yii\base\Module
      */
     public $rememberMeTime = 2592000; // 30 days
 
-    /**
-     * @var array
-     * @desc User model relation from other models
-     * @see http://www.yiiframework.com/doc/guide/database.arr
-     */
-    public $relations = array();
-
-    public $tableMap = array(
-        'User' => 'User',
-    );
-
-    public $layoutLogged;
-
     public $attemptsBeforeCaptcha = 3; // Unsuccessful Login Attempts before Captcha
-
-	public $superAdmins = ['admin'];
 
 	public function init()
 	{

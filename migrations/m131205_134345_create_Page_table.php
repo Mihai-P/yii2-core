@@ -6,20 +6,24 @@ class m131205_134345_create_Page_table extends Migration
 {
     public function up()
     {
+        $tableOptions = null;
+        if ($this->db->driverName === 'mysql') {
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
+        }
+
         $this->createTable('Page', array(
-            'id' => 'pk',
-            'name' => 'string NOT NULL',
-            'url' => 'string DEFAULT NULL',
-            'h1' => 'string DEFAULT NULL',
-            'template' => 'string DEFAULT NULL',
-            'content' => 'text',
-            'status' => 'enum("active","inactive","deleted") NOT NULL DEFAULT "active"',
-            'update_time' => 'datetime DEFAULT NULL',
-            'update_by' => 'int(11) DEFAULT NULL',
-            'create_time' => 'datetime DEFAULT NULL',
-            'create_by' => 'int(11) DEFAULT NULL',
-        ),
-        'ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin');		
+            'id' => Schema::TYPE_PK,
+            'name' => Schema::TYPE_STRING . ' NOT NULL',
+            'url' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'h1' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'template' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'content' => Schema::TYPE_TEXT,
+            'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
+            'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+            'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
+            'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
+        ), $tableOptions);
     }
 
     public function down()

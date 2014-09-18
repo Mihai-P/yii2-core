@@ -4,7 +4,7 @@ THIS IS AN ALPHA STATE DO NOT USE IT FOR PRODUCTION
 CMS Module
 ===========
 
-CMS Module is the start for a CMS built on Yii 2. It provides user authentication, registration and RBAC support to your Yii2 site.
+CMS Module is the start for a CMS built on Yii 2. It uses the advance yii2 template. It provides user authentication, registration and RBAC support to your Yii2 site.
 
 ## Installation
 
@@ -44,9 +44,21 @@ return [
 	    'user' => [
 	        'class' => 'core\components\User',
 	    ],
+        'urlManager' => [
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+        ],
 	    ...
 	]
 ];
+```
+
+Copy .htaccess from /vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
+
+```php
+Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module');
+Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
 ```
 
 And run migrations:

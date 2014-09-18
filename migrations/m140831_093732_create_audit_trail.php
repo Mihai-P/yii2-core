@@ -17,15 +17,15 @@ class m140831_093732_create_audit_trail extends Migration
 		//that older versions can still use migrate functionality to upgrade.
 		$this->createTable( 'tbl_audit_trail',
 			array(
-				'id' => 'pk',
-				'old_value' => 'text',
-				'new_value' => 'text',
-				'action' => 'string NOT NULL',
-				'model' => 'string NOT NULL',
-				'field' => 'string',
-				'stamp' => 'datetime NOT NULL',
-				'user_id' => 'string',
-				'model_id' => 'string NOT NULL',
+				'id' => Schema::TYPE_PK,
+				'old_value' => Schema::TYPE_TEXT,
+				'new_value' => Schema::TYPE_TEXT,
+				'action' => Schema::TYPE_STRING . ' NOT NULL',
+				'model' => Schema::TYPE_STRING . ' NOT NULL',
+				'field' => Schema::TYPE_STRING . '',
+				'stamp' => Schema::TYPE_DATETIME . ' NOT NULL',
+				'user_id' => Schema::TYPE_STRING . '',
+				'model_id' => Schema::TYPE_STRING . ' NOT NULL',
 			)
 		);
 
