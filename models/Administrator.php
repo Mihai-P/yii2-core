@@ -17,7 +17,6 @@ use yii\web\IdentityInterface;
  * @property string $password
  * @property string $password_reset_token
  * @property string $auth_key
- * @property string $last_visit_time
  * @property string $name
  * @property string $firstname
  * @property string $lastname
@@ -114,7 +113,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             'profile' => ['email', 'password'],
             'resetPassword' => ['password', 'password_repeat'],
             'requestPasswordResetToken' => ['email'],
-            'login' => ['last_visit_time'],
         ] + parent::scenarios();
     }
     /**

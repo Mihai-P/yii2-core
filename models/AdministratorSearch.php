@@ -75,9 +75,7 @@ class AdministratorSearch extends Administrator
             ->andFilterWhere(['like', 'picture', $this->picture])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'validation_key', $this->validation_key]);
-
+            ->andFilterWhere(['like', 'mobile', $this->mobile]);
         return $dataProvider;
     }
 }
