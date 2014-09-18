@@ -44,6 +44,9 @@ return [
 	    'user' => [
 	        'class' => 'core\components\User',
 	    ],
+        'authManager' => [
+            'class' => 'core\components\DbManager'
+        ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
