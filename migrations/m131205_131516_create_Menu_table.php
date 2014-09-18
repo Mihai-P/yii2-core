@@ -1,10 +1,12 @@
 <?php
 use yii\db\Schema;
-use yii\db\Migration;
-
+use core\components\Migration;
 
 class m131205_131516_create_Menu_table extends Migration
 {
+    var $menu = 'Website';
+    var $module = 'core';
+
 	public function up()
 	{
         $tableOptions = null;
@@ -32,22 +34,18 @@ class m131205_131516_create_Menu_table extends Migration
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
         ), $tableOptions);
-        $this->addForeignKey('Menu_ibfk_1', 'Menu', 'Menu_id', 'Menu', 'id', 'CASCADE', 'CASCADE');
+        $this->addForeignKey('Menu_Menu_id', 'Menu', 'Menu_id', 'Menu', 'id', 'CASCADE', 'CASCADE');
+
+        $this->createAuthItems();
+        $this->createAdminMenu();
 	}
 
 	public function down()
 	{
+        $this->dropForeignKey('Menu_Menu_id', 'Menu');
         $this->dropTable('Menu');
-	}
 
-	/*
-	// Use safeUp/safeDown to do migration with transaction
-	public function safeUp()
-	{
+        $this->deleteAuthItems();
+        $this->deleteAdminMenu();        
 	}
-
-	public function safeDown()
-	{
-	}
-	*/
 }

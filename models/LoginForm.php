@@ -11,7 +11,7 @@ use core\models\User;
  */
 class LoginForm extends Model
 {
-	public $username;
+	public $email;
 	public $password;
 	public $rememberMe = true;
 	public $verifyCode;
@@ -24,8 +24,9 @@ class LoginForm extends Model
 	public function rules()
 	{
 		return [
-			// username and password are both required
-			[['username', 'password'], 'required'],
+			// email and password are both required
+			[['email', 'password'], 'required'],
+			[['email'], 'email'],
 			// password is validated by validatePassword()
 			['password', 'validatePassword'],
 			// rememberMe must be a boolean value
@@ -40,7 +41,7 @@ class LoginForm extends Model
 	public function attributeLabels()
 	{
 		return [
-			'username' => Yii::t('core.user', 'Username or Email'),
+			'email' => Yii::t('core.user', 'Email'),
 			'password' => Yii::t('core.user', 'Password'),
 			'rememberMe' => Yii::t('core.user', 'Remember Me'),
 			'verifyCode' => Yii::t('core.user', 'Verify Code'),
@@ -56,12 +57,12 @@ class LoginForm extends Model
 	{
 		$user = $this->getUser();
 		if (!$user || !$user->validatePassword($this->password)) {
-			$this->addError('password', Yii::t('core.user', 'Incorrect username or password.'));
+			$this->addError('password', Yii::t('core.user', 'Incorrect email or password.'));
 		}
 	}
 
 	/**
-	 * Logs in a user using the provided username and password.
+	 * Logs in a user using the provided email and password.
 	 *
 	 * @return boolean whether the user is logged in successfully
 	 */
@@ -75,14 +76,14 @@ class LoginForm extends Model
 	}
 
 	/**
-	 * Finds user by [[username]]
+	 * Finds user by [[email]]
 	 *
 	 * @return User|null
 	 */
 	private function getUser()
 	{
 		if ($this->_user === false) {
-			$this->_user = Administrator::findByEmail($this->username);
+			$this->_user = Administrator::findByEmail($this->email);
 		}
 		return $this->_user;
 	}

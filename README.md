@@ -57,7 +57,20 @@ return [
     'controllerMap' => [
         'site' => [
             'class' => 'core\controllers\SiteController',
-        ]
+        ],
+        'elfinder' => [
+            'class' => 'mihaildev\elfinder\Controller',
+            'access' => ['@'], //глобальный доступ к фаил менеджеру @ - для авторизорованных , ? - для гостей , чтоб открыть всем ['@', '?']
+            'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
+            'roots' => [
+                [
+                    'class' => 'backend\components\FrontendPath',
+                    'path' => '../../frontend/web/files/images',
+                    'url' => 'http://farmfresh.2ezweb.com.au/files/images',
+                    'name'  => 'Public'
+                ],
+            ]
+        ]        
     ],
 ];
 ```
@@ -69,7 +82,16 @@ Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module')
 Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
 ```
 
-And run migrations:
+Define the fontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview.
+```php
+return [
+...
+    'fontend-url' => 'http://frontend.yii2/',
+...
+];
+```
+
+Run migrations:
 
 ```bash
 $ php yii migrate/up --migrationPath=@core/migrations

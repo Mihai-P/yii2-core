@@ -6,7 +6,8 @@ use core\components\Migration;
 
 class m140822_021737_create_PageTemplate_table extends Migration
 {
-	var $menu = 'Pages';
+	var $menu = 'Website';
+    var $module = 'core';
 
     public function up()
     {
@@ -34,24 +35,14 @@ class m140822_021737_create_PageTemplate_table extends Migration
         $this->addColumn('Page', 'PageTemplate_id', 'int(11) NOT NULL DEFAULT "1" AFTER name');
         $this->addForeignKey('Page_PageTemplate_id', 'Page', 'PageTemplate_id', 'PageTemplate', 'id', 'CASCADE', 'CASCADE');
 
-		$page_menu = AdminMenu::find()->where(['internal' => 'PageController'])->one();
-		$page_menu->url = '';
-		$page_menu->internal = 'Pages';
-		$page_menu->save();
-
-        $this->insert('AdminMenu', [
-        	'AdminMenu_id' => $page_menu->id, 
-        	'name' => 'Pages', 
-        	'internal' => 'PageController', 
-        	'url' => '/core/Page/admin/', 
-        	'ap' => 'read::Page', 
-        	'order' => '1'
-        ]);
         $this->createAuthItems();
         $this->createAdminMenu();
         $this->update('AdminMenu', [
-			'name' => 'Templates',
-		], ['internal' => 'PageTemplateController']);
+			'order' => 4,
+		], ['internal' => 'WebsiteController']);
+        $this->update('AdminMenu', [
+            'order' => 3,
+        ], ['internal' => 'PageTempalteController']);
     }
 
     public function down()
@@ -65,10 +56,5 @@ class m140822_021737_create_PageTemplate_table extends Migration
 
 		$this->deleteAuthItems();
 		$this->deleteAdminMenu();
-
-		$this->update('AdminMenu', [
-			'url' => '/core/Page/admin/',
-			'internal' => 'PageController'
-		], ['internal' => 'Pages']);
     }
 }

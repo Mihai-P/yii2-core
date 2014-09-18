@@ -1,9 +1,12 @@
 <?php
 use yii\db\Schema;
-use yii\db\Migration;
+use core\components\Migration;
 
 class m131205_134345_create_Page_table extends Migration
 {
+    var $menu = 'Website';
+    var $module = 'core';
+
     public function up()
     {
         $tableOptions = null;
@@ -24,10 +27,15 @@ class m131205_134345_create_Page_table extends Migration
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
         ), $tableOptions);
+
+        $this->createAuthItems();
+        $this->createAdminMenu();        
     }
 
     public function down()
     {
         $this->dropTable('Page');
+        $this->deleteAuthItems();
+        $this->deleteAdminMenu();        
     }
 }

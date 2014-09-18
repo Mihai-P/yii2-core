@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use core\models\Contact;
+use yii\helpers\ArrayHelper;
 
 /**
  * ContactSearch represents the model behind the search form about `core\models\Contact`.
@@ -13,15 +14,24 @@ use core\models\Contact;
 class ContactSearch extends Contact
 {
     /**
+     * @var string search registered from - to for the model
+     */    
+    var $create_time_from;
+    var $create_time_to;    
+    /**
      * @var string search keyword for the model
      */    
     var $keyword;
+    /**
+     * @var string search tag for the model
+     */    
+    var $tag;
 
     public function rules()
     {
         return [
-            [['id', 'Group_id', 'Postcode_id', 'Administrator_id', 'Contact_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['keyword', 'title', 'type', 'username', 'password', 'password_reset_token', 'auth_key', 'last_visit_time', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'fax', 'company', 'address', 'comments', 'internal_comments', 'break_from', 'break_to', 'dob_date', 'ignore_activity', 'sms_subscription', 'email_subscription', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['keyword', 'create_time_from', 'create_time_to', 'tag', 'type', 'password', 'password_reset_token', 'auth_key', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
         ];
     }
 
@@ -31,9 +41,20 @@ class ContactSearch extends Contact
         return Model::scenarios();
     }
 
+    public function attributeLabels()
+    {
+        return ArrayHelper::merge(
+            [
+                'create_time_from' => 'Registered From',
+                'create_time_to' => 'To',
+            ],
+            parent::attributeLabels()
+        );
+    }
+
     public function search($params)
     {
-        $query = Contact::find()->where('type = "Contact" AND status <> "deleted"');
+        $query = Contact::find()->where('User.type = "Contact" AND User.status <> "deleted"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -52,47 +73,34 @@ class ContactSearch extends Contact
                 $query->andFilterWhere(['id' => $this->keyword]);
             }            
         }
+        if($this->create_time_from) {
+            $query->andWhere('User.create_time >= :create_time_from', [':create_time_from' => date('Y-m-d 00:00:00', strtotime($this->create_time_from))]);
+        }
+        if($this->create_time_to) {
+            $query->andWhere('User.create_time < :create_time_to', [':create_time_to' => date('Y-m-d 00:00:00', strtotime($this->create_time_to) + 60*60*24)]);
+        }
+
+        if($this->tag) {
+            $query->join('INNER JOIN', 'Contact_Tag', 'User.id = Contact_Tag.Contact_id')->andWhere('Contact_Tag.Tag_id = :Tag_id AND Contact_Tag.status = "active"', [':Tag_id' => $this->tag]);
+        }
+
         $query->andFilterWhere([
             'id' => $this->id,
-            'Group_id' => $this->Group_id,
-            'type' => $this->type,
-            'last_visit_time' => $this->last_visit_time,
-            'Postcode_id' => $this->Postcode_id,
-            'Administrator_id' => $this->Administrator_id,
-            'Contact_id' => $this->Contact_id,
-            'break_from' => $this->break_from,
-            'break_to' => $this->break_to,
-            'dob_date' => $this->dob_date,
-            'login_attempts' => $this->login_attempts,
             'update_time' => $this->update_time,
             'update_by' => $this->update_by,
             'create_time' => $this->create_time,
             'create_by' => $this->create_by,
-            'status' => $this->status,
+            'User.status' => $this->status,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
+        $query->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'name', $this->name])
             ->andFilterWhere(['like', 'firstname', $this->firstname])
             ->andFilterWhere(['like', 'lastname', $this->lastname])
             ->andFilterWhere(['like', 'picture', $this->picture])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'mobile', $this->mobile])
-            ->andFilterWhere(['like', 'fax', $this->fax])
-            ->andFilterWhere(['like', 'company', $this->company])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'comments', $this->comments])
-            ->andFilterWhere(['like', 'internal_comments', $this->internal_comments])
-            ->andFilterWhere(['like', 'ignore_activity', $this->ignore_activity])
-            ->andFilterWhere(['like', 'sms_subscription', $this->sms_subscription])
-            ->andFilterWhere(['like', 'email_subscription', $this->email_subscription])
-            ->andFilterWhere(['like', 'validation_key', $this->validation_key])
-            ->andFilterWhere(['like', 'status', $this->status]);
+            ->andFilterWhere(['like', 'mobile', $this->mobile]);
 
         return $dataProvider;
     }

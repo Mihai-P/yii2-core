@@ -14,7 +14,6 @@ use yii\web\IdentityInterface;
  * This is the model class for table "User".
  *
  * @property integer $id
- * @property string $username
  * @property string $email
  * @property string $password
  * @property string $password_reset_token
@@ -83,9 +82,9 @@ class User extends ActiveRecord implements IdentityInterface
 	}
 
 	/**
-	 * Finds user by username
+	 * Finds user by email
 	 *
-	 * @param string $username
+	 * @param string $email
 	 * @return null|User
 	 */
 	public static function findByEmail($email)
@@ -174,10 +173,6 @@ class User extends ActiveRecord implements IdentityInterface
 		return [
 			['status', 'default', 'value' => static::STATUS_ACTIVE, 'on' => 'signup'],
 			['status', 'safe'],
-			['username', 'filter', 'filter' => 'trim'],
-			['username', 'required'],
-			['username', 'unique', 'message' => Yii::t('core.user', 'This username has already been taken.')],
-			['username', 'string', 'min' => 2, 'max' => 255],
 
 			['email', 'filter', 'filter' => 'trim'],
 			['email', 'required'],
@@ -193,8 +188,8 @@ class User extends ActiveRecord implements IdentityInterface
 	public function scenarios()
 	{
 		return [
-			'signup' => ['username', 'email', 'password'],
-			'profile' => ['username', 'email', 'password'],
+			'signup' => ['email', 'email', 'password'],
+			'profile' => ['email', 'email', 'password'],
 			'resetPassword' => ['password'],
 			'requestPasswordResetToken' => ['email'],
 			'login' => ['last_visit_time'],
@@ -208,7 +203,6 @@ class User extends ActiveRecord implements IdentityInterface
 	{
 		return [
 			'id' => 'ID',
-			'username' => Yii::t('core.user', 'Username'),
 			'email' => Yii::t('core.user', 'Email'),
 			'password' => Yii::t('core.user', 'Password'),
 			'password_reset_token' => Yii::t('core.user', 'Password Reset Token'),
@@ -263,21 +257,6 @@ class User extends ActiveRecord implements IdentityInterface
 			throw $e;
 		}
 		return $result;
-	}
-
-	/**
-	 * Returns whether the logged in user is an administrator.
-	 *
-	 * @return boolean the result.
-	 */
-	public function getIsSuperAdmin()
-	{
-		if ($this->_isSuperAdmin !== null) {
-			return $this->_isSuperAdmin;
-		}
-
-		$this->_isSuperAdmin = in_array($this->username, Yii::$app->getModule('core')->superAdmins);
-		return $this->_isSuperAdmin;
 	}
 
 	public function login($duration = 0)

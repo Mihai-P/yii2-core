@@ -20,7 +20,7 @@ class AdministratorSearch extends Administrator
     public function rules()
     {
         return [
-            [['keyword', 'username', 'type', 'password', 'password_reset_token', 'auth_key', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
+            [['keyword', 'type', 'password', 'password_reset_token', 'auth_key', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
             [['id', 'Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
         ];
     }
@@ -64,8 +64,7 @@ class AdministratorSearch extends Administrator
             'create_by' => $this->create_by,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'type', $this->type])
+        $query->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'auth_key', $this->auth_key])

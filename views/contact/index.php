@@ -3,7 +3,8 @@
 use yii\helpers\Html;
 use theme\widgets\GridView;
 use theme\widgets\Pjax;
-
+use core\models\Contact;
+use theme\widgets\ActiveForm;
 /**
  * @var yii\web\View $this
  * @var core\models\ContactSearch $searchModel
@@ -19,8 +20,10 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'id' => 'main-grid',
         'dataProvider' => $dataProvider,
+        'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
         'columns' => [
+            ['class' => 'theme\widgets\CheckboxColumn'],
             ['class' => 'theme\widgets\IdColumn'],
             ['class' => 'theme\widgets\NameColumn'],
             ['class' => 'theme\widgets\StatusColumn'],
@@ -29,3 +32,42 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
     <?php Pjax::end(); ?>
 </div>
+            <!-- Form modal -->
+            <div id="assign-all-tag" class="modal fade" tabindex="-1" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h5 class="modal-title">Assign to tags</h5>
+                        </div>
+<!-- Form inside modal -->
+<?php 
+    $model = new Contact;
+    $form = ActiveForm::begin([
+        'action' => ['assign-tags'],
+        'method' => 'post',
+        'id' => 'assign-tags-form',
+        'options' => [
+            'role' => "form",
+        ], 
+        'enableClientValidation' => false,
+        'validateOnSubmit' => false,
+        'validateOnChange' => false,
+        'fieldConfig' => [
+            'template' => "<div class=\"row\"><div class=\"col-sm-2\">{label}</div>\n<div class=\"col-sm-10\">{input}</div></div>",
+        ]        
+    ]);
+?>
+                            <div class="modal-body has-padding">
+                                <?= $form->field($model, 'tags')->widget(\theme\widgets\InputTags::classname()) ?>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        <?php ActiveForm::end(); ?>
+                    </div>
+                </div>
+            </div>
+            <!-- /form modal -->

@@ -3,6 +3,8 @@
 namespace core\components;
 
 use yii\db\Query;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 /**
  * FaqController implements the CRUD actions for Faq model.
  */
@@ -11,10 +13,12 @@ class Migration extends \yii\db\Migration
     var $controller;
     var $menu = 'Misc';
     var $module = '';
+    var $singleMenu = false;
     var $privileges = array('create', 'delete', 'read', 'update');
 
     public function friendly($str) {
-        return trim(implode(" ", preg_split('/(?=\p{Lu})/u', $str)));
+        return Inflector::pluralize(Inflector::camel2words(StringHelper::basename($str)));
+        //return trim(implode(" ", preg_split('/(?=\p{Lu})/u', $str)));
     }
 
     public function getController() {
@@ -53,29 +57,34 @@ class Migration extends \yii\db\Migration
     public function createAdminMenu() {
         $connection = \Yii::$app->db;
         $query = new Query;
-
-        $menu = $query->from('AdminMenu')
-            ->where('internal=:internal', array(':internal'=>$this->menu))
-            ->one();
-
-        if(!$menu) {
-            $query = new Query;
-            // compose the query
-            $last_main_menu = $query->from('AdminMenu')
-                ->where('AdminMenu_id IS NULL')
-                ->orderby('order DESC')          
+        if(!$this->singleMenu) {
+            $menu_name = $this->friendly($this->getController());
+            $menu = $query->from('AdminMenu')
+                ->where('internal=:internal', array(':internal'=>$this->menu))
                 ->one();
 
-            $this->insert('AdminMenu', array(
-                "name" => $this->menu,
-                "internal" => $this->menu,
-                "url" => '',
-                "ap" => 'read::'.$this->getController(),
-                "order" => $last_main_menu ? $last_main_menu['order'] + 1 : 1
-            ));
-            $menu_id = $connection->getLastInsertID();
+            if(!$menu) {
+                $query = new Query;
+                // compose the query
+                $last_main_menu = $query->from('AdminMenu')
+                    ->where('AdminMenu_id IS NULL')
+                    ->orderby('order DESC')          
+                    ->one();
+
+                $this->insert('AdminMenu', array(
+                    "name" => $this->menu,
+                    "internal" => $this->menu,
+                    "url" => '',
+                    "ap" => 'read::'.$this->getController(),
+                    "order" => $last_main_menu ? $last_main_menu['order'] + 1 : 1
+                ));
+                $menu_id = $connection->getLastInsertID();
+            } else {
+                $menu_id = $menu['id'];
+            }
         } else {
-            $menu_id = $menu['id'];
+            $menu_id = NULL;
+            $menu_name = $this->menu;
         }
         $query = new Query;
 
@@ -87,7 +96,7 @@ class Migration extends \yii\db\Migration
 
         $this->insert('AdminMenu', array(
             "AdminMenu_id" => $menu_id,
-            "name" => $this->friendly($this->getController()),
+            "name" => $menu_name,
             "internal" => $this->getController() . 'Controller',
             "url" => ($this->module ? '/' . $this->module : '' ) . '/'.$this->getController().'/admin/',
             "ap" => 'read::'.$this->getController(),

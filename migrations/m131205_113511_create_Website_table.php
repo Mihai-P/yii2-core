@@ -1,9 +1,13 @@
 <?php
 use yii\db\Schema;
-use yii\db\Migration;
+use core\components\Migration;
 
 class m131205_113511_create_Website_table extends Migration
 {
+	var $module = 'core';
+	var $privileges = ['update'];
+	var $menu = 'Website';
+
 	public function up()
 	{
         $tableOptions = null;
@@ -23,11 +27,25 @@ class m131205_113511_create_Website_table extends Migration
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
         ), $tableOptions);
+        
+        $this->insert('Website', [
+            'name' => 'Default',
+            'host' => 'default',
+            'theme' => 'default',
+            'template' => '@core/views/website/default',
+        ]);
+
+        $this->createAuthItems();
+        $this->createAdminMenu();
+        $this->update('AdminMenu', ['ap' => 'update::Website'], ['internal' => 'Website']);
+        $this->update('AdminMenu', ['ap' => 'update::Website', 'url' => '/core/Website/update?id=1'], ['internal' => 'WebsiteController']);
 	}
 
 	public function down()
 	{
 		$this->dropTable('Website');
+        $this->deleteAuthItems();
+        $this->deleteAdminMenu();
 	}
 
 	/*

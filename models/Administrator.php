@@ -12,7 +12,6 @@ use yii\web\IdentityInterface;
  *
  * @property integer $id
  * @property integer $Group_id
- * @property string $username
  * @property string $type
  * @property string $password
  * @property string $password_reset_token
@@ -167,19 +166,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     public static function findIdentity($id)
     {
         return static::findOne($id);
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return null|User
-     */
-    public static function findByUsername($username)
-    {
-        return static::find()
-        ->andWhere(['and', ['or', ['username' => $username], ['email' => $username]], ['status' => static::STATUS_ACTIVE]])
-        ->one();
     }
 
     /**

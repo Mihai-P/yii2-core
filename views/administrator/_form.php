@@ -28,7 +28,8 @@ if(!$model->hasErrors()) {
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255, 'autocomplete' => 'off']) ?>
+
     <?= $form->field($model, 'password_repeat')->passwordInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>

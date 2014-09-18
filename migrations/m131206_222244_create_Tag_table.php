@@ -1,9 +1,13 @@
 <?php
 use yii\db\Schema;
-use yii\db\Migration;
+use core\components\Migration;
 
 class m131206_222244_create_Tag_table extends Migration
 {
+    var $singleMenu = true;
+    var $module = 'core';
+    var $menu = 'Tags';
+
 	public function up()
 	{
         $tableOptions = null;
@@ -22,11 +26,16 @@ class m131206_222244_create_Tag_table extends Migration
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
         ), $tableOptions);
         $this->createIndex('Tag_type', 'Tag', 'type');
+
+        $this->createAuthItems();
+        $this->createAdminMenu();                
 	}
 
 	public function down()
 	{
         $this->dropIndex('Tag_type', 'Tag');
 		$this->dropTable('Tag');
+        $this->deleteAuthItems();
+        $this->deleteAdminMenu();             
 	}
 }

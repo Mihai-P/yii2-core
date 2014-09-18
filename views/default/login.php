@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="panel panel-default">
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> User login</h6></div>
             <div class="panel-body">
-				<?= $form->field($model, 'username', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+				<?= $form->field($model, 'email', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
 
 				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 				<?php if ($model->scenario == 'withCaptcha'): ?>
