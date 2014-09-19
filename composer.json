@@ -25,7 +25,11 @@
 		"nickcv/yii2-mandrill": "*",
 		"sammaye/yii2-audittrail": "dev-master",
 		"creocoder/yii2-nested-set-behavior": "*",
-		"FortAwesome/Font-Awesome": "*"
+		"FortAwesome/Font-Awesome": "*",
+		"kartik-v/yii2-sortable": "dev-master",
+		"robregonm/yii2-pdf": "dev-master",
+		"goodby/csv": "*",
+		"nickcv/yii2-mandrill": "*"
     },	
 	"autoload": {
 		"psr-4": {
