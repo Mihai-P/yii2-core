@@ -12,6 +12,7 @@ use core\models\Contact;
  * @var core\models\Contact $model
  * @var yii\widgets\ActiveForm $form
  */
+$model->tags = $model->getTags();
 ?>
 
 <div class="contact-form">
@@ -27,6 +28,8 @@ use core\models\Contact;
     <?= $form->field($model, 'phone')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'mobile')->textInput(['maxlength' => 255]) ?>
+
+    <?= $form->field($model, 'tags')->widget(\theme\widgets\InputTags::classname()) ?>
 
     <div class="form-actions text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
