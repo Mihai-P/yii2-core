@@ -31,16 +31,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'validateOnSubmit' => false,
         'validateOnChange' => false,		
 		'fieldConfig' => [
-			'template' => "{input}",
+			'template' => "{input}{hint}{error}",
 			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
 		],
 	]); ?>
         <div class="panel panel-default">
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> User login</h6></div>
             <div class="panel-body">
-				<?= $form->field($model, 'email', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
+				<?= $form->field($model, 'email', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
 
-				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
 				<?php if ($model->scenario == 'withCaptcha'): ?>
 					<?=
 					$form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
