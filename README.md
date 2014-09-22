@@ -26,7 +26,7 @@ to the require section of your `composer.json` file.
 
 ## Usage
 
-Once the extension is installed, modify your application configuration to include:
+Once the extension is installed, modify the backend\config\main.php application configuration to include:
 
 ```php
 return [
@@ -43,6 +43,7 @@ return [
 	    ...
 	    'user' => [
 	        'class' => 'core\components\User',
+            'enableAutoLogin' => true,
 	    ],
         'authManager' => [
             'class' => 'core\components\DbManager'
@@ -66,7 +67,7 @@ return [
                 [
                     'class' => 'backend\components\FrontendPath',
                     'path' => '../../frontend/web/files/images',
-                    'url' => 'http://farmfresh.2ezweb.com.au/files/images',
+                    'url' => 'http://frontend.yii2/files/images',
                     'name'  => 'Public'
                 ],
             ]
