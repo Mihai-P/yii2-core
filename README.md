@@ -65,7 +65,7 @@ return [
             'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
             'roots' => [
                 [
-                    'class' => 'backend\components\FrontendPath',
+                    'class' => 'core\components\FrontendPath',
                     'path' => '../../frontend/web/files/images',
                     'url' => 'http://frontend.yii2/files/images',
                     'name'  => 'Public'
@@ -76,8 +76,12 @@ return [
 ];
 ```
 
-Copy .htaccess from /vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
+Copy .htaccess from vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
+```bash
+cp vendor/tez/yii2-cms-module/.htaccess backend/web/
+```
 
+In common/config/bootstrap add 
 ```php
 Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module');
 Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
@@ -92,7 +96,7 @@ return [
 ];
 ```
 
-In your common/config/params.php define the mandrill details
+In your common/config/params.php define the mandrill details and the logo for the notification
 ```php
     'mandrill'=>[
         'key' => 'xxxx', 
@@ -100,6 +104,16 @@ In your common/config/params.php define the mandrill details
         'from_name' => 'No Reply'
     ],
     'logo' => 'http://2ezweb.net/themes/default/images/logo.png', // the logo will be merged into the email notification.
+```
+
+In backend\assets\AppAsset.php the depend section should look like this
+```php
+    public $depends = [
+        'yii\web\YiiAsset',
+        'yii\bootstrap\BootstrapAsset',
+        'theme\assets\BrainAsset',
+        'theme\assets\CustomAsset',          
+    ];
 ```
 
 Run migrations:
@@ -111,10 +125,6 @@ $ php yii migrate/up --migrationPath=@core/migrations
 ## License
 
 Auth module is released under the BSD-3 License. See the bundled `LICENSE.md` for details.
-
-#INSTALLATION
-
-./yii migrate/up --migrationPath=@core/migrations
 
 ## URLs
 
