@@ -162,7 +162,7 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public static function tableName()
 	{
-		return Yii::$app->getModule('core')->tableMap['User'];
+		return 'User';
 	}
 
 	/**
