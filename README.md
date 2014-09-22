@@ -91,6 +91,16 @@ return [
 ];
 ```
 
+In your common/config/params.php define the mandrill details
+```php
+    'mandrill'=>[
+        'key' => 'xxxx', 
+        'from_email' => 'admin@.....', 
+        'from_name' => 'No Reply'
+    ],
+    'logo' => 'http://2ezweb.net/themes/default/images/logo.png', // the logo will be merged into the email notification.
+```
+
 Run migrations:
 
 ```bash

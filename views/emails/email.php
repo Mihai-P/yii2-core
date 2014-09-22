@@ -468,7 +468,7 @@ use yii\helpers\Html;
                                     <table border="0" cellpadding="0" cellspacing="0" width="100%" id="templateHeader">
                                         <tr>
                                             <td valign="top" class="headerContent">
-                                            	<img src="<?= Yii::$app->params['emailLogo']?>" style="width:600px;" id="headerImage" />
+                                            	<img src="<?= Yii::$app->params['logo']?>" style="width:600px;" id="headerImage" />
                                             </td>
                                         </tr>
                                     </table>
