@@ -247,6 +247,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             $this->name = $this->firstname . ' ' . $this->lastname;
             if (!empty($this->password_repeat)) {
                 $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+                $this->password_reset_token = null;
             } else {
                 unset($this->password);
             }
@@ -274,16 +275,4 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
-    
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->scenario='';
-        $this->password_reset_token = null;
-        $this->detachBehaviors();        
-        $this->save(false);
-        return true;
-    }    
 }

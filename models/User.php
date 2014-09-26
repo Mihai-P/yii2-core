@@ -153,7 +153,6 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public function validatePassword($password)
 	{
-		//return $this->password ==md5($password);
 		return Security::validatePassword($password, $this->password);
 	}
 
