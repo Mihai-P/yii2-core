@@ -26,21 +26,23 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 	<?php $form = ActiveForm::begin([
-		'id' => 'login-form',
-		'options' => ['role' => 'form'],
+		'id' => 'request-password-reset-token-form',
+		'options' => [
+			'role' => 'form',
+			'class' => 'small-form',
+		],
         'enableClientValidation' => false,
         'validateOnSubmit' => false,
         'validateOnChange' => false,		
 		'fieldConfig' => [
-			'template' => "{input}",
-			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
+			'template' => "{input}{error}",
 		],
 	]); ?>
         <div class="panel panel-default">
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> Reset Password</h6></div>
             <div class="panel-body">
             	<p>Please enter your email address below and we will send you an email with further instructions.</p>
-				<?= $form->field($model, 'email', ['options' => ['class' => 'form-group input-group input-group-lg'], 'template' => '<span class="input-group-addon"><i class=" glyphicon glyphicon-user"></i></span>{input}'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
+            	<?= $form->field($model, 'email', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
 
 				<div class="form-group">
 					<div class="text-center">

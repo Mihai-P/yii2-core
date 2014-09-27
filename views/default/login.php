@@ -26,13 +26,15 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 	<?php $form = ActiveForm::begin([
 		'id' => 'login-form',
-		'options' => ['role' => 'form'],
+		'options' => [
+			'role' => 'form',
+			'class' => 'small-form',
+		],
         'enableClientValidation' => false,
         'validateOnSubmit' => false,
         'validateOnChange' => false,		
 		'fieldConfig' => [
 			'template' => "{input}{hint}{error}",
-			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
 		],
 	]); ?>
         <div class="panel panel-default">
@@ -41,9 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= $form->field($model, 'email', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-user form-control-feedback"></i></div>'])->textInput(['placeholder' => $model->getAttributeLabel('email')]) ?>
 
 				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+
 				<?php if ($model->scenario == 'withCaptcha'): ?>
-					<?=
-					$form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
+					<?= $form->field($model, 'verifyCode')->widget(Captcha::className(), ['captchaAction' => 'default/captcha', 'options' => ['class' => 'form-control'],]) ?>
 				<?php endif; ?>
 				<div class="row form-actions">
 					<div class="col-xs-6">

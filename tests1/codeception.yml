@@ -1,0 +1,27 @@
+namespace: core\tests
+actor: Tester
+paths:
+    tests: .
+    log: _output
+    data: _data
+    helpers: _support
+settings:
+    bootstrap: _bootstrap.php
+    suite_class: \PHPUnit_Framework_TestSuite
+    colors: true
+    memory_limit: 1024M
+    log: true
+config:
+    # the entry script URL (without host info) for functional and acceptance tests
+    # PLEASE ADJUST IT TO THE ACTUAL ENTRY SCRIPT URL
+    test_entry_url: /index-test.php
+modules:
+    enabled: [Db]
+    config:
+        Db:
+            populate: true
+            cleanup: false
+            dsn: 'mysql:host=localhost;dbname=yii2_advanced_tests'
+            user: 'root'
+            password: 'anaaremere'
+            dump: _data/dump.sql

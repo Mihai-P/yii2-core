@@ -16,22 +16,23 @@ $this->title = \Yii::t('core.user', 'Login');
 <div class="login-wrapper">
 	<?php $form = ActiveForm::begin([
 		'id' => 'reset-password-form',
-		'options' => ['role' => 'form'],
+		'options' => [
+			'role' => 'form',
+			'class' => 'small-form',
+		],
         'enableClientValidation' => false,
         'validateOnSubmit' => false,
         'validateOnChange' => false,		
 		'fieldConfig' => [
-			'template' => "{input}",
-			//'labelOptions' => ['class' => 'col-lg-1 control-label'],
+			'template' => "{input}{error}",
 		],
 	]); ?>
         <div class="panel panel-default">
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> Reset Password</h6></div>
             <div class="panel-body">
             	<p>Please enter your desired password below.</p>
-	<?= $form->field($model, 'password', ['options' => ['class' => 'form-group input-group input-group-lg'], 'template' => '<span class="input-group-addon"><i class=" glyphicon glyphicon-lock"></i></span>{input}'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
-
-	<?= $form->field($model, 'password_repeat', ['options' => ['class' => 'form-group input-group input-group-lg'], 'template' => '<span class="input-group-addon"><i class=" glyphicon glyphicon-lock"></i></span>{input}'])->passwordInput(['placeholder' => $model->getAttributeLabel('password_repeat')]) ?>
+				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]); ?>
+				<?= $form->field($model, 'password_repeat', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password_repeat')]); ?>
 
 				<div class="form-group">
 					<div class="text-center">

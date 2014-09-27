@@ -42,6 +42,7 @@ class DefaultController extends Controller
 		return [
 			'error' => [
 				'class' => 'yii\web\ErrorAction',
+				'view' => 'error'
 			],
 			'captcha' => [
 				'class' => 'yii\captcha\CaptchaAction',
@@ -49,6 +50,16 @@ class DefaultController extends Controller
 			],
 		];
 	}
+
+    public function beforeAction($event)
+    {
+		if(Yii::$app->user->isGuest) {
+			$this->layout = '@core/views/layouts/login';
+		} else {
+			$this->layout = '@core/views/layouts/main';
+		}
+        return true;
+    }
 
 	public function actionLogin()
 	{
@@ -102,7 +113,7 @@ class DefaultController extends Controller
 				Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
 				return $this->goHome();
 			} else {
-				Yii::$app->getSession()->setFlash('danger', 'There was an error sending email.');
+				Yii::$app->getSession()->setFlash('danger', 'There was an error sending the email.');
 			}
 		} 
 		return $this->render('requestPasswordResetToken', [

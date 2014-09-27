@@ -72,6 +72,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
             [['password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
             [['password', 'password_repeat'], 'validatePasswordInput'],
+            [['password', 'password_repeat'], 'required', 'on' => ['resetPassword']],
             [['firstname', 'lastname', 'Group_id', 'email'], 'required'],
             [['update_time', 'create_time'], 'safe'],
             [['email'], 'email'],
@@ -79,6 +80,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             [['password', 'password_repeat', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
+
         ];
 
         if($this->isNewRecord) {
@@ -96,7 +98,6 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
             return;
         }
         if($this->password != $this->password_repeat) {
-            die('The password repeat');
             $this->addError('password', 'You have to repeat the password');
             $this->addError('password_repeat', 'You have to repeat the password');
         }
