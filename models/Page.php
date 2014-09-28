@@ -41,7 +41,7 @@ class Page extends \core\components\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
+            [['PageTemplate_id', 'name'], 'required'],
             [['h1', 'content', 'status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['PageTemplate_id', 'update_by', 'create_by'], 'integer'],

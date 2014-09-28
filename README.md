@@ -53,6 +53,15 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
         ],
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@core/views/layouts' => '@core/views/layouts',
+                    '@core/views' => ['@app/views', '@core/views'],                    
+                ],
+                'baseUrl' => '@web/',
+            ],
+        ],
 	    ...
 	],
     'controllerMap' => [

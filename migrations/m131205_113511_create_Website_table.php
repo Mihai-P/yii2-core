@@ -38,7 +38,7 @@ class m131205_113511_create_Website_table extends Migration
         $this->createAuthItems();
         $this->createAdminMenu();
         $this->update('AdminMenu', ['ap' => 'update::Website'], ['internal' => 'Website']);
-        $this->update('AdminMenu', ['ap' => 'update::Website', 'url' => '/core/Website/update?id=1'], ['internal' => 'WebsiteController']);
+        $this->update('AdminMenu', ['ap' => 'update::Website', 'url' => '/core/website/update?id=1'], ['internal' => 'WebsiteController']);
 	}
 
 	public function down()

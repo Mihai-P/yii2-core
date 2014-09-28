@@ -91,14 +91,14 @@ class Migration extends \yii\db\Migration
         $last_menu = $query->from('AdminMenu')
                 ->from('AdminMenu')
                 ->where('AdminMenu_id=:AdminMenu_id', array(':AdminMenu_id'=>$menu_id))
-                ->orderby('order DESC')               
+                ->orderby('order DESC')
                 ->one();
 
         $this->insert('AdminMenu', array(
             "AdminMenu_id" => $menu_id,
             "name" => $menu_name,
             "internal" => $this->getController() . 'Controller',
-            "url" => ($this->module ? '/' . $this->module : '' ) . '/'.$this->getController().'/admin/',
+            "url" => ($this->module ? '/' . $this->module : '' ) . '/'. strtolower(trim(preg_replace("([A-Z])", "-$0", $this->getController()), '-')).'/',
             "ap" => 'read::'.$this->getController(),
             "order" => $last_menu ? $last_menu['order'] + 1 : 1
         )); }

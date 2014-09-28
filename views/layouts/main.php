@@ -97,15 +97,12 @@ AppAsset::register($this);
         <div class="sidebar collapse">
             <ul class="navigation">
 <?php        
-    function change_url($url) {
-        return strtolower(str_replace(array('/admin', '/-'), array('', '/'), preg_replace("([A-Z])", "-$0", $url)));
-    }
     $menus = AdminMenu::find()->with('adminMenus')->where('AdminMenu_id IS NULL')->active()->orderBy('order ASC')->all();
     foreach($menus as $menu) {
         $submenus = array();
         foreach($menu->adminMenus as $submenu)
             if(Yii::$app->user->checkAccess($submenu->ap))
-                $submenus[] = '<li><a href="'.change_url($submenu->url).'">'.$submenu->name . '</a></li>';
+                $submenus[] = '<li><a href="'.$submenu->url.'">'.$submenu->name . '</a></li>';
 
         if(Yii::$app->user->checkAccess($menu->ap)) {
             if(count($submenus)) {
@@ -115,7 +112,7 @@ AppAsset::register($this);
                         <ul style="display: none;">'.implode('', $submenus).'</ul>
                     </li>';
             } else {
-                echo '<li><a href="'.change_url($menu->url).'"><i class="fa fa-bar-chart-o"></i> '.$menu->name.'</a></li>';
+                echo '<li><a href="'.$menu->url.'"><i class="fa fa-bar-chart-o"></i> '.$menu->name.'</a></li>';
             }
         }
     }
