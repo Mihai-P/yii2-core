@@ -83,6 +83,24 @@ return [
         ]        
     ],
 ];
+
+```
+
+Use the new crud generator, put in the main-local.php
+```php
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+        'generators' => [
+            'crud'   => [
+                'class'     => 'core\gii\crud\Generator',
+                'templates' => ['crud' => '@core/gii/crud']
+            ],
+            'model'   => [
+                'class'     => 'core\gii\model\Generator',
+                'templates' => ['model' => '@core/gii/model/default']
+            ],
+        ]
+    ];    
 ```
 
 Copy .htaccess from vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
