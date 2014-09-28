@@ -86,7 +86,7 @@ return [
 
 ```
 
-Use the new crud generator, put in the main-local.php
+Use the new crud generator, put in the backend/config/main-local.php
 ```php
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
