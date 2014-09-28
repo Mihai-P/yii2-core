@@ -16,10 +16,11 @@ use core\models\Menu;
     <?php $form = ActiveForm::begin(); ?>
     <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
     
-    <div class="form-group field-menu-menu_id required <?= ($model->hasErrors('Menu_id') ? "has-error" : "") ?>">
+    <div class="form-group field-menu-menu_id <?= ($model->hasErrors('Menu_id') ? "has-error" : "") ?>">
         <div class="col-sm-2"><label class="control-label" for="menu-menu_id">Parent</label></div>
         <div class="col-sm-10">
             <select id="menu-menu_id" class="select2" name="Menu[Menu_id]">
+            <option value="">Main Menu</option>
             <?php 
             	$menus = Menu::find()->where('status <> "deleted"')->addOrderBy('root')->addOrderBy('lft')->all();
             	foreach ($menus as $n => $menu) {
