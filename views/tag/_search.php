@@ -51,8 +51,8 @@ use core\models\Tag;
             <?=  Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">
-            <?= $form->field($model, 'type', array('template' => "{input}"))->dropDownList(ArrayHelper::map(Tag::find()->select('type')->distinct()->asArray()->orderby('type ASC')->all(), 'type', 'type'), ['prompt' => 'Filter by Type', 'placeholder' => 'Filter by Type', 'data-default' => '']) ?>
-            <?= $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
+            <?= $form->field($model, 'type', ['template' => "{input}"])->dropDownList(ArrayHelper::map(Tag::find()->select('type')->distinct()->asArray()->orderby('type ASC')->all(), 'type', 'type'), ['prompt' => 'Filter by Type', 'placeholder' => 'Filter by Type', 'data-default' => '']) ?>
+            <?= $form->field($model, 'status', ['template' => "{input}"])->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
     <?php // echo $form->field($model, 'id') ?>
 

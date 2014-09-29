@@ -60,8 +60,8 @@ use core\models\Tag;
             <?= Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">
-            <?= $form->field($model, 'tag', array('template' => "{input}"))->dropDownList(ArrayHelper::map(Tag::find()->asArray()->where('status <> "deleted" AND type="Contact"')->orderby('name ASC')->all(), 'id', 'name'), ['prompt' => 'Filter by Tag', 'placeholder' => 'Filter by Tag', 'data-default' => '']) ?>
-            <?= $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', 'deleted' => 'Deleted', ], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
+            <?= $form->field($model, 'tag', ['template' => "{input}"])->dropDownList(ArrayHelper::map(Tag::find()->asArray()->where('status <> "deleted" AND type="Contact"')->orderby('name ASC')->all(), 'id', 'name'), ['prompt' => 'Filter by Tag', 'placeholder' => 'Filter by Tag', 'data-default' => '']) ?>
+            <?= $form->field($model, 'status', ['template' => "{input}"])->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive', 'deleted' => 'Deleted', ], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
     <?php ActiveForm::end(); ?>
 </div>

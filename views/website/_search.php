@@ -49,7 +49,7 @@ use yii\widgets\ActiveForm;
             <?=  Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">
-            <?=  $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
+            <?=  $form->field($model, 'status', ['template' => "{input}"])->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
     <?php // echo $form->field($model, 'id') ?>
 

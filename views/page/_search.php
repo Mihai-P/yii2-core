@@ -51,8 +51,8 @@ use core\models\PageTemplate;
             <?=  Html::resetButton('Reset', ['class' => 'btn btn-link reset-search']) ?>
         </div>
         <span class="pull-right" style="text-align: right">
-            <?= $form->field($model, 'PageTemplate_id', array('template' => "{input}"))->dropDownList(ArrayHelper::map(PageTemplate::find()->asArray()->orderby('name ASC')->all(), 'id', 'name'), ['prompt' => 'Filter by Template', 'placeholder' => 'Filter by Template', 'data-default' => '']) ?>
-            <?= $form->field($model, 'status', array('template' => "{input}"))->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
+            <?= $form->field($model, 'PageTemplate_id', ['template' => "{input}"])->dropDownList(ArrayHelper::map(PageTemplate::find()->asArray()->orderby('name ASC')->all(), 'id', 'name'), ['prompt' => 'Filter by Template', 'placeholder' => 'Filter by Template', 'data-default' => '']) ?>
+            <?= $form->field($model, 'status', ['template' => "{input}"])->dropDownList([ 'active' => 'Active', 'inactive' => 'Inactive'], ['prompt' => 'Filter by Status', 'placeholder' => 'Filter by Status', 'data-default' => 'active']) ?>
         </span>
     <?php // echo $form->field($model, 'id') ?>
 
