@@ -369,7 +369,7 @@ class Controller extends \yii\web\Controller
      */
     public function findModel($id)
     {
-        $model = call_user_func_array(array($this->MainModel, 'findOne'), array($id));
+        $model = call_user_func_array([$this->MainModel, 'findOne'], [$id]);
         if ($model !== null) {
             return $model;
         } else {
@@ -383,7 +383,7 @@ class Controller extends \yii\web\Controller
      */
     public function bulkButtons($grid ='')
     {
-        $buttons = array();
+        $buttons = [];
         if(\Yii::$app->user->checkAccess('update::' . $this->getCompatibilityId())) {
             $buttons[] = [
                 'text' => 'Activate', 
@@ -425,7 +425,7 @@ class Controller extends \yii\web\Controller
      */
     public function allButtons($grid ='')
     {
-        $buttons = array();
+        $buttons = [];
         if(\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {
             $buttons['pdf'] = [
                 'text' => 'Download PDF', 

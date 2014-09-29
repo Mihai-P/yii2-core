@@ -15,7 +15,7 @@ class m131205_113511_create_Website_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
         
-		$this->createTable('Website', array(
+		$this->createTable('Website', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'host' => Schema::TYPE_STRING . ' NOT NULL',
@@ -26,7 +26,7 @@ class m131205_113511_create_Website_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
         
         $this->insert('Website', [
             'name' => 'Default',

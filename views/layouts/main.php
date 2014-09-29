@@ -99,7 +99,7 @@ AppAsset::register($this);
 <?php        
     $menus = AdminMenu::find()->with('adminMenus')->where('AdminMenu_id IS NULL')->active()->orderBy('order ASC')->all();
     foreach($menus as $menu) {
-        $submenus = array();
+        $submenus = [];
         foreach($menu->adminMenus as $submenu)
             if(Yii::$app->user->checkAccess($submenu->ap))
                 $submenus[] = '<li><a href="'.$submenu->url.'">'.$submenu->name . '</a></li>';

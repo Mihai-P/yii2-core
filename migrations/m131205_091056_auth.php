@@ -12,32 +12,29 @@ class m131205_091056_auth extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }        
 
-		$this->createTable('AuthItem',
-	        array(
+		$this->createTable('AuthItem', [
 		            'name' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 		            'type' => Schema::TYPE_INTEGER . ' NOT NULL',
 		            'description' => 'text COLLATE utf8_bin',
 	                'bizrule' => 'text COLLATE utf8_bin',
 	                'data' => 'text COLLATE utf8_bin',
 	                'PRIMARY KEY (`name`)', // primary item
-	        ), $tableOptions);
-		$this->createTable('AuthItemChild',
-	        array(
+	        ], $tableOptions);
+		$this->createTable('AuthItemChild', [
 		            'parent' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 		            'child' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 	                'PRIMARY KEY (`parent`,`child`)', // primary item
-	        ), $tableOptions);
+	        ], $tableOptions);
 		$this->addForeignKey('AuthItemChild_ibfk_1', 'AuthItemChild', 'parent', 'AuthItem', 'name', 'CASCADE', 'CASCADE');
 		$this->addForeignKey('AuthItemChild_ibfk_2', 'AuthItemChild', 'child', 'AuthItem', 'name', 'CASCADE', 'CASCADE');
 
-		$this->createTable('AuthAssignment',
-	        array(
+		$this->createTable('AuthAssignment', [
 		            'itemname' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 		            'userid' => 'varchar(64) COLLATE utf8_bin NOT NULL',
 	                'bizrule' => 'text COLLATE utf8_bin',
 	                'data' => 'text COLLATE utf8_bin',
 	                'PRIMARY KEY (`itemname`,`userid`)', // primary item
-	        ), $tableOptions);
+	        ], $tableOptions);
 	}
 
 	public function safeDown()

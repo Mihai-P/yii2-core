@@ -33,7 +33,7 @@ use core\models\AuthItem;
 				echo '
 					<div class="form-group field-group-privileges">
 						<div class="col-sm-2"><label class="control-label" for="group-'.$key.'">'.$key.'</label></div>
-						<div class="col-sm-10">' . Html::checkboxList('Group[privileges]', $model->privileges, $controller_checkboxes, array('class' => 'inline', 'itemOptions' => ['class' => 'styled'])) . '</div>
+						<div class="col-sm-10">' . Html::checkboxList('Group[privileges]', $model->privileges, $controller_checkboxes, ['class' => 'inline', 'itemOptions' => ['class' => 'styled']]) . '</div>
 					</div>';
 				$counter++;
 			}

@@ -14,7 +14,7 @@ class Migration extends \yii\db\Migration
     var $menu = 'Misc';
     var $module = '';
     var $singleMenu = false;
-    var $privileges = array('create', 'delete', 'read', 'update');
+    var $privileges = ['create', 'delete', 'read', 'update'];
 
     public function friendly($str) {
         return Inflector::pluralize(Inflector::camel2words(StringHelper::basename($str)));
@@ -32,17 +32,17 @@ class Migration extends \yii\db\Migration
 
     public function createAuthItems() {
         foreach($this->privileges as $privilege) {
-            $this->insert('AuthItem', array(
+            $this->insert('AuthItem', [
                 "name" => $privilege.'::'.$this->getController(),
                 "type" => 0,
                 "description" => $privilege.' '.$this->getController(),
                 "bizrule" => null,
                 "data" => 'a:2:{s:6:"module";s:'.strlen($this->menu).':"'.$this->menu.'";s:10:"controller";s:'.strlen($this->friendly($this->getController())).':"'.$this->friendly($this->getController()).'";}',
-            ));
-            $this->insert('AuthItemChild', array(
+            ]);
+            $this->insert('AuthItemChild', [
                 "parent" => 1,
                 "child" => $privilege.'::'.$this->getController(),
-            ));
+            ]);
         }       
     }
 
@@ -60,7 +60,7 @@ class Migration extends \yii\db\Migration
         if(!$this->singleMenu) {
             $menu_name = $this->friendly($this->getController());
             $menu = $query->from('AdminMenu')
-                ->where('internal=:internal', array(':internal'=>$this->menu))
+                ->where('internal=:internal', [':internal'=>$this->menu])
                 ->one();
 
             if(!$menu) {
@@ -71,13 +71,13 @@ class Migration extends \yii\db\Migration
                     ->orderby('order DESC')          
                     ->one();
 
-                $this->insert('AdminMenu', array(
+                $this->insert('AdminMenu', [
                     "name" => $this->menu,
                     "internal" => $this->menu,
                     "url" => '',
                     "ap" => 'read::'.$this->getController(),
                     "order" => $last_main_menu ? $last_main_menu['order'] + 1 : 1
-                ));
+                ]);
                 $menu_id = $connection->getLastInsertID();
             } else {
                 $menu_id = $menu['id'];
@@ -90,18 +90,19 @@ class Migration extends \yii\db\Migration
 
         $last_menu = $query->from('AdminMenu')
                 ->from('AdminMenu')
-                ->where('AdminMenu_id=:AdminMenu_id', array(':AdminMenu_id'=>$menu_id))
+                ->where('AdminMenu_id=:AdminMenu_id', [':AdminMenu_id'=>$menu_id])
                 ->orderby('order DESC')
                 ->one();
 
-        $this->insert('AdminMenu', array(
+        $this->insert('AdminMenu', [
             "AdminMenu_id" => $menu_id,
             "name" => $menu_name,
             "internal" => $this->getController() . 'Controller',
             "url" => ($this->module ? '/' . $this->module : '' ) . '/'. strtolower(trim(preg_replace("([A-Z])", "-$0", $this->getController()), '-')).'/',
             "ap" => 'read::'.$this->getController(),
             "order" => $last_menu ? $last_menu['order'] + 1 : 1
-        )); }
+        ]);
+    }
 
     public function deleteAdminMenu() {
         $this->delete(

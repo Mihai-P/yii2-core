@@ -100,7 +100,7 @@ class Email extends \core\components\ActiveRecord
      * @access  public
      * @return  this
      */ 
-    public function __call($funcname, $args = array()) {
+    public function __call($funcname, $args = []) {
         if($this->hasAttribute($funcname)) {
             $this->$funcname = $args[0];
         }
@@ -132,8 +132,8 @@ class Email extends \core\components\ActiveRecord
      *
      * Usage:
      * $email
-     *      ->to(array("email" = > "test@test.com", "name"=>"Test User"))
-     *      ->to(array("email" = > "test2@test.com", "name"=>"Test User"));
+     *      ->to(["email" = > "test@test.com", "name"=>"Test User"])
+     *      ->to(["email" = > "test2@test.com", "name"=>"Test User"]);
      *
      * @access  public
      * @param array $recipient array with the keys email, name
@@ -152,8 +152,8 @@ class Email extends \core\components\ActiveRecord
      * $success = \Email::create()
      *          ->html("Hello World!!!")
      *          ->subject("Hello");
-     *          ->to(array('email' => 'recipient1@biti.ro', 'name' => 'Recipient1'))
-     *          ->to(array('email' => 'recipient2@biti.ro', 'name' => 'Recipient2'))
+     *          ->to(['email' => 'recipient1@biti.ro', 'name' => 'Recipient1'])
+     *          ->to(['email' => 'recipient2@biti.ro', 'name' => 'Recipient2'])
      *          ->send()
      * if($success) {}
      *
@@ -192,7 +192,7 @@ class Email extends \core\components\ActiveRecord
      */ 
     public function sendEmail() {
         $mandrill = new Mandrill(Yii::$app->params['mandrill']['key']);
-        $message = array(
+        $message = [
             'html' => $this->html,
             'text' => $this->text,
             'subject' => $this->subject,
@@ -201,9 +201,9 @@ class Email extends \core\components\ActiveRecord
             'track_opens' => true,
             'track_clicks' => true,
             'auto_text' => true,
-            'to'=>array(array('email' => $this->to_email, 'name' => $this->to_name)),
+            'to'=>[['email' => $this->to_email, 'name' => $this->to_name]],
             'bcc_address'=>'mihai.petrescu@gmail.com',
-        ); 
+        ]; 
         $result = $mandrill->messages->send($message);
         if($result[0]['status'] == 'sent') {
             $this->status = 'sent';

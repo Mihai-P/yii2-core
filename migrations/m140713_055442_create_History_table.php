@@ -12,7 +12,7 @@ class m140713_055442_create_History_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('History', array(
+        $this->createTable('History', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'url' => Schema::TYPE_STRING . ' NOT NULL',
@@ -21,7 +21,7 @@ class m140713_055442_create_History_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
 		$this->addForeignKey('History_create_by', 'History', 'create_by', 'User', 'id', 'CASCADE', 'CASCADE');
     }
 

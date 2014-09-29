@@ -11,7 +11,7 @@ class m131207_234948_create_Email_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('Email', array(
+        $this->createTable('Email', [
             'id' => Schema::TYPE_PK,
             'from_email' => Schema::TYPE_STRING . ' NOT NULL',
             'from_name' => Schema::TYPE_STRING . ' NOT NULL',
@@ -28,7 +28,7 @@ class m131207_234948_create_Email_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
 	}
 
 	public function down()

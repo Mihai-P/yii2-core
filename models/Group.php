@@ -79,7 +79,7 @@ class Group extends \core\components\ActiveRecord
         if(isset($post['Group']['privileges'])) {
             $this->privileges = $post['Group']['privileges'];
             
-            $auth_item = AuthItem::find()->where('name = :name' , array(':name' => $this->id))->one();
+            $auth_item = AuthItem::find()->where('name = :name', [':name' => $this->id])->one();
 
             if ($this->isNewRecord || !isset($auth_item->name)) {
                 $role=$auth->createRole($this->id);
@@ -99,7 +99,7 @@ class Group extends \core\components\ActiveRecord
                     
                     if(is_array($this->privileges) && count($this->privileges)) {
                         foreach($this->privileges as $value) {
-                            $assignment_role = AuthItem::find()->where('name = :name' , array(':name' => $value))->one();
+                            $assignment_role = AuthItem::find()->where('name = :name', [':name' => $value])->one();
                             if(!$auth->hasChild($role, $assignment_role))
                                 $auth->addChild($role, $assignment_role);
                         }

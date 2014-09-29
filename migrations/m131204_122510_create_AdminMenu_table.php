@@ -11,7 +11,7 @@ class m131204_122510_create_AdminMenu_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-		$this->createTable('AdminMenu', array(
+		$this->createTable('AdminMenu', [
             'id' => Schema::TYPE_PK,
             'AdminMenu_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'name' => Schema::TYPE_STRING . ' NOT NULL',
@@ -25,7 +25,7 @@ class m131204_122510_create_AdminMenu_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
         $this->addForeignKey('AdminMenu_ibfk_1', 'AdminMenu', 'AdminMenu_id', 'AdminMenu', 'id', 'CASCADE', 'CASCADE');
         $this->execute('
 		INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `internal`, `url`, `ap`, `order`, `show_mobile`) VALUES(1, NULL, "Dashboard", "dashboard", "/", "", 1, "1");

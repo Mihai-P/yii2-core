@@ -11,7 +11,7 @@ class m131205_124521_create_WebsiteStat_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-		$this->createTable('WebsiteStat', array(
+		$this->createTable('WebsiteStat', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'pageviews' => Schema::TYPE_INTEGER . ' unsigned NOT NULL DEFAULT "0"',
@@ -24,7 +24,7 @@ class m131205_124521_create_WebsiteStat_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
 
 		$this->execute('
 			INSERT INTO `WebsiteStat` (`name`, `pageviews`, `visitors`, `visits`, `newvisits`) VALUES (CURRENT_DATE(), "0", "0", "0", "0");

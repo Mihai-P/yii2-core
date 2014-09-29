@@ -15,8 +15,7 @@ class m140831_093732_create_audit_trail extends Migration
 		//table from version 1 of the extension. Other migrations will
 		//upgrade it from here if we ever need to. This was done so
 		//that older versions can still use migrate functionality to upgrade.
-		$this->createTable( 'audit_trail',
-			array(
+		$this->createTable( 'audit_trail', [
 				'id' => Schema::TYPE_PK,
 				'old_value' => Schema::TYPE_TEXT,
 				'new_value' => Schema::TYPE_TEXT,
@@ -26,7 +25,7 @@ class m140831_093732_create_audit_trail extends Migration
 				'stamp' => Schema::TYPE_DATETIME . ' NOT NULL',
 				'user_id' => Schema::TYPE_STRING . '',
 				'model_id' => Schema::TYPE_STRING . ' NOT NULL',
-			)
+			]
 		);
 
 		//Index these bad boys for speedy lookups

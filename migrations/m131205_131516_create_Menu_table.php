@@ -14,7 +14,7 @@ class m131205_131516_create_Menu_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-		$this->createTable('Menu', array(
+		$this->createTable('Menu', [
             'id' => Schema::TYPE_PK,
             'Menu_id' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'name' => Schema::TYPE_STRING . ' NOT NULL',
@@ -33,7 +33,7 @@ class m131205_131516_create_Menu_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
         $this->addForeignKey('Menu_Menu_id', 'Menu', 'Menu_id', 'Menu', 'id', 'CASCADE', 'CASCADE');
 
         $this->createAuthItems();

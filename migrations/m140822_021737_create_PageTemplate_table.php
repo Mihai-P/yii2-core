@@ -16,7 +16,7 @@ class m140822_021737_create_PageTemplate_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('PageTemplate', array(
+        $this->createTable('PageTemplate', [
             'id' => Schema::TYPE_PK,
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'template' => Schema::TYPE_STRING . ' DEFAULT NULL',
@@ -25,7 +25,7 @@ class m140822_021737_create_PageTemplate_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
 
         $this->insert('PageTemplate', [
                 'name' => 'Main',

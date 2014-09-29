@@ -43,7 +43,7 @@ class TagsBehavior extends Behavior
         $this->tagType = $this->tagType ? $this->tagType : $model_name;
         if(isset($_POST[$model_name]['tags'])) {
             if($_POST[$model_name]['tags']) {
-                $existing_ids = array('0');
+                $existing_ids = ['0'];
                 foreach(explode(',',$_POST[$model_name]['tags']) as $tag_value) {
                     $tag = Tag::find()->where('status<>"deleted" AND name=:name AND type=:type', [':name' => $tag_value, ':type' => $this->tagType])->one();
                     if(!isset($tag->id)) {
@@ -86,7 +86,7 @@ class TagsBehavior extends Behavior
                 }
                 if(!$add)
                     \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id . " AND id NOT IN (" .implode(',', $existing_ids).")")->execute();
-                /*Yii::app()->db->createCommand("UPDATE {$relationship_table} SET status = 'deleted', update_time = NOW(), update_by = :user_id WHERE {$own_column} = :own_id AND id NOT IN (" .implode(',', $existing_ids).")")->execute(array(":own_id"=>$this->owner->id, ":user_id"=>Yii::app()->user->getId()));*/
+                /*Yii::app()->db->createCommand("UPDATE {$relationship_table} SET status = 'deleted', update_time = NOW(), update_by = :user_id WHERE {$own_column} = :own_id AND id NOT IN (" .implode(',', $existing_ids).")")->execute([":own_id"=>$this->owner->id, ":user_id"=>Yii::app()->user->getId()]);*/
             } elseif(!$add) {
                 \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id)->execute();
             }

@@ -12,7 +12,7 @@ class m140709_000727_create_Contact_Tag_table extends Migration
             $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
         }
 
-        $this->createTable('Contact_Tag', array(
+        $this->createTable('Contact_Tag', [
             'id' => Schema::TYPE_PK,
             'Tag_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'Contact_id' => Schema::TYPE_INTEGER . ' NOT NULL',
@@ -21,7 +21,7 @@ class m140709_000727_create_Contact_Tag_table extends Migration
             'update_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
             'create_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',
             'create_by' => Schema::TYPE_INTEGER . ' DEFAULT NULL',
-        ), $tableOptions);
+        ], $tableOptions);
 
         $this->addForeignKey('Contact_Tag_Tag_id', 'Contact_Tag', 'Tag_id', 'Tag', 'id', 'CASCADE', 'CASCADE');        
         $this->addForeignKey('Contact_Tag_Contact_id', 'Contact_Tag', 'Contact_id', 'User', 'id', 'CASCADE', 'CASCADE');
