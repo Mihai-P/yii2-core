@@ -16,6 +16,7 @@ use core\components\ControllerEvent;
  */
 class Controller extends \yii\web\Controller
 {
+    var $hasView = false;
     var $MainModel = '';
     var $MainModelSearch = '';
     var $defaultQueryParams = ['status' => 'active'];
@@ -204,7 +205,10 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterCreate($model);
-            return $this->redirect(['index']);
+            if($this->hasView)
+                return $this->redirect(['view', 'id' => $model->id]);
+            else 
+                return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -225,7 +229,10 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterUpdate($model);
-            return $this->redirect(['index']);
+            if($this->hasView)
+                return $this->redirect(['view', 'id' => $model->id]);
+            else 
+                return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,

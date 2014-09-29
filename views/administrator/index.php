@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'theme\widgets\CheckboxColumn'],
             ['class' => 'theme\widgets\IdColumn'],
-            ['class' => 'theme\widgets\NameColumn'],
+            ['class' => 'theme\widgets\NameColumn', 'hasView' => $this->context->hasView],
             ['class' => 'theme\widgets\StatusColumn'],
             ['class' => 'theme\widgets\ActionColumn'],
         ],
