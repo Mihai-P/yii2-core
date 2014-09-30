@@ -5,6 +5,8 @@ namespace core\controllers;
 use Yii;
 use core\components\Controller;
 use core\models\Menu;
+use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -14,6 +16,80 @@ class MenuController extends Controller
     var $MainModel = 'core\models\Menu';
     var $MainModelSearch = 'core\models\MenuSearch';
 
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return ArrayHelper::merge(
+            [
+                'access' => [
+                    'rules' => [
+                        [
+                            'actions' => ['sort'], // Define specific actions
+                            'allow' => true, // Has access
+                            'roles' => ['update::' . $this->getCompatibilityId()],
+                        ],
+                    ],
+                ],
+            ],
+            parent::behaviors()
+        );
+    }
+
+    /**
+     * Sets up the sorting option 
+     */
+    public function isSortable() 
+    {
+        $this->getSearchCriteria();
+        $sortable = new \stdClass;
+        if($this->searchModel->Menu_id > 0) {
+            $sortable->sortable = true;
+            $sortable->link = Url::toRoute(['sort', 'Menu_id' => $this->searchModel->Menu_id]);
+        } else {
+            $sortable->sortable = false;
+            $sortable->message = 'Filter on a menu first';
+        }
+        return $sortable;
+    }
+
+    /**
+     * Allows sorting of the menus
+     */
+    public function actionSort() 
+    {
+        $this->layout = static::FORM_LAYOUT;
+        $modelName = $this->getCompatibilityId();
+        if(isset($_POST[$modelName]) && count($_POST[$modelName])) {
+            //If we are changing the main categories then use a different algorithm
+            if($_GET['Menu_id']==-1) {
+                foreach($_POST[$modelName] as $key => $id) {
+                    $record = $this->findModel($id);
+                    $record->sort_order = $key+1;
+                    $record->saveNode();
+                }
+            } else {
+                $parent = $this->findModel($_GET['Menu_id']);
+                foreach($_POST[$modelName] as $key => $id) {
+                    $record = $this->findModel($id);
+                    $record->moveAsLast($parent);
+                }
+            }
+            return $this->redirect(['index']);
+        } else {
+            $this->getSearchCriteria();
+            $searchCriteria = ['MenuSearch' => ['Menu_id' => $this->searchModel->Menu_id]];
+            $this->searchModel = new $this->MainModelSearch;
+            $this->dataProvider = $this->searchModel->search($searchCriteria);
+
+            $this->dataProvider->pagination = false;
+            return $this->render('sort', [
+                'searchModel' => $this->searchModel,
+                'dataProvider' => $this->dataProvider,
+            ]);         
+        }
+    }
     /**
      * Deletes an existing Faq model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
