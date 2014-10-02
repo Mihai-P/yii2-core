@@ -27,7 +27,7 @@ foreach($result as $item) {
 	$items[] = ['content'=>$item['name'] . Html::hiddenInput('Menu[]', $item['id']) . $label];
 }
 
-$form = ActiveForm::begin();
+$form = ActiveForm::begin(['id' => 'sort-form']);
 
 echo Sortable::widget([
 	    'items'=>$items
