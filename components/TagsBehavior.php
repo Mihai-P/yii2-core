@@ -3,7 +3,7 @@ namespace core\components;
 
 use Yii;
 use yii\base\Behavior;
-use core\components\ActiveRecord;
+use core\components\Query;
 use yii\helpers\ArrayHelper;
 use core\models\Tag;
 use yii\db\Expression;
@@ -13,16 +13,24 @@ class TagsBehavior extends Behavior
     var $tagType;
 
     /**
-     * @return \yii\db\ActiveQuery
+     * Get the tags separated by ','. It uses the relation called modelTags from the model
+     * @return string
      */
     public function getTags() {
         return implode(",", array_keys(ArrayHelper::map($this->owner->getModelTags()->asArray()->all(), 'name', 'name')));
     }
 
+    /**
+     * Get the column name for the relation
+     * @return string
+     */
     public function tagsOwnColumn() {
         return $this->owner->formName() . '_id';
     }
-
+    /**
+     * Get the name of the relationship table
+     * @return string
+     */
     public function tagsRelationTable() {
         $model_name = $this->owner->formName();
         if($model_name > 'Tag') {
@@ -33,6 +41,11 @@ class TagsBehavior extends Behavior
         return $relationship_table;
     }
 
+    /**
+     * Saves the tags om tje database
+     * @param bool $add if we should add the tags or replace the existing ones
+     * @return null
+     */
     public function saveTags($add = false)
     {
         $model_name = $this->owner->formName();
@@ -56,8 +69,6 @@ class TagsBehavior extends Behavior
                         ->from($relationship_table)
                         ->where("{$own_column} = :own_id AND Tag_id = :tag_id AND status='active'", [":own_id"=>$this->owner->id, ":tag_id"=>$tag->id])
                         ->one();
-                    //find out if it is already inserted 
-                    
                     if($existingRelation) {
                         $existing_ids[] = $existingRelation['id'];
                     } else {
@@ -69,14 +80,7 @@ class TagsBehavior extends Behavior
                             'update_time' => new Expression('NOW()'),
                             'create_time' => new Expression('NOW()'),
                         ])->execute();
-                        /*
-                        $sql = (new \yii\db\QueryBuilder(\Yii::$app->db))->insert($relationship_table, [
-                            'Tag_id' => $tag->id,
-                            $own_column => $this->owner->id,
-                            'update_by' => Yii::$app->getUser()->id,
-                            'create_by' => Yii::$app->getUser()->id,
-                        ], [])->execute();*/
-                        $insertedRelation = (new \yii\db\Query())
+                        $insertedRelation = (new Query())
                             ->from($relationship_table)
                             ->where("{$own_column} = :own_id AND Tag_id = :tag_id AND status='active'", [":own_id"=>$this->owner->id, ":tag_id"=>$tag->id])
                             ->orderBy("id DESC")
@@ -86,7 +90,6 @@ class TagsBehavior extends Behavior
                 }
                 if(!$add)
                     \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id . " AND id NOT IN (" .implode(',', $existing_ids).")")->execute();
-                /*Yii::app()->db->createCommand("UPDATE {$relationship_table} SET status = 'deleted', update_time = NOW(), update_by = :user_id WHERE {$own_column} = :own_id AND id NOT IN (" .implode(',', $existing_ids).")")->execute([":own_id"=>$this->owner->id, ":user_id"=>Yii::app()->user->getId()]);*/
             } elseif(!$add) {
                 \Yii::$app->db->createCommand()->update($relationship_table, ['status' => "deleted", 'update_time' => new Expression('NOW()'), 'update_by' => Yii::$app->getUser()->id], "{$own_column} = " . $this->owner->id)->execute();
             }

@@ -4,26 +4,14 @@ namespace core\components;
 
 use Yii;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use yii\helpers\Url;
-use yii\data\ArrayDataProvider;
-use yii\helpers\ArrayHelper;
 use core\models\History;
-use core\components\ControllerEvent;
 
 /**
- * FaqController implements the CRUD actions for Faq model.
+ * Controller implements the CRUD actions for the model.
  */
 class Controller extends \yii\web\Controller
 {
-    var $hasView = false;
-    var $MainModel = '';
-    var $MainModelSearch = '';
-    var $defaultQueryParams = ['status' => 'active'];
-    var $searchModel;
-    var $dataProvider;
-    var $historyField = "name";
-
     /**
      * @const string the default layout for the controller view. Defaults to '//core./main',
      * meaning using the normal. See 'protected/views/layouts/main.php'.
@@ -36,7 +24,6 @@ class Controller extends \yii\web\Controller
     const PRINT_LAYOUT = '@core/views/layouts/print';
     const SIMPLE_LAYOUT = '@core/views/layouts/simple';
     const SIDEBAR_LAYOUT = '@core/views/layouts/sidebar';
-
     /**
      * @event Event an event that is triggered after a record is inserted.
      */
@@ -45,17 +32,23 @@ class Controller extends \yii\web\Controller
      * @event Event an event that is triggered after a record is updated.
      */
     const EVENT_AFTER_UPDATE = 'afterUpdate';
-
-
+    var $hasView = false;
+    var $MainModel = '';
+    var $MainModelSearch = '';
+    var $defaultQueryParams = ['status' => 'active'];
+    var $searchModel;
+    var $dataProvider;
+    var $historyField = "name";
     var $layout = '@core/views/layouts/main';
+
     /**
      * @inheritdoc
      */
     public function behaviors()
     {
-       return [
-           'access' => [
-                'class' => \core\components\AccessControl::className(),
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
                 'rules' => [
                     [
                         'actions' => ['index', 'view', 'list', 'pdf', 'csv', 'pagination'], // Define specific actions
@@ -79,12 +72,26 @@ class Controller extends \yii\web\Controller
                     ],
                     [
                         'allow' => false, // Do not have access
-                        'roles'=>['?'], // Guests '?'
+                        'roles' => ['?'], // Guests '?'
                     ],
                 ],
-           ],
+            ],
         ];
     }
+
+    /**
+     * Gets the simple name for the current controller
+     * @return string
+     */
+    public function getCompatibilityId()
+    {
+        $controller = $this->getUniqueId();
+        if (strpos($controller, "/")) {
+            $controller = substr($controller, strpos($controller, "/") + 1);
+        }
+        return str_replace(' ', '', ucwords(str_replace('-', ' ', $controller)));
+    }
+
     /**
      * @inheritdoc
      */
@@ -96,47 +103,9 @@ class Controller extends \yii\web\Controller
             ],
         ];
     }
-    /**
-     * Lists all Faq models.
-     * @return mixed
-     */
-    public function getCompatibilityId()
-    {
-        $controller = $this->getUniqueId();
-        if(strpos($controller, "/")) {
-            $controller = substr($controller, strpos($controller, "/") + 1);
-        }        
-        return str_replace(' ', '', ucwords(str_replace('-', ' ', $controller)));
-    }
 
-    public function getSearchCriteria() {
-        /* setting the default pagination for the page */
-        if(!Yii::$app->session->get($this->MainModel.'Pagination')) {
-            Yii::$app->session->set($this->MainModel.'Pagination', 10);
-        }
-        $savedQueryParams = Yii::$app->session->get($this->MainModel.'QueryParams');
-        if(count($savedQueryParams)) {
-            $queryParams = $savedQueryParams;
-        } else {
-            $queryParams = [substr($this->MainModelSearch, strrpos($this->MainModelSearch, "\\") + 1) => $this->defaultQueryParams];
-        }
-        /* use the same filters as before */
-        if(count(Yii::$app->request->queryParams)) {
-            $queryParams = array_merge($queryParams, Yii::$app->request->queryParams);
-        }
-
-        if(isset($queryParams['page'])) {
-            $_GET['page'] = $queryParams['page'];
-        }
-        if(Yii::$app->request->getIsPjax()) {
-            $this->layout = false;
-        }
-        Yii::$app->session->set($this->MainModel.'QueryParams',$queryParams);
-        $this->searchModel = new $this->MainModelSearch;
-        $this->dataProvider = $this->searchModel->search($queryParams);
-    }
     /**
-     * Lists all Faq models.
+     * Lists all the models.
      * @return mixed
      */
     public function actionIndex()
@@ -150,15 +119,47 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Lists all Faq models.
-     * @return mixed
+     * creates the search criteria for the model
+     * @return null
+     */
+    public function getSearchCriteria()
+    {
+        /* setting the default pagination for the page */
+        if (!Yii::$app->session->get($this->MainModel . 'Pagination')) {
+            Yii::$app->session->set($this->MainModel . 'Pagination', 10);
+        }
+        $savedQueryParams = Yii::$app->session->get($this->MainModel . 'QueryParams');
+        if (count($savedQueryParams)) {
+            $queryParams = $savedQueryParams;
+        } else {
+            $queryParams = [substr($this->MainModelSearch, strrpos($this->MainModelSearch, "\\") + 1) => $this->defaultQueryParams];
+        }
+        /* use the same filters as before */
+        if (count(Yii::$app->request->queryParams)) {
+            $queryParams = array_merge($queryParams, Yii::$app->request->queryParams);
+        }
+
+        if (isset($queryParams['page'])) {
+            $_GET['page'] = $queryParams['page'];
+        }
+        if (Yii::$app->request->getIsPjax()) {
+            $this->layout = false;
+        }
+        Yii::$app->session->set($this->MainModel . 'QueryParams', $queryParams);
+        $this->searchModel = new $this->MainModelSearch;
+        $this->dataProvider = $this->searchModel->search($queryParams);
+    }
+
+    /**
+     * Creates a PDF file with the current list of the models
+     * @return file
      */
     public function actionPdf()
     {
         $this->getSearchCriteria();
         $this->layout = static::BLANK_LAYOUT;
         $this->dataProvider->pagination = false;
-        $content =  $this->render('pdf', [
+        $content = $this->render('pdf', [
             'dataProvider' => $this->dataProvider,
         ]);
 
@@ -166,22 +167,22 @@ class Controller extends \yii\web\Controller
         $mpdf->WriteHTML($content);
 
         Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
-        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->getCompatibilityId().'.pdf"');
-        return $mpdf->Output($this->getCompatibilityId().'.pdf', 'S');
+        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="' . $this->getCompatibilityId() . '.pdf"');
+        return $mpdf->Output($this->getCompatibilityId() . '.pdf', 'S');
     }
 
     /**
-     * Lists all Faq models.
+     * Sets the pagination for the list
      * @return mixed
      */
     public function actionPagination()
     {
-        Yii::$app->session->set($this->MainModel.'Pagination',Yii::$app->request->queryParams['records']);
-        $this->redirect( ['index'] );
+        Yii::$app->session->set($this->MainModel . 'Pagination', Yii::$app->request->queryParams['records']);
+        $this->redirect(['index']);
     }
 
     /**
-     * Displays a single Faq model.
+     * Displays a single model.
      * @param integer $id
      * @return mixed
      */
@@ -194,8 +195,25 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Creates a new Faq model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Finds the model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return ActiveRecord the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function findModel($id)
+    {
+        $model = call_user_func_array([$this->MainModel, 'findOne'], [$id]);
+        if ($model !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    /**
+     * Creates a new model.
+     * If creation is successful, the browser will be redirected to the 'view' or 'index' page.
      * @return mixed
      */
     public function actionCreate()
@@ -205,9 +223,9 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterCreate($model);
-            if($this->hasView)
+            if ($this->hasView)
                 return $this->redirect(['view', 'id' => $model->id]);
-            else 
+            else
                 return $this->redirect(['index']);
         } else {
             return $this->render('create', [
@@ -216,9 +234,37 @@ class Controller extends \yii\web\Controller
         }
     }
 
+    public function afterCreate($model)
+    {
+        $this->saveHistory($model, $this->historyField);
+        $this->trigger(self::EVENT_AFTER_CREATE, new ControllerEvent([
+            'model' => $model,
+            'controller' => $this
+        ]));
+    }
+
     /**
-     * Updates an existing Faq model.
-     * If update is successful, the browser will be redirected to the 'view' page.
+     * Saves the history for the model
+     * @param \yii\db\ActiveRecord $model
+     * @param string $historyField
+     * @return null
+     */
+    public function saveHistory($model, $historyField)
+    {
+        if (isset($model->{$historyField})) {
+            $url_components = explode("\\", get_class($model));
+            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");
+
+            $history = new History;
+            $history->name = $model->{$historyField} . ' (' . $url_components[2] . ')';
+            $history->url = Url::toRoute(['update', 'id' => $model->id]);
+            $history->save();
+        }
+    }
+
+    /**
+     * Updates an existing model.
+     * If update is successful, the browser will be redirected to the 'view' or 'index' page.
      * @param integer $id
      * @return mixed
      */
@@ -229,9 +275,9 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterUpdate($model);
-            if($this->hasView)
+            if ($this->hasView)
                 return $this->redirect(['view', 'id' => $model->id]);
-            else 
+            else
                 return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -240,43 +286,17 @@ class Controller extends \yii\web\Controller
         }
     }
 
-    public function afterCreate($model) {
-        $this->saveHistory($model, $this->historyField);
-        $this->trigger(self::EVENT_AFTER_CREATE, new ControllerEvent([
-                'model' => $model,
-                'controller' => $this
-        ]));
-    }
-
-    public function afterUpdate($model) {
+    public function afterUpdate($model)
+    {
         $this->saveHistory($model, $this->historyField);
         $this->trigger(self::EVENT_AFTER_UPDATE, new ControllerEvent([
-                'model' => $model,
-                'controller' => $this
+            'model' => $model,
+            'controller' => $this
         ]));
     }
 
     /**
-     * Updates an existing Faq model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function saveHistory($model, $historyField)
-    {
-        if(isset($model->{$historyField})) {
-            $url_components = explode("\\", get_class($model));
-            $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");                
-
-            $history = new History;
-            $history->name = $model->{$historyField} . ' ('.$url_components[2].')';
-            $history->url = Url::toRoute(['update', 'id' => $model->id]) ;
-            $history->save();
-        }            
-    }
-
-    /**
-     * Deletes an existing Faq model.
+     * Deletes an existing model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -284,22 +304,22 @@ class Controller extends \yii\web\Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-        if(Yii::$app->request->getIsAjax()) {
+        if (Yii::$app->request->getIsAjax()) {
             \Yii::$app->response->format = 'json';
             return ['success' => true];
         } else {
             return $this->redirect(['index']);
         }
     }
-    
+
     /**
      * Deletes a list of models
      * @return mixed
      */
     public function actionDeleteAll()
     {
-        if(isset($_POST['items'])) {
-            foreach($_POST['items'] as $id) {
+        if (isset($_POST['items'])) {
+            foreach ($_POST['items'] as $id) {
                 $this->findModel($id)->delete();
             }
         }
@@ -311,9 +331,9 @@ class Controller extends \yii\web\Controller
      */
     public function actionActivateAll()
     {
-        if(isset($_POST['items'])) {
-            foreach($_POST['items'] as $id) {
-                if($model = $this->findModel($id)) {
+        if (isset($_POST['items'])) {
+            foreach ($_POST['items'] as $id) {
+                if ($model = $this->findModel($id)) {
                     $model->status = "active";
                     $model->save(false);
                 }
@@ -327,9 +347,9 @@ class Controller extends \yii\web\Controller
      */
     public function actionDeactivateAll()
     {
-        if(isset($_POST['items'])) {
-            foreach($_POST['items'] as $id) {
-                if($model = $this->findModel($id)) {
+        if (isset($_POST['items'])) {
+            foreach ($_POST['items'] as $id) {
+                if ($model = $this->findModel($id)) {
                     $model->status = "inactive";
                     $model->save(false);
                 }
@@ -338,21 +358,21 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Deletes an existing Faq model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * Deletes an existing model.
+     * If deletion is successful, the browser will be redirected to the 'index' page or send a json response.
      * @param integer $id
      * @return mixed
      */
     public function actionStatus($id)
     {
         $model = $this->findModel($id);
-        if($model->status == "active") {
+        if ($model->status == "active") {
             $model->status = "inactive";
         } else {
             $model->status = "active";
         }
         $model->save(false);
-        if(Yii::$app->request->getIsAjax()) {
+        if (Yii::$app->request->getIsAjax()) {
             \Yii::$app->response->format = 'json';
             return ['success' => true];
         } else {
@@ -361,33 +381,17 @@ class Controller extends \yii\web\Controller
     }
 
     /**
-     * Finds the Faq model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Faq the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function findModel($id)
-    {
-        $model = call_user_func_array([$this->MainModel, 'findOne'], [$id]);
-        if ($model !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-    
-    /**
      * Sets the bulk actions that can be performed on the table of models
      * @param string $grid the ID of the grid that will be updated
+     * @return array
      */
-    public function bulkButtons($grid ='')
+    public function bulkButtons($grid = '')
     {
         $buttons = [];
-        if(\Yii::$app->user->checkAccess('update::' . $this->getCompatibilityId())) {
+        if (\Yii::$app->user->checkAccess('update::' . $this->getCompatibilityId())) {
             $buttons[] = [
-                'text' => 'Activate', 
-                'url' => Url::toRoute('activate-all'), 
+                'text' => 'Activate',
+                'url' => Url::toRoute('activate-all'),
                 'options' => [
                     'class' => 'pull-left btn btn-xs btn-success all-activate',
                     'data-pjax' => '0',
@@ -395,8 +399,8 @@ class Controller extends \yii\web\Controller
                 ]
             ];
             $buttons[] = [
-                'text' => 'Deactivate', 
-                'url' => Url::toRoute('deactivate-all'), 
+                'text' => 'Deactivate',
+                'url' => Url::toRoute('deactivate-all'),
                 'options' => [
                     'class' => 'pull-left btn btn-xs btn-primary all-deactivate',
                     'data-pjax' => '0',
@@ -404,10 +408,10 @@ class Controller extends \yii\web\Controller
                 ]
             ];
         }
-        if(\Yii::$app->user->checkAccess('delete::' . $this->getCompatibilityId())) {
+        if (\Yii::$app->user->checkAccess('delete::' . $this->getCompatibilityId())) {
             $buttons[] = [
-                'text' => 'Delete', 
-                'url' => Url::toRoute('delete-all'), 
+                'text' => 'Delete',
+                'url' => Url::toRoute('delete-all'),
                 'options' => [
                     'class' => 'pull-left btn btn-xs btn-danger all-delete',
                     'data-pjax' => '0',
@@ -420,23 +424,24 @@ class Controller extends \yii\web\Controller
 
 
     /**
-     * Sets the bulk actions that can be performed on the table of models
+     * Sets the buttons that can be performed on the entire result
      * @param string $grid the ID of the grid that will be updated
+     * @return array
      */
-    public function allButtons($grid ='')
+    public function allButtons($grid = '')
     {
         $buttons = [];
-        if(\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {
+        if (\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {
             $buttons['pdf'] = [
-                'text' => 'Download PDF', 
-                'url' => Url::toRoute(['pdf']), 
+                'text' => 'Download PDF',
+                'url' => Url::toRoute(['pdf']),
                 'options' => [
                     'target' => '_blank',
                 ]
             ];
             $buttons['csv'] = [
-                'text' => 'Download CSV', 
-                'url' => Url::toRoute(['csv']), 
+                'text' => 'Download CSV',
+                'url' => Url::toRoute(['csv']),
                 'options' => [
                     'target' => '_blank',
                 ]

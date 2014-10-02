@@ -4,6 +4,7 @@ namespace core\components;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use core\components\HistoryBehavior;
+use yii\db\BaseActiveRecord;
 use sammaye\audittrail\LoggableBehavior;
 use yii\db\Expression;
 
@@ -42,15 +43,15 @@ class ActiveRecord extends \yii\db\ActiveRecord
             'blameable' => [
                 'class' => BlameableBehavior::className(),
                 'attributes' => [
-                    \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['create_by', 'update_by'], 
-                    \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_by'
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['create_by', 'update_by'],
+                    BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_by'
                 ],                
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
-                    \yii\db\BaseActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
-                    \yii\db\BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_time',
+                    BaseActiveRecord::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
+                    BaseActiveRecord::EVENT_BEFORE_UPDATE => 'update_time',
                 ],
                 'value' => new Expression('NOW()'),
             ],

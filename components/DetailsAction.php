@@ -12,39 +12,23 @@ use yii\base\Action;
 
 
 /**
- * ErrorAction displays application errors using a specified view.
+ * DetailsAction displays application errors using a specified view.
  *
- * To use ErrorAction, you need to do the following steps:
+ * To use DetailsAction, you need to do the following steps:
  *
- * First, declare an action of ErrorAction type in the `actions()` method of your `SiteController`
+ * First, declare an action of DetailsAction type in the `actions()` method of your `NameController`
  * class (or whatever controller you prefer), like the following:
  *
  * ```php
  * public function actions()
  * {
  *     return [
- *         'error' => ['class' => 'yii\web\ErrorAction'],
+ *         'details' => ['class' => 'core\components\DetailsAction'],
  *     ];
  * }
  * ```
  *
- * Then, create a view file for this action. If the route of your error action is `site/error`, then
- * the view file should be `views/site/error.php`. In this view file, the following variables are available:
- *
- * - `$name`: the error name
- * - `$message`: the error message
- * - `$exception`: the exception being handled
- *
- * Finally, configure the "errorHandler" application component as follows,
- *
- * ```php
- * 'errorHandler' => [
- *     'errorAction' => 'site/error',
- * ]
- * ```
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class DetailsAction extends Action
 {

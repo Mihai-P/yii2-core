@@ -40,6 +40,7 @@ class ContactController extends Controller
     /**
      * Sets the bulk actions that can be performed on the table of models
      * @param string $grid the ID of the grid that will be updated
+     * @return array
      */
     public function allButtons($grid ='')
     {

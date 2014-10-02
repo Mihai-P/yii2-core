@@ -18,7 +18,6 @@ class Migration extends \yii\db\Migration
 
     public function friendly($str) {
         return Inflector::pluralize(Inflector::camel2words(StringHelper::basename($str)));
-        //return trim(implode(" ", preg_split('/(?=\p{Lu})/u', $str)));
     }
 
     public function getController() {
@@ -46,6 +45,9 @@ class Migration extends \yii\db\Migration
         }       
     }
 
+    /**
+     * cleans up the AuthItems for the current controller
+     */
     public function deleteAuthItems() {
         foreach($this->privileges as $privilege) {
             $this->delete(
