@@ -122,7 +122,7 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     {
         return [
             'id' => 'ID',
-            'Group_id' => 'Group ID',
+            'Group_id' => 'Group',
             'password' => 'Password',
             'password_repeat' => 'Repeat Password',
             'auth_key' => 'Auth Key',

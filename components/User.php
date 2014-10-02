@@ -61,10 +61,11 @@ class User extends BaseUser
 		$key = $operation . serialize($params);
 		
 		$can = Yii::$app->session->get($key);
-		if(!$can) {
+		if(!isset($can)) {
 			$can = parent::can($operation, $params, $allowCaching);
-			Yii::$app->session->set($key, $can);
+			Yii::$app->session->set($key, $can);	
 		}
+
 		return $can;
 	}
 }

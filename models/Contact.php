@@ -69,7 +69,7 @@ class Contact extends  \core\components\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'Group_id' => 'Group ID',
+            'Group_id' => 'Group',
             'type' => 'Type',
             'password' => 'Password',
             'password_reset_token' => 'Password Reset Token',

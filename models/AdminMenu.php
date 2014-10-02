@@ -56,7 +56,7 @@ class AdminMenu extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'AdminMenu_id' => 'Admin Menu ID',
+            'AdminMenu_id' => 'Admin Menu',
             'name' => 'Name',
             'internal' => 'Internal',
             'url' => 'Url',
