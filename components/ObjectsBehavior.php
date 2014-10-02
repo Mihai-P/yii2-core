@@ -3,24 +3,28 @@ namespace core\components;
 
 use Yii;
 use yii\base\Behavior;
-use core\components\ActiveRecord;
 use core\models\Object;
+use yii\helpers\StringHelper;
 
 class ObjectsBehavior extends Behavior
 {
-    public function short_model($model)
-    {
-        $model = $this->owner;
-        $url_components = explode("\\", get_class($model));
-        return $url_components[2];
-    }
-
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getObjects()
     {
-        return $this->owner->hasMany(Object::className(), ['Model_id' => 'id'])->where('Model = :Model', [':Model' => $this->short_model($this->owner)]);
+        return $this->owner->hasMany(Object::className(), ['Model_id' => 'id'])->where('Model = :Model', [':Model' => StringHelper::basename(get_class($this->owner))]);
     }
 
+
+    /**
+     * Save the objects in the database
+     *
+     * It updates the objects in the DB. It also cleans up the cache so it will be refreshed next time they are used
+     *
+     * @param string $name the name of the object that is needed
+     * @return \core\models\Object;
+     */
     public function object($name)
     {
         $objects = Yii::$app->cache->get(get_class($this->owner) . $this->owner->id);
@@ -40,6 +44,13 @@ class ObjectsBehavior extends Behavior
         return $object;
     }
 
+    /**
+     * Save the objects in the database
+     *
+     * It updates the objects in the DB. It also cleans up the cache so it will be refreshed next time they are used
+     *
+     * @return null
+     */
     public function saveObjects()
     {
         $post = Yii::$app->request->post();

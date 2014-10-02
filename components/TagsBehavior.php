@@ -3,7 +3,7 @@ namespace core\components;
 
 use Yii;
 use yii\base\Behavior;
-use core\components\Query;
+use yii\db\Query;
 use yii\helpers\ArrayHelper;
 use core\models\Tag;
 use yii\db\Expression;
@@ -14,6 +14,7 @@ class TagsBehavior extends Behavior
 
     /**
      * Get the tags separated by ','. It uses the relation called modelTags from the model
+     *
      * @return string
      */
     public function getTags() {
@@ -22,6 +23,7 @@ class TagsBehavior extends Behavior
 
     /**
      * Get the column name for the relation
+     *
      * @return string
      */
     public function tagsOwnColumn() {
@@ -29,6 +31,7 @@ class TagsBehavior extends Behavior
     }
     /**
      * Get the name of the relationship table
+     *
      * @return string
      */
     public function tagsRelationTable() {
@@ -43,6 +46,7 @@ class TagsBehavior extends Behavior
 
     /**
      * Saves the tags om tje database
+     *
      * @param bool $add if we should add the tags or replace the existing ones
      * @return null
      */
@@ -65,7 +69,7 @@ class TagsBehavior extends Behavior
                         $tag->name = $tag_value;
                         $tag->save();       
                     }
-                    $existingRelation = (new \yii\db\Query())
+                    $existingRelation = (new Query())
                         ->from($relationship_table)
                         ->where("{$own_column} = :own_id AND Tag_id = :tag_id AND status='active'", [":own_id"=>$this->owner->id, ":tag_id"=>$tag->id])
                         ->one();

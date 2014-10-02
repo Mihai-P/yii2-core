@@ -106,6 +106,7 @@ class Controller extends \yii\web\Controller
 
     /**
      * Lists all the models.
+     *
      * @return mixed
      */
     public function actionIndex()

@@ -29,14 +29,13 @@ use yii\web\ForbiddenHttpException;
  * {
  *     return [
  *         'access' => [
- *             'class' => \core\AccessControl::className(),
+ *             'class' => \core\components\AccessControl::className(),
  *         ],
  *     ];
  * }
  * ~~~
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
- * @since 2.0
  */
 class AccessControl extends \yii\filters\AccessControl
 {

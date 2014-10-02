@@ -5,8 +5,10 @@
  */
 
 namespace core\components;
-use mihaildev\elfinder\BasePath;
+
 use Yii;
+use yii\helpers\ArrayHelper;
+use mihaildev\elfinder\BasePath;
 
 class FrontendPath extends BasePath {
     public $path;
@@ -52,6 +54,6 @@ class FrontendPath extends BasePath {
             'locked' => true
         ];
 
-        return \yii\helpers\ArrayHelper::merge($options, $this->options);
+        return ArrayHelper::merge($options, $this->options);
     }
 } 
