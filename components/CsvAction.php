@@ -60,7 +60,6 @@ class CsvAction extends Action
         $this->controller->getSearchCriteria();
         $this->controller->dataProvider->pagination = false;
         $query = $this->controller->dataProvider->query;
-        //$query->select($this->fields);
 
         $config = new ExporterConfig();
         $exporter = new Exporter($config);
@@ -77,6 +76,5 @@ class CsvAction extends Action
         Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
         Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->controller->getCompatibilityId().'.csv"');
         $exporter->export('php://output', array_merge([$this->fields], $values));
-
     }
 }

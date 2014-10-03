@@ -12,7 +12,7 @@
 namespace core\components;
 
 use Yii;
-use yii\base\Action;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Auth AccessControl provides RBAC access control.
@@ -29,14 +29,13 @@ use yii\base\Action;
  * {
  *     return [
  *         'access' => [
- *             'class' => \core\AccessControl::className(),
+ *             'class' => \core\components\AccessControl::className(),
  *         ],
  *     ];
  * }
  * ~~~
  *
- * @author Ricardo Obregón <robregonm@gmail.com>
- * @since 2.0
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class AccessControl extends \yii\filters\AccessControl
 {
@@ -73,14 +72,14 @@ class AccessControl extends \yii\filters\AccessControl
 	 * if the user is already logged, a 403 HTTP exception will be thrown.
 	 *
 	 * @param User $user the current user
-	 * @throws HttpException if the user is already logged in.
+	 * @throws ForbiddenHttpException if the user is already logged in.
 	 */
 	protected function denyAccess($user)
 	{
 		if ($user->getIsGuest()) {
 			$user->loginRequired();
 		} else {
-			throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+			throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
 		}
 	}
 

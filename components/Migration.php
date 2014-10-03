@@ -16,11 +16,21 @@ class Migration extends \yii\db\Migration
     var $singleMenu = false;
     var $privileges = ['create', 'delete', 'read', 'update'];
 
+    /**
+     * Transforms the name of the controller to a more user friendly one
+     *
+     * @param string $str the string that will be made friendly
+     * @return string the friendly string
+     */
     public function friendly($str) {
         return Inflector::pluralize(Inflector::camel2words(StringHelper::basename($str)));
-        //return trim(implode(" ", preg_split('/(?=\p{Lu})/u', $str)));
     }
 
+    /**
+     * Returns the name of the controller
+     *
+     * @return string the name of the controller
+     */
     public function getController() {
         if(!empty($this->controller)) {
             return $this->controller;
@@ -30,6 +40,11 @@ class Migration extends \yii\db\Migration
         }
     }
 
+    /**
+     * Creates the AuthItems for a controller
+     *
+     * @return null
+     */
     public function createAuthItems() {
         foreach($this->privileges as $privilege) {
             $this->insert('AuthItem', [
@@ -46,6 +61,11 @@ class Migration extends \yii\db\Migration
         }       
     }
 
+    /**
+     * Deletes the AuthItems for the controller
+     *
+     * @return null
+     */
     public function deleteAuthItems() {
         foreach($this->privileges as $privilege) {
             $this->delete(
@@ -54,6 +74,11 @@ class Migration extends \yii\db\Migration
         }
     }
 
+    /**
+     * Inserts the AdminMenus for the controller
+     *
+     * @return null
+     */
     public function createAdminMenu() {
         $connection = \Yii::$app->db;
         $query = new Query;
@@ -104,6 +129,11 @@ class Migration extends \yii\db\Migration
         ]);
     }
 
+    /**
+     * Deletes the Admin Menu for the controller
+     *
+     * @return null
+     */
     public function deleteAdminMenu() {
         $this->delete(
             'AdminMenu',"internal = '".$this->getController()."Controller'"
