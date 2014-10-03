@@ -44,7 +44,8 @@ class User extends BaseUser
 	 */
 	protected function afterLogin($identity, $cookieBased, $duration)
 	{
-		parent::afterLogin($identity, $cookieBased, $duration);
+        /** @var $identity \core\models\Administrator */
+        parent::afterLogin($identity, $cookieBased, $duration);
 		$this->identity->setScenario(self::EVENT_AFTER_LOGIN);
 		$this->identity->setAttribute('name', $this->identity->name);
 		$this->identity->save(false);
