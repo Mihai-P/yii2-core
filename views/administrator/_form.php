@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use theme\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use core\models\Group;
+use theme\widgets\InputFile;
 
 /**
  * @var yii\web\View $this
@@ -36,7 +37,7 @@ if(!$model->hasErrors()) {
 
     <?= $form->field($model, 'lastname')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'picture')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'picture')->widget(InputFile::classname()) ?>
 
     <?= $form->field($model, 'phone')->textInput(['maxlength' => 255]) ?>
 

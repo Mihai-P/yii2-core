@@ -3,6 +3,7 @@
 namespace core\models;
 
 use Yii;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Tag".
@@ -18,7 +19,7 @@ use Yii;
  *
  * @property ProductTag[] $productTags
  */
-class Tag extends \core\components\ActiveRecord
+class Tag extends ActiveRecord
 {
     /**
      * @inheritdoc

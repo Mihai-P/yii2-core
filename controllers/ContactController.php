@@ -6,7 +6,6 @@ use Yii;
 use core\components\Controller;
 use yii\helpers\ArrayHelper;
 use core\models\Tag;
-use yii\db\Expression;
 
 /**
  * ContactController implements the CRUD actions for Contact model.

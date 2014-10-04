@@ -3,17 +3,17 @@
 namespace core\models;
 
 use Yii;
-use yii\behaviors\BlameableBehavior;
-use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
-use yii\base\Security;
 use yii\web\IdentityInterface;
+use core\components\ActiveRecord;
+use yii\base\NotSupportedException;
 
 /**
  * This is the model class for table "User".
  *
  * @property integer $id
+ * @property string $name
+ * @property string $firstname
+ * @property string $lastname
  * @property string $email
  * @property string $password
  * @property string $password_reset_token
@@ -28,58 +28,17 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-	const STATUS_DELETED = 'deleted';
-	const STATUS_INACTIVE = 'inactive';
-	const STATUS_ACTIVE = 'active';
-	const STATUS_SUSPENDED = 'suspended';
-
-	/**
-	 * @var string the raw password. Used to collect password input and isn't saved in database
-	 */
-
-	private $_isSuperAdmin = null;
-
-	private $statuses = [
-		self::STATUS_DELETED => 'Deleted',
-		self::STATUS_INACTIVE => 'Inactive',
-		self::STATUS_ACTIVE => 'Active',
-		self::STATUS_SUSPENDED => 'Suspended',
-	];
-
-	public function behaviors()
-	{
-		return [
-			'timestamp' => [
-				'class' => 'yii\behaviors\TimestampBehavior',
-				'attributes' => [
-					self::EVENT_BEFORE_INSERT => ['create_time', 'update_time'],
-					self::EVENT_BEFORE_DELETE => 'delete_time',
-				],
-				'value' => function () {
-						return new Expression('CURRENT_TIMESTAMP');
-					}
-			],
-		];
-	}
-
-	public function getStatus($status = null)
-	{
-		if ($status === null) {
-			return Yii::t('core.user', $this->statuses[$this->status]);
-		}
-		return Yii::t('core.user', $this->statuses[$status]);
-	}
-
-	/**
-	 * Finds an identity by the given ID.
-	 *
-	 * @param string|integer $id the ID to be looked for
-	 * @return IdentityInterface|null the identity object that matches the given ID.
-	 */
-	public static function findIdentity($id)
-	{
-		return static::findOne($id);
-	}
+    var $password_repeat;
+    /**
+     * Finds an identity by the given ID.
+     *
+     * @param string|integer $id the ID to be looked for
+     * @return IdentityInterface|null the identity object that matches the given ID.
+     */
+    public static function findIdentity($id)
+    {
+        return static::findOne($id);
+    }
 
 	/**
 	 * Finds user by email
@@ -100,27 +59,27 @@ class User extends ActiveRecord implements IdentityInterface
 		throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
 	}
 
-	/**
-	 * Finds user by password reset token
-	 *
-	 * @param string $token password reset token
-	 * @return static|null
-	 */
-	public static function findByPasswordResetToken($token)
-	{
-		$expire = Yii::$app->params['user.passwordResetTokenExpire'];
-		$parts = explode('_', $token);
-		$timestamp = (int)end($parts);
-		if ($timestamp + $expire < time()) {
-			// token expired
-			return null;
-		}
+    /**
+     * Finds user by password reset token
+     *
+     * @param string $token password reset token
+     * @return static|null
+     */
+    public static function findByPasswordResetToken($token)
+    {
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        $parts = explode('_', $token);
+        $timestamp = (int)end($parts);
+        if ($timestamp + $expire < time()) {
+            // token expired
+            return null;
+        }
 
-		return static::findOne([
-			'password_reset_token' => $token,
-			'status' => self::STATUS_ACTIVE,
-		]);
-	}
+        return static::findOne([
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
+        ]);
+    }
 
 	/**
 	 * @return int|string current user ID
@@ -153,7 +112,7 @@ class User extends ActiveRecord implements IdentityInterface
 	 */
 	public function validatePassword($password)
 	{
-		return Security::validatePassword($password, $this->password);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
 	}
 
 	/**
@@ -174,26 +133,48 @@ class User extends ActiveRecord implements IdentityInterface
 			['status', 'safe'],
 
 			['email', 'filter', 'filter' => 'trim'],
-			['email', 'required'],
 			['email', 'email'],
-			['email', 'unique', 'message' => Yii::t('core.user', 'This email address has already been taken.')],
-			['email', 'exist', 'message' => Yii::t('core.user', 'There is no user with such email.'), 'on' => 'requestPasswordResetToken'],
+			['email', 'exist', 'message' => 'There was an error sending the email.', 'on' => 'requestPasswordResetToken'],
 
-			['password', 'required', 'on' => 'signup'],
-			['password', 'string', 'min' => 6],
+            [['firstname', 'lastname', 'email'], 'required'],
+
+            [['firstname', 'lastname', 'type', 'status'], 'string', 'max' => 255],
+
+            [['update_by', 'create_by'], 'integer'],
+
+            [['auth_key'], 'string', 'max' => 128],
+            [['password_reset_token'], 'string', 'max' => 32],
+
+            [['password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
+            [['password', 'password_repeat'], 'validatePasswordInput'],
+            [['password', 'password_repeat'], 'required', 'on' => ['resetPassword']],
 		];
 	}
 
-	public function scenarios()
-	{
-		return [
-			'signup' => ['email', 'email', 'password'],
-			'profile' => ['email', 'email', 'password'],
-			'resetPassword' => ['password'],
-			'requestPasswordResetToken' => ['email'],
-			'login' => ['last_visit_time'],
-		] + parent::scenarios();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function scenarios()
+    {
+        return [
+            'profile' => ['email', 'password'],
+            'resetPassword' => ['password', 'password_repeat'],
+            'requestPasswordResetToken' => ['email'],
+        ] + parent::scenarios();
+    }
+
+    public function validatePasswordInput()
+    {
+        if($this->isNewRecord && (empty($this->password) || empty($this->password_repeat)))  {
+            $this->addError('password', 'The password is required');
+            $this->addError('password_repeat', 'The password is required');
+            return;
+        }
+        if($this->password != $this->password_repeat) {
+            $this->addError('password', 'You have to repeat the password');
+            $this->addError('password_repeat', 'You have to repeat the password');
+        }
+    }
 
 	/**
 	 * @inheritdoc
@@ -214,52 +195,36 @@ class User extends ActiveRecord implements IdentityInterface
 		];
 	}
 
-	public function beforeSave($insert)
-	{
-		if (parent::beforeSave($insert)) {
-			if (($this->isNewRecord || in_array($this->getScenario(), ['resetPassword', 'profile'])) && !empty($this->password)) {
-				$this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-			}
-			if ($this->isNewRecord) {
-				$this->auth_key = Yii::$app->getSecurity()->generateRandomString();
-			}
-			if ($this->getScenario() !== \yii\web\User::EVENT_AFTER_LOGIN) {
-				$this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));
-			}
+    /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $this->name = $this->firstname . ' ' . $this->lastname;
+            if (!empty($this->password_repeat)) {
+                $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+                $this->password_reset_token = null;
+            } else {
+                unset($this->password);
+            }
+            if ($this->isNewRecord) {
+                $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
+            }
 
-			return true;
-		}
-		return false;
-	}
+            return true;
+        }
+        return false;
+    }
 
-	public function delete()
-	{
-		$db = static::getDb();
-		$transaction = $this->isTransactional(self::OP_DELETE) && $db->getTransaction() === null ? $db->beginTransaction() : null;
-		try {
-			$result = false;
-			if ($this->beforeDelete()) {
-				$this->setAttribute('status', static::STATUS_DELETED);
-				$this->save(false);
-			}
-			if ($transaction !== null) {
-				if ($result === false) {
-					$transaction->rollback();
-				} else {
-					$transaction->commit();
-				}
-			}
-		} catch (\Exception $e) {
-			if ($transaction !== null) {
-				$transaction->rollback();
-			}
-			throw $e;
-		}
-		return $result;
-	}
-
-	public function login($duration = 0)
-	{
-		return Yii::$app->user->login($this, $duration);
-	}
+    /**
+     * Login the model
+     *
+     * @param int $duration how long to keep the user logged in. 0 is forever
+     * @return bool if the login was successful
+     */
+    public function login($duration = 0)
+    {
+        return Yii::$app->user->login($this, $duration);
+    }
 }

@@ -3,9 +3,8 @@
 namespace core\models;
 
 use Yii;
-use yii\db\ActiveRecord;
-use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "User".
@@ -32,89 +31,35 @@ use yii\web\IdentityInterface;
  * @property integer $create_by
  *
  */
-class Administrator extends \core\components\ActiveRecord implements IdentityInterface
+class Administrator extends User implements IdentityInterface
 {
-    const STATUS_DELETED = 'deleted';
-    const STATUS_INACTIVE = 'inactive';
-    const STATUS_ACTIVE = 'active';
-
-    var $password_repeat;
-
-    private $statuses = [
-        self::STATUS_DELETED => 'Deleted',
-        self::STATUS_INACTIVE => 'Inactive',
-        self::STATUS_ACTIVE => 'Active',
-    ];
-
-    public function getStatus($status = null)
-    {
-        if ($status === null) {
-            return $this->statuses[$this->status];
-        }
-        return $this->statuses[$status];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'User';
-    }
-
     /**
      * @inheritdoc
      */
     public function rules()
     {
-        $rules = [
-            ['type', 'default', 'value' => 'Administrator'],
-            [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
-            [['password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
-            [['password', 'password_repeat'], 'validatePasswordInput'],
-            [['password', 'password_repeat'], 'required', 'on' => ['resetPassword']],
-            [['firstname', 'lastname', 'Group_id', 'email'], 'required'],
-            [['update_time', 'create_time'], 'safe'],
-            [['email'], 'email'],
-            [['type', 'status'], 'string'],
-            [['password', 'password_repeat', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 128],
-            [['password_reset_token'], 'string', 'max' => 32]
+        $rules =  ArrayHelper::merge(
+            [
+                ['type', 'default', 'value' => 'Administrator'],
 
-        ];
+                [['Group_id', 'login_attempts'], 'integer'],
+                [['Group_id'], 'required'],
+
+                [['picture', 'phone', 'mobile'], 'safe'],
+
+                [['picture', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
+            ],
+            parent::rules()
+        );
 
         if($this->isNewRecord) {
             $rules[] = [['password', 'password_repeat'], 'required'];
         }
+
         return $rules;
 
     }
 
-    public function validatePasswordInput($attribute, $params)
-    {
-        if($this->isNewRecord && (empty($this->password) || empty($this->password_repeat)))  {
-            $this->addError('password', 'The password is required');
-            $this->addError('password_repeat', 'The password is required');
-            return;
-        }
-        if($this->password != $this->password_repeat) {
-            $this->addError('password', 'You have to repeat the password');
-            $this->addError('password_repeat', 'You have to repeat the password');
-        }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        return [
-            'signup' => ['email', 'password'],
-            'profile' => ['email', 'password'],
-            'resetPassword' => ['password', 'password_repeat'],
-            'requestPasswordResetToken' => ['email'],
-        ] + parent::scenarios();
-    }
     /**
      * @inheritdoc
      */
@@ -145,135 +90,16 @@ class Administrator extends \core\components\ActiveRecord implements IdentityInt
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getContacts()
-    {
-        return $this->hasMany(Contact::className(), ['Contact_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getGroup()
     {
         return $this->hasOne(Group::className(), ['id' => 'Group_id']);
     }
 
     /**
-     * Finds an identity by the given ID.
-     *
-     * @param string|integer $id the ID to be looked for
-     * @return IdentityInterface|null the identity object that matches the given ID.
+     * adding a default query to the model
      */
-    public static function findIdentity($id)
-    {
-        return static::findOne($id);
-    }
-
-    /**
-     * Finds user by email
-     *
-     * @param string $email
-     * @return null|User
-     */
-    public static function findByEmail($email)
-    {
-        return static::findOne(['email' => $email, 'status' => static::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        $parts = explode('_', $token);
-        $timestamp = (int)end($parts);
-        if ($timestamp + $expire < time()) {
-            // token expired
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
-    }
-
     public static function find()
     {
         return parent::find()->where('type = "Administrator" AND status <> "deleted"');
-    }
-
-    /**
-     * @return int|string current user ID
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string current user auth key
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * @param string $authKey
-     * @return boolean if auth key is valid for current user
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->auth_key === $authKey;
-    }
-
-    /**
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
-    }
-
-
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->name = $this->firstname . ' ' . $this->lastname;
-            if (!empty($this->password_repeat)) {
-                $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
-                $this->password_reset_token = null;
-            } else {
-                unset($this->password);
-            }
-            if ($this->isNewRecord) {
-                $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
-            }
-            if ($this->getScenario() !== \yii\web\User::EVENT_AFTER_LOGIN) {
-                $this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));
-            }
-
-            return true;
-        }
-        return false;
-    }
-
-    public function login($duration = 0)
-    {
-        return Yii::$app->user->login($this, $duration);
-    }
-    
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 }

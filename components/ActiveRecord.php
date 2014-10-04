@@ -12,6 +12,25 @@ use yii\db\StaleObjectException;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+    const STATUS_DELETED = 'deleted';
+    const STATUS_INACTIVE = 'inactive';
+    const STATUS_ACTIVE = 'active';
+
+    private $statuses = [
+        self::STATUS_DELETED => 'Deleted',
+        self::STATUS_INACTIVE => 'Inactive',
+        self::STATUS_ACTIVE => 'Active',
+    ];
+
+
+    public function getStatus($status = null)
+    {
+        if ($status === null) {
+            return Yii::t('core.user', $this->statuses[$this->status]);
+        }
+        return Yii::t('core.user', $this->statuses[$status]);
+    }
+
     /**
      * Marks an ActiveRecord as deleted in the database
      * @return integer|boolean the number of rows deleted, or false if the deletion is unsuccessful for some reason.
