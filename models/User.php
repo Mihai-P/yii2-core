@@ -28,7 +28,8 @@ use yii\base\NotSupportedException;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    var $password_repeat;
+    var $new_password;
+    var $new_password_repeat;
     /**
      * Finds an identity by the given ID.
      *
@@ -145,9 +146,9 @@ class User extends ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32],
 
-            [['password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
-            [['password', 'password_repeat'], 'validatePasswordInput'],
-            [['password', 'password_repeat'], 'required', 'on' => ['resetPassword']],
+            [['new_password'], 'compare', 'on' => ['resetPassword', 'update'], 'operator' => '=='],
+            [['new_password', 'new_password_repeat'], 'validatePasswordInput'],
+            [['new_password', 'new_password_repeat'], 'required', 'on' => ['resetPassword']],
 		];
 	}
 
@@ -158,21 +159,21 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             'profile' => ['email', 'password'],
-            'resetPassword' => ['password', 'password_repeat'],
+            'resetPassword' => ['new_password', 'new_password_repeat'],
             'requestPasswordResetToken' => ['email'],
         ] + parent::scenarios();
     }
 
     public function validatePasswordInput()
     {
-        if($this->isNewRecord && (empty($this->password) || empty($this->password_repeat)))  {
-            $this->addError('password', 'The password is required');
-            $this->addError('password_repeat', 'The password is required');
+        if($this->isNewRecord && (empty($this->new_password) || empty($this->new_password_repeat)))  {
+            $this->addError('new_password', 'The password is required.');
+            $this->addError('new_password_repeat', 'The password is required.');
             return;
         }
-        if($this->password != $this->password_repeat) {
-            $this->addError('password', 'You have to repeat the password');
-            $this->addError('password_repeat', 'You have to repeat the password');
+        if($this->new_password != $this->new_password_repeat) {
+            $this->addError('new_password', 'You have to repeat the password.');
+            $this->addError('new_password_repeat', 'You have to repeat the password.');
         }
     }
 
@@ -185,6 +186,8 @@ class User extends ActiveRecord implements IdentityInterface
 			'id' => 'ID',
 			'email' => Yii::t('core.user', 'Email'),
 			'password' => Yii::t('core.user', 'Password'),
+            'new_password' => Yii::t('core.user', 'New Password'),
+            'new_password_repeat' => Yii::t('core.user', 'Repeat Password'),
 			'password_reset_token' => Yii::t('core.user', 'Password Reset Token'),
 			'auth_key' => Yii::t('core.user', 'Auth Key'),
 			'status' => Yii::t('core.user', 'Status'),
@@ -202,8 +205,8 @@ class User extends ActiveRecord implements IdentityInterface
     {
         if (parent::beforeSave($insert)) {
             $this->name = $this->firstname . ' ' . $this->lastname;
-            if (!empty($this->password_repeat)) {
-                $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->password);
+            if (!empty($this->new_password)) {
+                $this->password = Yii::$app->getSecurity()->generatePasswordHash($this->new_password);
                 $this->password_reset_token = null;
             } else {
                 unset($this->password);

@@ -53,7 +53,7 @@ class Administrator extends User implements IdentityInterface
         );
 
         if($this->isNewRecord) {
-            $rules[] = [['password', 'password_repeat'], 'required'];
+            $rules[] = [['new_password', 'new_password_repeat'], 'required'];
         }
 
         return $rules;
@@ -69,7 +69,8 @@ class Administrator extends User implements IdentityInterface
             'id' => 'ID',
             'Group_id' => 'Group',
             'password' => 'Password',
-            'password_repeat' => 'Repeat Password',
+            'new_password' => 'New Password',
+            'new_password_repeat' => 'Repeat Password',
             'auth_key' => 'Auth Key',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',

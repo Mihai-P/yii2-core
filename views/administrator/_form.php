@@ -12,8 +12,8 @@ use theme\widgets\InputFile;
  * @var yii\widgets\ActiveForm $form
  */
 if(!$model->hasErrors()) {
-    $model->password = '';
-    $model->password_repeat = '';
+    $model->new_password = '';
+    $model->new_password_repeat = '';
 }
 ?>
 
@@ -29,9 +29,9 @@ if(!$model->hasErrors()) {
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 255, 'autocomplete' => 'off']) ?>
+    <?= $form->field($model, 'new_password')->passwordInput(['maxlength' => 255, 'autocomplete' => 'off']) ?>
 
-    <?= $form->field($model, 'password_repeat')->passwordInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'new_password_repeat')->passwordInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'firstname')->textInput(['maxlength' => 255]) ?>
 

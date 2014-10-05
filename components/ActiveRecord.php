@@ -1,6 +1,7 @@
 <?php
 namespace core\components;
 
+use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use core\components\HistoryBehavior;
@@ -25,9 +26,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
     public function getStatus($status = null)
     {
-        if ($status === null) {
-            return Yii::t('core.user', $this->statuses[$this->status]);
-        }
         return Yii::t('core.user', $this->statuses[$status]);
     }
 
@@ -48,7 +46,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             if ($lock !== null) {
                 $condition[$lock] = $this->$lock;
             }
-            $this->status = 'deleted';
+            $this->status = self::STATUS_DELETED;
             $result = $this->save(false);
             if ($lock !== null && !$result) {
                 throw new StaleObjectException('The object being deleted is outdated.');

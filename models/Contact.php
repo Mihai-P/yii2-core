@@ -34,7 +34,7 @@ use core\models\Tag;
  * @property integer $create_by
  *
  */
-class Contact extends  \core\components\ActiveRecord
+class Contact extends  User
 {
     var $tags;
     /**
@@ -56,7 +56,7 @@ class Contact extends  \core\components\ActiveRecord
             [['email'], 'email'],
             [['tags', 'update_time', 'create_time'], 'safe'],
             [['type', 'status'], 'string'],
-            [['password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
+            [['password', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
@@ -71,10 +71,6 @@ class Contact extends  \core\components\ActiveRecord
             'id' => 'ID',
             'Group_id' => 'Group',
             'type' => 'Type',
-            'password' => 'Password',
-            'password_reset_token' => 'Password Reset Token',
-            'auth_key' => 'Auth Key',
-            'last_visit_time' => 'Last Visit Time',
             'name' => 'Name',
             'firstname' => 'Firstname',
             'lastname' => 'Lastname',
@@ -82,7 +78,6 @@ class Contact extends  \core\components\ActiveRecord
             'email' => 'Email',
             'phone' => 'Phone',
             'mobile' => 'Mobile',
-            'login_attempts' => 'Login Attempts',
             'status' => 'Status',
             'update_time' => 'Update Time',
             'update_by' => 'Update By',

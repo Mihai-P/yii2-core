@@ -13,8 +13,7 @@ use core\models\History;
 class Controller extends \yii\web\Controller
 {
     /**
-     * @const string the default layout for the controller view. Defaults to '//core./main',
-     * meaning using the normal. See 'protected/views/layouts/main.php'.
+     * @const string the layouts available for the controller views. Defaults to the main one
      */
     const MAIN_LAYOUT = '@core/views/layouts/main';
     const FORM_LAYOUT = '@core/views/layouts/form';
@@ -32,13 +31,43 @@ class Controller extends \yii\web\Controller
      * @event Event an event that is triggered after a record is updated.
      */
     const EVENT_AFTER_UPDATE = 'afterUpdate';
+
+    /**
+     * @var bool if the redirects should go to the view action or back to inder
+     */
     var $hasView = false;
+
+    /**
+     * @var string the class of the main model for the controller
+     */
     var $MainModel = '';
+    /**
+     * @var string the search class of the main model for the controller
+     */
     var $MainModelSearch = '';
-    var $defaultQueryParams = ['status' => 'active'];
+
+    /**
+     * @var array the default query params for the index view
+     */
+    var $defaultQueryParams = ['status' => ActiveRecord::STATUS_ACTIVE];
+
+    /**
+     * @var ActiveRecord the search model
+     */
     var $searchModel;
+
+    /**
+     * @var \yii\data\ActiveDataProvider the data provider for the index, pdf, csv
+     */
     var $dataProvider;
+
+    /**
+     * @var string the field name that will identify the record
+     */
     var $historyField = "name";
+    /**
+     * @inheritdoc
+     */
     var $layout = '@core/views/layouts/main';
 
     /**
@@ -153,7 +182,7 @@ class Controller extends \yii\web\Controller
 
     /**
      * Creates a PDF file with the current list of the models
-     * @return file
+     * @return string
      */
     public function actionPdf()
     {
@@ -335,7 +364,7 @@ class Controller extends \yii\web\Controller
         if (isset($_POST['items'])) {
             foreach ($_POST['items'] as $id) {
                 if ($model = $this->findModel($id)) {
-                    $model->status = "active";
+                    $model->status = ActiveRecord::STATUS_ACTIVE;
                     $model->save(false);
                 }
             }
@@ -351,7 +380,7 @@ class Controller extends \yii\web\Controller
         if (isset($_POST['items'])) {
             foreach ($_POST['items'] as $id) {
                 if ($model = $this->findModel($id)) {
-                    $model->status = "inactive";
+                    $model->status = ActiveRecord::STATUS_INACTIVE;
                     $model->save(false);
                 }
             }
@@ -367,10 +396,10 @@ class Controller extends \yii\web\Controller
     public function actionStatus($id)
     {
         $model = $this->findModel($id);
-        if ($model->status == "active") {
-            $model->status = "inactive";
+        if ($model->status == ActiveRecord::STATUS_ACTIVE) {
+            $model->status = ActiveRecord::STATUS_INACTIVE;
         } else {
-            $model->status = "active";
+            $model->status = ActiveRecord::STATUS_ACTIVE;
         }
         $model->save(false);
         if (Yii::$app->request->getIsAjax()) {
