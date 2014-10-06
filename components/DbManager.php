@@ -13,7 +13,7 @@ namespace core\components;
  * The database connection is specified by [[db]]. The database schema could be initialized by applying migration:
  *
  * ```
- * yii migrate --migrationPath=@yii/rbac/migrations/
+ * yii migrate --migrationPath=@core/migrations/
  * ```
  *
  * If you don't want to use migration and need SQL instead, files for all databases are in migrations directory.
@@ -33,17 +33,17 @@ class DbManager extends \yii\rbac\DbManager
     public $db = 'db';
 
     /**
-     * @var string the name of the table storing authorization items. Defaults to "auth_item".
+     * @var string the name of the table storing authorization items. Defaults to "AuthItem".
      */
     public $itemTable = '{{%AuthItem}}';
 
     /**
-     * @var string the name of the table storing authorization item hierarchy. Defaults to "auth_item_child".
+     * @var string the name of the table storing authorization item hierarchy. Defaults to "AuthItemChild".
      */
     public $itemChildTable = '{{%AuthItemChild}}';
 
     /**
-     * @var string the name of the table storing authorization item assignments. Defaults to "auth_assignment".
+     * @var string the name of the table storing authorization item assignments. Defaults to "AuthAssignment".
      */
     public $assignmentTable = '{{%AuthAssignment}}';
 

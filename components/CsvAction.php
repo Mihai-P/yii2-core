@@ -14,39 +14,23 @@ use Goodby\CSV\Export\Standard\ExporterConfig;
 
 
 /**
- * ErrorAction displays application errors using a specified view.
+ * CsvAction displays application errors using a specified view.
  *
- * To use ErrorAction, you need to do the following steps:
+ * To use CsvAction, you need to do the following steps:
  *
- * First, declare an action of ErrorAction type in the `actions()` method of your `SiteController`
+ * Declare an action of CsvAction type in the `actions()` method of your `YyyController`
  * class (or whatever controller you prefer), like the following:
  *
  * ```php
  * public function actions()
  * {
  *     return [
- *         'error' => ['class' => 'yii\web\ErrorAction'],
+ *         'error' => ['class' => 'core\components\CsvAction'],
  *     ];
  * }
  * ```
  *
- * Then, create a view file for this action. If the route of your error action is `site/error`, then
- * the view file should be `views/site/error.php`. In this view file, the following variables are available:
- *
- * - `$name`: the error name
- * - `$message`: the error message
- * - `$exception`: the exception being handled
- *
- * Finally, configure the "errorHandler" application component as follows,
- *
- * ```php
- * 'errorHandler' => [
- *     'errorAction' => 'site/error',
- * ]
- * ```
- *
- * @author Qiang Xue <qiang.xue@gmail.com>
- * @since 2.0
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class CsvAction extends Action
 {

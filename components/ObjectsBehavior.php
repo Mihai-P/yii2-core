@@ -16,7 +16,6 @@ class ObjectsBehavior extends Behavior
         return $this->owner->hasMany(Object::className(), ['Model_id' => 'id'])->where('Model = :Model', [':Model' => StringHelper::basename(get_class($this->owner))]);
     }
 
-
     /**
      * Save the objects in the database
      *

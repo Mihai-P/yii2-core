@@ -7,6 +7,8 @@ use yii\db\ActiveQuery;
 class DefaultQuery extends ActiveQuery
 {
     /**
+     * Adds the default query
+     *
      * @return \yii\db\ActiveQuery
      */
     public function active()

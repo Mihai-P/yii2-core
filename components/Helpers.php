@@ -17,7 +17,7 @@ class Helpers
 	/**
 	 * Protects the email from bots
      *
-	 * I have copied and modified this http://www.maurits.vdschee.nl/php_hide_email/
+	 * Credits to http://www.maurits.vdschee.nl/php_hide_email/
 	 *
 	 * @param string $email the email address
 	 * @return string 
