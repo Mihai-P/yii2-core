@@ -24,8 +24,14 @@ use core\models\PageTemplate;
 
     <?= $form->field($model, 'h1')->textInput(['maxlength' => 255]) ?>
 <?php
-	if($model->template && is_file($this->findViewFile($model->template))) {
-		echo $this->context->renderPartial($model->template, ['model' => $model, 'form' => $form]);
+	if($model->template) {
+        if(is_file($this->findViewFile("@app/views/page/" . $model->template))) {
+            echo $this->context->renderPartial("@app/views/page/" . $model->template, ['model' => $model, 'form' => $form]);
+        } elseif(is_file($this->findViewFile("@core/views/page/" . $model->template))) {
+            echo $this->context->renderPartial("@core/views/page/" . $model->template, ['model' => $model, 'form' => $form]);
+        } else {
+            echo $this->context->renderPartial('_simple', ['model' => $model, 'form' => $form]);
+        }
 	} else {
 		echo $this->context->renderPartial('_simple', ['model' => $model, 'form' => $form]);
 	}
