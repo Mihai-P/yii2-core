@@ -39,6 +39,9 @@ class CsvAction extends Action
      */
     public $fields = ['id', 'name', 'status'];
 
+    /**
+     * Creates the pdf file for download
+     */
     public function run()
     {
         $this->controller->getSearchCriteria();

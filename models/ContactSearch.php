@@ -5,7 +5,6 @@ namespace core\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use core\models\Contact;
 use yii\helpers\ArrayHelper;
 
 /**

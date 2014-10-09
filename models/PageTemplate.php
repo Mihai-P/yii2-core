@@ -3,7 +3,7 @@
 namespace core\models;
 
 use Yii;
-use core\models\Page;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "PageTemplate".
@@ -19,7 +19,7 @@ use core\models\Page;
  *
  * @property Page[] $pages
  */
-class PageTemplate extends \core\components\ActiveRecord
+class PageTemplate extends ActiveRecord
 {
     /**
      * @inheritdoc

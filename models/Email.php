@@ -4,6 +4,7 @@ namespace core\models;
 
 use Yii;
 use Mandrill;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Email".
@@ -24,12 +25,12 @@ use Mandrill;
  * @property string $create_time
  * @property integer $create_by
  */
-class Email extends \core\components\ActiveRecord
+class Email extends ActiveRecord
 {
     /**
      * array that holds multiple recipients
      */
-    var $multiple_repicients;
+    var $multipleRecipients;
 
     /**
      * @inheritdoc
@@ -82,9 +83,10 @@ class Email extends \core\components\ActiveRecord
      * Creates a new email model and returns it
      *
      * @access  public
-     * @return  this
-     */ 
-    public static function create() {
+     * @return  $this
+     */
+    public static function create()
+    {
         $email = new static();
         $email->from_email = Yii::$app->params['mandrill']['from_email'];
         $email->from_name = Yii::$app->params['mandrill']['from_name'];
@@ -98,11 +100,14 @@ class Email extends \core\components\ActiveRecord
      * $email->subject('Hello World');
      *
      * @access  public
-     * @return  this
-     */ 
-    public function __call($funcname, $args = []) {
-        if($this->hasAttribute($funcname)) {
-            $this->$funcname = $args[0];
+     * @param string $attribute the name of the property
+     * @param array $args the value
+     * @return  $this
+     */
+    public function __call($attribute, $args = [])
+    {
+        if ($this->hasAttribute($attribute)) {
+            $this->$attribute = $args[0];
         }
 
         return $this;
@@ -117,10 +122,11 @@ class Email extends \core\components\ActiveRecord
      * @access  public
      * @param string $name the name of the receiver
      * @param string $email array with the keys email, name
-     * @return  this
-     */ 
+     * @return  $this
+     */
 
-    public function from($name, $email) {
+    public function from($name, $email)
+    {
         $this->from_email = $email;
         $this->from_name = $name;
 
@@ -137,19 +143,20 @@ class Email extends \core\components\ActiveRecord
      *
      * @access  public
      * @param array $recipient array with the keys email, name
-     * @return  this
-     */ 
+     * @return  $this
+     */
 
-    public function to($recipient) {
-        $this->multiple_repicients[] = $recipient;
+    public function to($recipient)
+    {
+        $this->multipleRecipients[] = $recipient;
         return $this;
     }
 
     /**
      * Sends the email to the email queue
-     * 
+     *
      * Usage:
-     * $success = \Email::create()
+     * $success = Email::create()
      *          ->html("Hello World!!!")
      *          ->subject("Hello");
      *          ->to(['email' => 'recipient1@biti.ro', 'name' => 'Recipient1'])
@@ -157,20 +164,20 @@ class Email extends \core\components\ActiveRecord
      *          ->send()
      * if($success) {}
      *
-     * it returns true if it was succesfull or the errors of the model 
+     * it returns true if it was successful or the errors of the model
      *
      * @access  public
      * @return  mixed
-     */ 
-    public function send() {
-        if(!$this->validate()) {
+     */
+    public function send()
+    {
+        if (!$this->validate()) {
             return $this->getErrors();
         }
 
-        foreach( $this->multiple_repicients as $to )
-        {
+        foreach ($this->multipleRecipients as $to) {
             $email_copy = clone $this;
-            if(is_array($to)) {
+            if (is_array($to)) {
                 $email_copy->to_email = $to['email'];
                 $email_copy->to_name = $to['name'];
             } else {
@@ -179,18 +186,19 @@ class Email extends \core\components\ActiveRecord
             }
             $email_copy->save(false);
         }
-        return true;        
-    } 
+        return true;
+    }
 
     /**
      * Tries to send the email to mandril
      *
-     * If it is successfull then it updates the email
-     * If it is NOT successfull then it updates number of tries
+     * If it is successful then it updates the email
+     * If it is NOT successful then it updates number of tries
      *
      * @access  public
-     */ 
-    public function sendEmail() {
+     */
+    public function sendEmail()
+    {
         $mandrill = new Mandrill(Yii::$app->params['mandrill']['key']);
         $message = [
             'html' => $this->html,
@@ -201,15 +209,15 @@ class Email extends \core\components\ActiveRecord
             'track_opens' => true,
             'track_clicks' => true,
             'auto_text' => true,
-            'to'=>[['email' => $this->to_email, 'name' => $this->to_name]],
-            'bcc_address'=>'mihai.petrescu@gmail.com',
-        ]; 
+            'to' => [['email' => $this->to_email, 'name' => $this->to_name]],
+            'bcc_address' => 'mihai.petrescu@gmail.com',
+        ];
         $result = $mandrill->messages->send($message);
-        if($result[0]['status'] == 'sent') {
+        if ($result[0]['status'] == 'sent') {
             $this->status = 'sent';
         } else {
             $this->tries++;
         }
         $this->save();
-    }    
+    }
 }

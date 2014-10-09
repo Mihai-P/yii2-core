@@ -3,11 +3,10 @@
 namespace core\models;
 
 use Yii;
-use common\models\Postcode;
 use yii\helpers\ArrayHelper;
 use core\components\TagsBehavior;
 use yii\db\Expression;
-use core\models\Tag;
+use yii\web\User as WebUser;
 
 /**
  * This is the model class for table "User".
@@ -34,7 +33,7 @@ use core\models\Tag;
  * @property integer $create_by
  *
  */
-class Contact extends  User
+class Contact extends User
 {
     var $tags;
     /**
@@ -108,10 +107,14 @@ class Contact extends  User
     {
         return $this->hasMany(Tag::className(), ['id' => 'Tag_id'])
             ->viaTable('Contact_Tag', ['Contact_id' => 'id'], function($query) {
+                /** @var \yii\db\ActiveQuery $query */
                 return $query->where('Contact_Tag.status = "active"');
             });
     }
 
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         if (parent::beforeSave($insert)) {
@@ -124,7 +127,7 @@ class Contact extends  User
             if ($this->isNewRecord) {
                 $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
             }
-            if ($this->getScenario() !== \yii\web\User::EVENT_AFTER_LOGIN) {
+            if ($this->getScenario() !== WebUser::EVENT_AFTER_LOGIN) {
                 $this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));
             }
 

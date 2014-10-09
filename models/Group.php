@@ -3,7 +3,7 @@
 namespace core\models;
 
 use Yii;
-use core\models\AuthItem;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Group".
@@ -18,7 +18,7 @@ use core\models\AuthItem;
  *
  * @property User[] $users
  */
-class Group extends \core\components\ActiveRecord
+class Group extends ActiveRecord
 {
     var $privileges;
     /**

@@ -3,9 +3,10 @@
 namespace core\models;
 
 use Yii;
-use common\components\CategoryQuery;
+use core\components\CategoryQuery;
 use creocoder\behaviors\NestedSet;
 use yii\helpers\ArrayHelper;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Menu".
@@ -32,7 +33,7 @@ use yii\helpers\ArrayHelper;
  * @property Menu $menu
  * @property Menu[] $menus
  */
-class Menu extends \core\components\ActiveRecord
+class Menu extends ActiveRecord
 {
     /**
      * @inheritdoc

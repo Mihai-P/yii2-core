@@ -4,6 +4,7 @@ namespace core\models;
 
 use Yii;
 use core\components\DefaultQuery;
+use \core\components\ActiveRecord;
 
 /**
  * This is the model class for table "AdminMenu".
@@ -25,7 +26,7 @@ use core\components\DefaultQuery;
  * @property AdminMenu $adminMenu
  * @property AdminMenu[] $adminMenus
  */
-class AdminMenu extends \yii\db\ActiveRecord
+class AdminMenu extends ActiveRecord
 {
     /**
      * @inheritdoc

@@ -3,6 +3,7 @@
 namespace core\models;
 
 use Yii;
+use \core\components\ActiveRecord;
 
 /**
  * This is the model class for table "AuthItem".
@@ -18,7 +19,7 @@ use Yii;
  *
  * @property AuthItemChild[] $authItemChildren
  */
-class AuthItem extends \core\components\ActiveRecord
+class AuthItem extends ActiveRecord
 {
     /**
      * @inheritdoc

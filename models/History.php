@@ -3,7 +3,7 @@
 namespace core\models;
 
 use Yii;
-
+use \core\components\ActiveRecord;
 /**
  * This is the model class for table "History".
  *
@@ -18,7 +18,7 @@ use Yii;
  *
  * @property User $createBy
  */
-class History extends \core\components\ActiveRecord
+class History extends ActiveRecord
 {
     /**
      * @inheritdoc

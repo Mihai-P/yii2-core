@@ -5,6 +5,7 @@ namespace core\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Website".
@@ -20,7 +21,7 @@ use core\components\ObjectsBehavior;
  * @property string $create_time
  * @property integer $create_by
  */
-class Website extends \core\components\ActiveRecord
+class Website extends ActiveRecord
 {
     /**
      * @inheritdoc
