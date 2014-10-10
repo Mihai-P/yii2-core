@@ -5,7 +5,6 @@ namespace core\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use core\models\Website;
 
 /**
  * WebsiteSearch represents the model behind the search form about `core\models\Website`.
@@ -17,6 +16,9 @@ class WebsiteSearch extends Website
      */    
     var $keyword;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -25,12 +27,19 @@ class WebsiteSearch extends Website
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
+    /**
+     * @param array $params the criteria for the search
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Website::find()->where('status <> "deleted"');

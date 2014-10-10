@@ -25,7 +25,9 @@ class ContactSearch extends Contact
      * @var string search tag for the model
      */    
     var $tag;
-
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -33,13 +35,17 @@ class ContactSearch extends Contact
             [['keyword', 'create_time_from', 'create_time_to', 'tag', 'type', 'password', 'password_reset_token', 'auth_key', 'name', 'firstname', 'lastname', 'picture', 'email', 'phone', 'mobile', 'validation_key', 'status', 'update_time', 'create_time'], 'safe'],
         ];
     }
-
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return ArrayHelper::merge(
@@ -50,7 +56,10 @@ class ContactSearch extends Contact
             parent::attributeLabels()
         );
     }
-
+    /**
+     * @param array $params the criteria for the search
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Contact::find()->where('User.type = "Contact" AND User.status <> "deleted"');

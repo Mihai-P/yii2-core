@@ -5,7 +5,7 @@ namespace core\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
-use core\models\PageTemplate;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Page".
@@ -25,8 +25,23 @@ use core\models\PageTemplate;
  * 
  * @property PageTemplate $pageTemplate 
  */
-class Page extends \core\components\ActiveRecord
+class Page extends ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        switch(count(Yii::$app->getModule('core')->pageTemplates)) {
+            case 0:
+                $this->template = '_simple';
+                break;
+            case 1:
+                $this->template = key(Yii::$app->getModule('core')->pageTemplates);
+                break;
+        }
+    }
     /**
      * @inheritdoc
      */
@@ -59,7 +74,7 @@ class Page extends \core\components\ActiveRecord
             'name' => 'Name',
             'PageTemplate_id' => 'Template',
             'url' => 'Url',
-            'template' => 'Template',
+            'template' => 'Layout',
             'content' => 'Content',
             'status' => 'Status',
             'update_time' => 'Update Time',

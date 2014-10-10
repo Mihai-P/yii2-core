@@ -5,7 +5,6 @@ namespace core\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use core\models\Tag;
 
 /**
  * TagSearch represents the model behind the search form about `core\models\Tag`.
@@ -17,6 +16,9 @@ class TagSearch extends Tag
      */    
     var $keyword;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -25,12 +27,19 @@ class TagSearch extends Tag
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
+    /**
+     * @param array $params the criteria for the search
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Tag::find()->where('status <> "deleted"');

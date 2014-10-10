@@ -11,6 +11,9 @@ use yii\data\ActiveDataProvider;
  */
 class UserSearch extends User
 {
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -19,12 +22,18 @@ class UserSearch extends User
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
-
+    /**
+     * @param array $params the criteria for the search
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = User::find();

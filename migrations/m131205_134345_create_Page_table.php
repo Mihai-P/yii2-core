@@ -19,7 +19,7 @@ class m131205_134345_create_Page_table extends Migration
             'name' => Schema::TYPE_STRING . ' NOT NULL',
             'url' => Schema::TYPE_STRING . ' DEFAULT NULL',
             'h1' => Schema::TYPE_STRING . ' DEFAULT NULL',
-            'template' => Schema::TYPE_STRING . ' DEFAULT NULL',
+            'template' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "_simple"',
             'content' => Schema::TYPE_TEXT,
             'status' => Schema::TYPE_STRING . ' NOT NULL DEFAULT "active"',
             'update_time' => Schema::TYPE_DATETIME . ' DEFAULT NULL',

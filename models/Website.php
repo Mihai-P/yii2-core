@@ -81,7 +81,7 @@ class Website extends ActiveRecord
 
     /**
      * get the details of a website
-     * returns Website Model
+     * @return Website
      */
     public static function details()
     {

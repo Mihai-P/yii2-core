@@ -16,6 +16,9 @@ class GroupSearch extends Group
      */    
     var $keyword;
 
+    /**
+     * @inheritdoc
+     */
     public function rules()
     {
         return [
@@ -24,12 +27,19 @@ class GroupSearch extends Group
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
 
+    /**
+     * @param array $params the criteria for the search
+     * @return ActiveDataProvider
+     */
     public function search($params)
     {
         $query = Group::find()->where('status <> "deleted"');

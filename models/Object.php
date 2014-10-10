@@ -3,6 +3,7 @@
 namespace core\models;
 
 use Yii;
+use core\components\ActiveRecord;
 
 /**
  * This is the model class for table "Object".
@@ -19,7 +20,7 @@ use Yii;
  * @property string $create_time
  * @property integer $create_by
  */
-class Object extends \core\components\ActiveRecord
+class Object extends ActiveRecord
 {
     /**
      * @inheritdoc

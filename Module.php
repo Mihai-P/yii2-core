@@ -12,6 +12,8 @@ class Module extends \yii\base\Module
      */
     public $rememberMeTime = 2592000; // 30 days
 
+    public $pageTemplates = ['_simple' => 'Simple']; // 30 days
+
     public $attemptsBeforeCaptcha = 3; // Unsuccessful Login Attempts before Captcha
 
 	public function init()
@@ -24,6 +26,6 @@ class Module extends \yii\base\Module
 		];
 		$this->setAliases([
 			'@core' => __DIR__
-		]);	}
-
+		]);
+    }
 }
