@@ -38,7 +38,7 @@ class Page extends ActiveRecord
                 $this->template = '_simple';
                 break;
             case 1:
-                $this->template = key(Yii::$app->getModule('core')->pageTemplates);
+                $this->template = Yii::$app->getModule('core')->pageTemplates[0]['file'];
                 break;
         }
     }

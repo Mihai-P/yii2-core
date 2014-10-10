@@ -25,7 +25,7 @@ use core\models\PageTemplate;
     <?= $form->field($model, 'h1')->textInput(['maxlength' => 255]) ?>
 <?php
     if($model->isNewRecord && count(Yii::$app->getModule('core')->pageTemplates) > 1) {
-        echo $form->field($model, 'template')->dropDownList(Yii::$app->getModule('core')->pageTemplates);
+        echo $form->field($model, 'template')->dropDownList(ArrayHelper::map(Yii::$app->getModule('core')->pageTemplates, 'file', 'name'));
     } else {
         if(is_file($this->findViewFile("@app/views/page/" . $model->template))) {
             echo $this->context->renderPartial("@app/views/page/" . $model->template, ['model' => $model, 'form' => $form]);

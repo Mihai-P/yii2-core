@@ -12,7 +12,12 @@ class Module extends \yii\base\Module
      */
     public $rememberMeTime = 2592000; // 30 days
 
-    public $pageTemplates = ['_simple' => 'Simple']; // 30 days
+    public $pageTemplates = [
+        [
+            'file' => '_simple',
+            'name' => 'Simple',
+        ],
+    ];
 
     public $attemptsBeforeCaptcha = 3; // Unsuccessful Login Attempts before Captcha
 
