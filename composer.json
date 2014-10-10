@@ -29,7 +29,8 @@
 		"kartik-v/yii2-sortable": "dev-master",
 		"robregonm/yii2-pdf": "dev-master",
 		"goodby/csv": "*",
-		"nickcv/yii2-mandrill": "*"
+		"nickcv/yii2-mandrill": "*",
+        "2amigos/yii2-editable-widget" : "*"
     },	
 	"autoload": {
 		"psr-4": {
