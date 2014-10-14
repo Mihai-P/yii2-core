@@ -21,8 +21,6 @@ use core\models\PageTemplate;
     <?= $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
     <?= $form->field($model, 'PageTemplate_id')->dropDownList(ArrayHelper::map(PageTemplate::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select2']) ?>
-
-    <?= $form->field($model, 'h1')->textInput(['maxlength' => 255]) ?>
 <?php
     if($model->isNewRecord && count(Yii::$app->getModule('core')->pageTemplates) > 1) {
         echo $form->field($model, 'template')->dropDownList(ArrayHelper::map(Yii::$app->getModule('core')->pageTemplates, 'file', 'name'));

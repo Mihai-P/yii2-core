@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
-
+use theme\widgets\Seo\SeoWidget;
 /**
  * @var yii\web\View $this
  * @var core\models\Page $model
@@ -12,35 +12,34 @@ $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Pages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="page-view">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'url:url',
-            'template',
-            'content:ntext',
-            'status',
-            'update_time',
-            'update_by',
-            'create_time',
-            'create_by',
-        ],
-    ]) ?>
-
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h6 class="panel-title"><?= Html::encode($this->title) ?></h6>
+                <?php
+                    if(\Yii::$app->user->checkAccess('update::' . $this->context->getCompatibilityId()))
+                        echo Html::a('Edit', ['update', 'id' => $model->id], ['class' => "pull-right btn btn-xs btn-primary"]);
+                ?>
+            </div>
+            <div class="table-responsive">
+                <div class="contact-view">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'template' => "<tr><th width='25%'>{label}</th><td width='75%'>{value}</td></tr>",
+                        'attributes' => [
+                            'name',
+                            'url',
+                            'pageTemplate.name',
+                            'template',
+                            'status',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <?=SeoWidget::widget(['model' => $model, 'accessPriviledge' => $this->context->getCompatibilityId()])?>
+    </div>
 </div>

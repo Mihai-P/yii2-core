@@ -218,7 +218,7 @@ class Controller extends \yii\web\Controller
      */
     public function actionView($id)
     {
-        $this->layout = static::TABLE_LAYOUT;
+        $this->layout = static::MAIN_LAYOUT;
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);

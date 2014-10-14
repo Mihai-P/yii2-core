@@ -6,6 +6,7 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
 use core\components\ActiveRecord;
+use yii\helpers\StringHelper;
 
 /**
  * This is the model class for table "Page".
@@ -90,5 +91,13 @@ class Page extends ActiveRecord
     public function getPageTemplate()
     {
         return $this->hasOne(PageTemplate::className(), ['id' => 'PageTemplate_id']);
-    }    
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSeo()
+    {
+        return $this->hasOne(Seo::className(), ['Model_id' => 'id'])->where('Model = :Model', [':Model' => StringHelper::basename(get_class($this))]);
+    }
 }

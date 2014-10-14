@@ -11,8 +11,22 @@ use core\models\Object;
  */
 class PageController extends Controller
 {
+    var $hasView = true;
     var $MainModel = 'core\models\Page';
     var $MainModelSearch = 'core\models\PageSearch';
+
+    /**
+     * Displays a single model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        $this->layout = static::MAIN_LAYOUT;
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
     /**
      * Creates a new model.
