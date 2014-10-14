@@ -32,9 +32,8 @@ $I->fillField('input[name="Tag[name]"]', 'Gondor');
 $I->click('Create');
 $I->see('Tags', 'h6');
 $I->see('Gondor', '.grid-view table tr td');
-//$tag->delete();
 
-$model = Tag::findOne(['name' => 'Gondor']);
+$model = Tag::find()->where(['name' => 'Gondor'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
 $page->testDelete($model);

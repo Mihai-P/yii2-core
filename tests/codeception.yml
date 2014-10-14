@@ -8,3 +8,17 @@ paths:
 
 settings:
   colors: true
+
+coverage:
+    enabled: true
+
+modules:
+    enabled: [Db]
+    config:
+        Db:
+            populate: true
+            cleanup: false
+            dsn: 'mysql:host=localhost;dbname=yii2_advanced_tests'
+            user: 'root'
+            password: 'anaaremere'
+            dump: _data/dump.sql

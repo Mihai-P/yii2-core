@@ -12,7 +12,6 @@ $I->wantTo('test the Menu list');
 
 $page = MenuPage::openBy($I);
 $I->see('Menus', 'h6');
-$I->see('No results found.');
 
 $I->amGoingTo('add a new record.');
 $I->click('Add new');
@@ -26,9 +25,8 @@ $I->amGoingTo('submit the form without errors.');
 $I->fillField('input[name="Menu[name]"]', 'Mordor');
 $I->click('Create');
 $I->see('Menus', 'h6');
-$I->dontSee('No results found.');
 
-$model = Menu::findOne(['name' => 'Mordor']);
+$model = Menu::find()->where(['name' => 'Mordor'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
 $page->testDelete($model);
@@ -61,14 +59,6 @@ $modelBree = Menu::findOne(['name' => 'Bree']);
 \PHPUnit_Framework_Assert::assertTrue($modelHobbiton->lft < $modelBree->lft);
 
 $I->submitForm('#sort-form', ['Menu' => [$modelBree->id, $modelHobbiton->id]]);
-/*
-$I->sendPOST(
-    '/index-test.php/core/menu/sort?Menu_id='.$model->id,
-    [
-        'Menu' => [$modelBree->lft, $modelHobbiton->lft],
-    ]
-);
-*/
 $modelHobbiton = Menu::findOne(['name' => 'Hobbiton']);
 $modelBree = Menu::findOne(['name' => 'Bree']);
 \PHPUnit_Framework_Assert::assertTrue($modelHobbiton->lft > $modelBree->lft);

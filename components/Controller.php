@@ -6,7 +6,7 @@ use Yii;
 use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 use core\models\History;
-
+use \yii\filters\AccessControl;
 /**
  * Controller implements the CRUD actions for the model.
  */

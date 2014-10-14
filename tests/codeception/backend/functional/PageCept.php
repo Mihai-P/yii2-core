@@ -49,7 +49,7 @@ $pageModel->template = '_notExisting';
 $pageModel->save();
 $page->testUpdate($pageModel, true);
 
-$model = Page::findOne(['name' => 'Rivendale']);
+$model = Page::find()->where(['name' => 'Rivendale'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model, true);
 $page->testDelete($model);

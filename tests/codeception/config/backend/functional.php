@@ -2,6 +2,8 @@
 $_SERVER['SCRIPT_FILENAME'] = YII_TEST_BACKEND_ENTRY_FILE;
 $_SERVER['SCRIPT_NAME'] = YII_BACKEND_TEST_ENTRY_URL;
 
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))))));
+
 /**
  * Application configuration for backend functional tests
  */

@@ -13,6 +13,7 @@ modules:
     enabled:
         - PhpBrowser
         - tests\codeception\common\_support\FixtureHelper
+        - Db
 # you can use WebDriver instead of PhpBrowser to test javascript and ajax.
 # This will require you to install selenium. See http://codeception.com/docs/04-AcceptanceTests#Selenium
 # "restart" option is used by the WebDriver to start each time per test-file new session and cookies,
@@ -25,3 +26,11 @@ modules:
 #            url: 'http://localhost'
 #            browser: firefox
 #            restart: true
+        Db:
+            populate: true
+            cleanup: false
+            dsn: 'mysql:host=localhost;dbname=yii2_advanced_tests'
+            user: 'root'
+            password: 'anaaremere'
+            dump: _data/dump.sql
+

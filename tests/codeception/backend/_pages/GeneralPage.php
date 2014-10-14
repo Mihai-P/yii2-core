@@ -14,21 +14,21 @@ class GeneralPage extends BasePage
 	function testActivateDeactivate($model) {
 		$this->actor->amGoingTo('make the record inactive');
 		$this->actor->click('tr[data-key="'.$model->id.'"] .button-status-deactivate');
-		$this->actor->dontSee($model->name, '.grid-view table tr td');
+		$this->actor->dontSee($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 
 		$this->actor->amGoingTo('look in the inactive records to find it');
 		$this->actor->selectOption($this->modelName($model).'Search[status]', 'Inactive');
 		$this->actor->click('.start-search');
-		$this->actor->see($model->name, '.grid-view table tr td');
+		$this->actor->see($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 
 		$this->actor->amGoingTo('make the record active');
 		$this->actor->click('tr[data-key="'.$model->id.'"] .button-status-activate');
-		$this->actor->dontSee($model->name, '.grid-view table tr td');
+		$this->actor->dontSee($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 
 		$this->actor->amGoingTo('look in the active records to find it');
 		$this->actor->selectOption($this->modelName($model).'Search[status]', 'Active');
 		$this->actor->click('.start-search');
-		$this->actor->see($model->name, '.grid-view table tr td');
+		$this->actor->see($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 	}
 
 	function testUpdate($model, $hasView = false) {
@@ -46,7 +46,7 @@ class GeneralPage extends BasePage
 	function testDelete($model) {
 		$this->actor->amGoingTo('delete the record');
 		$this->actor->click('tr[data-key="'.$model->id.'"] .button-delete');
-		$this->actor->dontSee($model->name, '.grid-view table tr td');
+		$this->actor->dontSee($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 	}	
 
 	function modelName($model) {

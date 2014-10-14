@@ -25,3 +25,18 @@ modules:
             user: 'root'
             password: 'anaaremere'
             dump: _data/dump.sql
+
+coverage:
+    enabled: true
+    include:
+        - ../../../*
+    exclude:
+        - ../../../tests/*
+        - ../../../migrations/*
+        - ../../../gii/*
+        - ../../../README.md
+        - ../../../codeception.yml
+        - ../../../composer.json
+        - ../../../LICENSE
+        - ../../../components/Migration.php
+        - ../../../components/FrontendPath.php

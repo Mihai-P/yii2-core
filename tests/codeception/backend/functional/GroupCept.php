@@ -26,7 +26,7 @@ $I->click('Create');
 $I->see('Groups', 'h6');
 $I->see('Hobbit', '.grid-view table tr td');
 
-$model = Group::findOne(['name' => 'Hobbit']);
+$model = Group::find()->where(['name' => 'Hobbit'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
 $page->testDelete($model);
