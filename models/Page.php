@@ -30,21 +30,6 @@ class Page extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function init()
-    {
-        parent::init();
-        switch(count(Yii::$app->getModule('core')->pageTemplates)) {
-            case 0:
-                $this->template = '_simple';
-                break;
-            case 1:
-                $this->template = Yii::$app->getModule('core')->pageTemplates[0]['file'];
-                break;
-        }
-    }
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'Page';
