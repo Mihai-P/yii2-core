@@ -11,6 +11,9 @@ settings:
 
 coverage:
     enabled: true
+    whitelist:
+        include:
+            - *
 
 modules:
     enabled: [Db]
