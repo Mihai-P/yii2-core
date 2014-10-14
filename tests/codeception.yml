@@ -8,3 +8,9 @@ paths:
 
 settings:
   colors: true
+
+coverage:
+  enabled: true
+  whitelist:
+        include:
+            - *

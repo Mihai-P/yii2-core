@@ -25,3 +25,12 @@ modules:
             user: 'root'
             password: 'anaaremere'
             dump: _data/dump.sql
+coverage:
+  enabled: true
+  remote: true
+  whitelist:
+      include:
+        - ../../../controllers/*
+        - ../../../models/*
+        - ../../../views/*
+c3url: '/index-test.php/index-test.php'
