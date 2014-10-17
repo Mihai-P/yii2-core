@@ -412,10 +412,9 @@ class Controller extends \yii\web\Controller
 
     /**
      * Sets the bulk actions that can be performed on the table of models
-     * @param string $grid the ID of the grid that will be updated
      * @return array
      */
-    public function bulkButtons($grid = '')
+    public function bulkButtons()
     {
         $buttons = [];
         if (\Yii::$app->user->checkAccess('update::' . $this->getCompatibilityId())) {
@@ -455,10 +454,9 @@ class Controller extends \yii\web\Controller
 
     /**
      * Sets the buttons that can be performed on the entire result
-     * @param string $grid the ID of the grid that will be updated
      * @return array
      */
-    public function allButtons($grid = '')
+    public function allButtons()
     {
         $buttons = [];
         if (\Yii::$app->user->checkAccess('read::' . $this->getCompatibilityId())) {

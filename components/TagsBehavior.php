@@ -8,8 +8,50 @@ use yii\helpers\ArrayHelper;
 use core\models\Tag;
 use yii\db\Expression;
 
+/**
+ * TagsBehaviour allows tag management to controllers
+ *
+ * For the controller define the following 2 functions
+ *
+ * ~~~
+ * public function afterCreate($model) {
+ *      $model->saveTags();
+ *      return parent::afterCreate($model);
+ * }
+ *
+ * public function afterUpdate($model) {
+ *      $model->saveTags();
+ *      return parent::afterCreate($model);
+ * }
+ * ~~~
+ *
+ * in the _form view at the top you should do a
+ * $model->tags = $model->getTags();
+ *
+ * the model used should have a variable
+ * var $tags;
+ *
+ * and a function that looks like
+ * /**
+ * @return \yii\db\ActiveQuery
+ *   *\/
+ * public function getModelTags()
+ * {
+ *      return $this->hasMany(Tag::className(), ['id' => 'Tag_id'])
+ *          ->viaTable('Yyy_Tag', ['Yyy_id' => 'id'], function($query) {
+ *              return $query->where('Yyy_Tag.status = "active"');
+ *      });
+ * }
+ *
+ *
+ *
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ */
 class TagsBehavior extends Behavior
 {
+    /**
+     * @var string the type for the tag to be used
+     */
     var $tagType;
 
     /**

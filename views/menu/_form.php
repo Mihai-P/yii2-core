@@ -2,7 +2,6 @@
 
 use yii\helpers\Html;
 use theme\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
 use core\models\Menu;
 
 /**
@@ -33,10 +32,94 @@ use core\models\Menu;
     
     <?= $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'target')->textInput(['maxlength' => 255]) ?>
+    <?= $form->field($model, 'target')->dropDownList(Menu::targetOptions(), ['class' => 'select2']) ?>
 
-    <?= $form->field($model, 'rel')->textInput(['maxlength' => 255]) ?>
-    
+    <?= $form->field($model, 'rel')->dropDownList(Menu::relOptions(), ['class' => 'select2']) ?>
+
+    <?= $form->field($model, 'responsive')->dropDownList(Menu::responsiveOptions(), ['class' => 'select2']) ?>
+
+    <h2 id="responsive-utilities-classes">Available classes</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped responsive-utilities">
+            <thead>
+            <tr>
+                <th></th>
+                <th>
+                    Extra small devices
+                    <small>Phones (&lt;768px)</small>
+                </th>
+                <th>
+                    Small devices
+                    <small>Tablets (≥768px)</small>
+                </th>
+                <th>
+                    Medium devices
+                    <small>Desktops (≥992px)</small>
+                </th>
+                <th>
+                    Large devices
+                    <small>Desktops (≥1200px)</small>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th>Visible only on small phones</th>
+                <td class="is-visible">Visible</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+            </tr>
+            <tr>
+                <th>Visible only on small phones<br/>and small tablets</th>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+            </tr>
+            <tr>
+                <th>Visible only on small phones<br/>and small tablets and medium desktops</th>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-hidden">Hidden</td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th>Always visible</th>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+            </tr>
+            </tbody>
+            <tbody>
+            <tr>
+                <th>Hidden on small phones</th>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+            </tr>
+            <tr>
+                <th>Hidden on small phones<br/>and small tablets</th>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-visible">Visible</td>
+                <td class="is-visible">Visible</td>
+            </tr>
+            <tr>
+                <th>Hidden on small phones<br/>and small tablets and medium desktops</th>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-hidden">Hidden</td>
+                <td class="is-visible">Visible</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="form-actions text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

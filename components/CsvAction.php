@@ -16,6 +16,8 @@ use Goodby\CSV\Export\Standard\ExporterConfig;
 /**
  * CsvAction displays application errors using a specified view.
  *
+ * @property Controller $controller
+ *
  * To use CsvAction, you need to do the following steps:
  *
  * Declare an action of CsvAction type in the `actions()` method of your `YyyController`
@@ -52,7 +54,7 @@ class CsvAction extends Action
         $exporter = new Exporter($config);
         $result = $query->asArray()->all();
         $fields = $this->fields;
-        $values = array_map(function ($ar) use ($fields) {
+        $values = array_map(function () use ($fields) {
             $return = [];
             foreach($fields as $field) {
                 $keyString = "['" . str_replace('.', "']['", $field) . "']"; 

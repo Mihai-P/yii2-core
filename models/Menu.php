@@ -17,6 +17,7 @@ use core\components\ActiveRecord;
  * @property string $internal
  * @property string $url
  * @property string $rel
+ * @property string $responsive
  * @property string $target
  * @property string $ap
  * @property integer $order
@@ -53,7 +54,7 @@ class Menu extends ActiveRecord
             [['name'], 'required'],
             [['status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
-            [['name', 'rel', 'target', 'ap', 'internal', 'url'], 'string', 'max' => 255]
+            [['name', 'rel', 'responsive', 'target', 'ap', 'internal', 'url'], 'string', 'max' => 255]
         ];
     }
 
@@ -69,6 +70,7 @@ class Menu extends ActiveRecord
             'internal' => 'Internal',
             'url' => 'Url',
             'rel' => 'Rel',
+            'responsive' => 'Responsive',
             'target' => 'Target',
             'ap' => 'Ap',
             'order' => 'Order',
@@ -116,5 +118,64 @@ class Menu extends ActiveRecord
     public static function createQuery()
     {
         return new CategoryQuery(['modelClass' => get_called_class()]);
-    }        
+    }
+
+    /**
+     * Global responsive options that will be used for the responsive dropdown
+     *
+     * @return array
+     */
+    public static function responsiveOptions()
+    {
+        return [
+            '' => 'Always visible',
+            'hidden-xs' => 'Hidden on small phones',
+            'hidden-xs hidden-sm' => 'Hidden on small phones and small tablets',
+            'hidden-xs hidden-sm hidden-md' => 'Hidden on small phones and small tablets and medium desktops',
+            'visible-xs-{type}' => 'Visible only on small phones',
+            'visible-xs-{type} visible-sm-{type}' => 'Visible only on small phones and small tablets',
+            'visible-xs-{type} visible-sm-{type} hidden-md-{type}' => 'Visible only on small phones and small tablets and medium desktops',
+        ];
+    }
+
+    /**
+     * Global rel options that will be used for the Rel dropdown
+     *
+     * @return array
+     */
+    public static function relOptions()
+    {
+        return [
+            '' => '',
+            'alternate' => 'alternate - Links to an alternate version of the document (i.e. print page, translated or mirror)',
+            'author' => 'author - Links to the author of the document',
+            'bookmark' => 'bookmark - Permanent URL used for bookmarking',
+            'help' => 'help - Links to a help document',
+            'license' => 'license - Links to copyright information for the document',
+            'next' => 'next - The next document in a selection',
+            'nofollow' => 'nofollow - Links to an unendorsed document, like a paid link.',
+            'noreferrer' => 'noreferrer - Specifies that the browser should not send a HTTP referer header if the user follows the hyperlink',
+            'prefetch' => 'prefetch - Specifies that the target document should be cached',
+            'prev' => 'prev - The previous document in a selection',
+            'search' => 'search - Links to a search tool for the document',
+            'tag' => 'tag - A tag (keyword) for the current document',
+        ];
+    }
+
+    /**
+     * Global target options that will be used for the Target dropdown
+     *
+     * @return array
+     */
+    public static function targetOptions()
+    {
+        return [
+            '' => '',
+            '_blank' => 'Opens the linked document in a new window or tab',
+            '_self' => 'Opens the linked document in the same frame as it was clicked (this is default)',
+            '_parent' => 'Opens the linked document in the parent frame',
+            '_top' => 'Opens the linked document in the full body of the window',
+        ];
+    }
+
 }
