@@ -2,12 +2,12 @@
 
 namespace tests\codeception\backend\_pages;
 
+use yii\codeception\BasePage;
 /**
- * Represents the tag page
+ * Represents loging page
  * @property \codeception_frontend\AcceptanceTester|\codeception_frontend\FunctionalTester|\codeception_backend\AcceptanceTester|\codeception_backend\FunctionalTester $actor
  */
-class TagPage extends GeneralPage
+class GeneralPage extends BasePage
 {
-    public $route = 'core/tag';
-    public $name = 'Tag';
+    public $route = 'core/website/update?id=1';
 }

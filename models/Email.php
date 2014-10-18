@@ -88,8 +88,7 @@ class Email extends ActiveRecord
     public static function create()
     {
         $email = new static();
-        $email->from_email = Yii::$app->params['mandrill']['from_email'];
-        $email->from_name = Yii::$app->params['mandrill']['from_name'];
+        $email->from(Yii::$app->params['mandrill']['from_name'], Yii::$app->params['mandrill']['from_email']);
         return $email;
     }
 
