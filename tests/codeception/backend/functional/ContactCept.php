@@ -33,6 +33,9 @@ $I->dontSee('No results found.');
 $model = Contact::findOne(['email' => 'Frodo.Baggins@Shire.com']);
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
+$page->testPdf($model);
+$page->testView($model);
+$page = ContactPage::openBy($I);
 
 $I->amGoingTo('test the password update.');
 $I->click('tr[data-key="'.$model->id.'"] a[title="Update"]');

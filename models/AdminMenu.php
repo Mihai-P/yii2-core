@@ -52,28 +52,6 @@ class AdminMenu extends ActiveRecord
 
     /**
      * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'AdminMenu_id' => 'Admin Menu',
-            'name' => 'Name',
-            'internal' => 'Internal',
-            'url' => 'Url',
-            'ap' => 'Ap',
-            'order' => 'Order',
-            'show_mobile' => 'Show Mobile',
-            'status' => 'Status',
-            'update_time' => 'Update Time',
-            'update_by' => 'Update By',
-            'create_time' => 'Create Time',
-            'create_by' => 'Create By',
-        ];
-    }
-
-    /**
-     * @inheritdoc
      * @return DefaultQuery
      */
     public static function find()

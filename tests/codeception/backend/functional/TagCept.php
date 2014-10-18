@@ -36,4 +36,6 @@ $I->see('Gondor', '.grid-view table tr td');
 $model = Tag::find()->where(['name' => 'Gondor'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
+$page->testPdf($model);
+$page->testView($model);
 $page->testDelete($model);

@@ -29,6 +29,8 @@ $I->see('Menus', 'h6');
 $model = Menu::find()->where(['name' => 'Mordor'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
+$page->testPdf($model);
+$page->testView($model);
 $page->testDelete($model);
 
 $page = MenuPage::openBy($I);

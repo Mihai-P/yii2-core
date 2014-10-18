@@ -22,6 +22,7 @@ $I->see('Name cannot be blank.', '.help-block');
 
 $I->amGoingTo('submit the form without errors.');
 $I->fillField('input[name="Group[name]"]', 'Hobbit');
+$I->checkOption('//*[@value="create::Administrator"]');
 $I->click('Create');
 $I->see('Groups', 'h6');
 $I->see('Hobbit', '.grid-view table tr td');
@@ -29,4 +30,6 @@ $I->see('Hobbit', '.grid-view table tr td');
 $model = Group::find()->where(['name' => 'Hobbit'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
+$page->testPdf($model);
+$page->testView($model);
 $page->testDelete($model);

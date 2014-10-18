@@ -2,6 +2,7 @@
 
 namespace tests\codeception\backend\_pages;
 
+use Yii;
 use yii\codeception\BasePage;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
@@ -13,6 +14,7 @@ class GeneralPage extends BasePage
 {
 	function testActivateDeactivate($model) {
 		$this->actor->amGoingTo('make the record inactive');
+        self::openBy($this->actor);
 		$this->actor->click('tr[data-key="'.$model->id.'"] .button-status-deactivate');
 		$this->actor->dontSee($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
 
@@ -33,6 +35,7 @@ class GeneralPage extends BasePage
 
 	function testUpdate($model, $hasView = false) {
 		$this->actor->amGoingTo('test the update for the record');
+        self::openBy($this->actor);
 		$this->actor->click('tr[data-key="'.$model->id.'"] a[title="Update"]');
 		$this->actor->see('Update '.$this->singular($model));
 		$this->actor->click('Update');
@@ -45,9 +48,22 @@ class GeneralPage extends BasePage
 
 	function testDelete($model) {
 		$this->actor->amGoingTo('delete the record');
+        self::openBy($this->actor);
 		$this->actor->click('tr[data-key="'.$model->id.'"] .button-delete');
 		$this->actor->dontSee($model->name, '.grid-view table tr[data-key="'.$model->id.'"] td');
-	}	
+	}
+
+    function testPdf($model) {
+        $this->actor->amGoingTo('test the pdf action');
+        $this->actor->amOnPage(Yii::$app->getUrlManager()->createUrl([$this->route.'/pdf', 'test' => 1]));
+        $this->actor->see($model->name);
+    }
+
+    function testView($model) {
+        $this->actor->amGoingTo('test the pdf action');
+        $this->actor->amOnPage(Yii::$app->getUrlManager()->createUrl([$this->route.'/view', 'id' => $model->id]));
+        $this->actor->see($model->name);
+    }
 
 	function modelName($model) {
 		return StringHelper::basename(get_class($model));

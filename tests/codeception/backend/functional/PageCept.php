@@ -1,4 +1,5 @@
 <?php
+
 use tests\codeception\backend\FunctionalTester;
 use tests\codeception\backend\_pages\LoginPage;
 use tests\codeception\backend\_pages\PagePage;
@@ -52,4 +53,19 @@ $page->testUpdate($pageModel, true);
 $model = Page::find()->where(['name' => 'Rivendale'])->orderBy(['create_time' => SORT_DESC])->one();
 $page->testActivateDeactivate($model);
 $page->testUpdate($model, true);
+$page->testPdf($model);
+$page->testView($model);
+
+$I->amGoingTo('test the seo saving widget');
+$I->amOnPage(Yii::$app->getUrlManager()->createUrl([$page->route.'/view', 'id' => $model->id]));
+$I->see($model->name);
+
+$I->submitForm('#seo', ['Seo' => [
+    'meta_title' => 'MetaTitle',
+    'meta_keywords' => 'MetaKeywords',
+    'meta_description' => 'MetaDescription',
+]]);
+$I->amOnPage(Yii::$app->getUrlManager()->createUrl([$page->route.'/view', 'id' => $model->id]));
+$I->see('MetaKeywords');
+
 $page->testDelete($model);

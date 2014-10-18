@@ -238,6 +238,7 @@ CREATE TABLE `Menu` (
   `internal` varchar(255) NOT NULL,
   `url` varchar(255) DEFAULT NULL,
   `rel` varchar(255) DEFAULT NULL,
+  `responsive` varchar(255) NOT NULL DEFAULT '',
   `target` varchar(255) DEFAULT NULL,
   `ap` text,
   `order` int(11) NOT NULL,

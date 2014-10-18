@@ -76,8 +76,8 @@ class Group extends ActiveRecord
     {
         $auth = Yii::$app->authManager;
         $post = Yii::$app->request->post();
-        if(isset($post['Group']['privileges'])) {
-            $this->privileges = $post['Group']['privileges'];
+        if(isset($post['privileges'])) {
+            $this->privileges = $post['privileges'];
             
             $auth_item = AuthItem::find()->where('name = :name', [':name' => $this->id])->one();
 

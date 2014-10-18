@@ -38,6 +38,9 @@ $I->see('Sam Gamgee', '.grid-view table tr td');
 $model = Administrator::findOne(['email' => 'Sam.Gamgee@Shire.com']);
 $page->testActivateDeactivate($model);
 $page->testUpdate($model);
+$page->testPdf($model);
+$page->testView($model);
+$page = AdministratorPage::openBy($I);
 
 $I->amGoingTo('test the password update.');
 $I->click('tr[data-key="'.$model->id.'"] a[title="Update"]');

@@ -40,3 +40,5 @@ coverage:
         - ../../../LICENSE
         - ../../../components/Migration.php
         - ../../../components/FrontendPath.php
+        # the view is included but the inclusion is not detected
+        - ../../../views/emails/email.php

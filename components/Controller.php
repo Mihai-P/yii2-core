@@ -192,13 +192,16 @@ class Controller extends \yii\web\Controller
         $content = $this->render('pdf', [
             'dataProvider' => $this->dataProvider,
         ]);
+        if(isset($_GET['test'])) {
+            return $content;
+        } else {
+            $mpdf = new \mPDF();
+            $mpdf->WriteHTML($content);
 
-        $mpdf = new \mPDF();
-        $mpdf->WriteHTML($content);
-
-        Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
-        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="' . $this->getCompatibilityId() . '.pdf"');
-        return $mpdf->Output($this->getCompatibilityId() . '.pdf', 'S');
+            Yii::$app->response->getHeaders()->set('Content-Type', 'application/pdf');
+            Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="' . $this->getCompatibilityId() . '.pdf"');
+            return $mpdf->Output($this->getCompatibilityId() . '.pdf', 'S');
+        }
     }
 
     /**

@@ -32,19 +32,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'name',
-            'Menu_id',
-            'root',
-            'lft',
-            'rgt',
-            'level',
-            'h1',
-            'description:ntext',
-            'order',
-            'status',
-            'update_time',
-            'update_by',
-            'create_time',
-            'create_by',
+            [
+                'label' => 'Parent',
+                'attribute' => 'menu.name',
+            ],
         ],
     ]) ?>
 

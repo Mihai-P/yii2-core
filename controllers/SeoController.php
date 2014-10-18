@@ -4,7 +4,7 @@ namespace core\controllers;
 
 use Yii;
 use core\models\Seo;
-use core\components\AccessControl;
+use yii\filters\AccessControl;
 
 /**
  * SeoController implements the CRUD actions for Seo model.

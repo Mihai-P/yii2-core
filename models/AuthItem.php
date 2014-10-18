@@ -43,23 +43,6 @@ class AuthItem extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'name' => 'Name',
-            'type' => 'Type',
-            'description' => 'Description',
-            'bizrule' => 'Bizrule',
-            'data' => 'Data',
-            'rule_name' => 'Rule Name',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
-        ];
-    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getAuthItemChildren()

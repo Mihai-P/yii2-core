@@ -31,9 +31,9 @@ use core\models\AuthItem;
 			echo '<h1>'.$module_name.'</h1>';
 			foreach($module_checkboxes as $key => $controller_checkboxes) {
 				echo '
-					<div class="form-group field-group-privileges">
+					<div class="form-group field-group-privileges ' . $key . '">
 						<div class="col-sm-2"><label class="control-label" for="group-'.$key.'">'.$key.'</label></div>
-						<div class="col-sm-10">' . Html::checkboxList('Group[privileges]', $model->privileges, $controller_checkboxes, ['class' => 'inline', 'itemOptions' => ['class' => 'styled']]) . '</div>
+						<div class="col-sm-10">' . Html::checkboxList('privileges', $model->privileges, $controller_checkboxes, ['class' => 'inline', 'itemOptions' => ['class' => 'styled']]) . '</div>
 					</div>';
 				$counter++;
 			}

@@ -32,11 +32,11 @@ use core\models\Menu;
     
     <?= $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'target')->dropDownList(Menu::targetOptions(), ['class' => 'select2']) ?>
+    <?= $form->field($model, 'target')->dropDownList(Menu::targetOptions()) ?>
 
-    <?= $form->field($model, 'rel')->dropDownList(Menu::relOptions(), ['class' => 'select2']) ?>
+    <?= $form->field($model, 'rel')->dropDownList(Menu::relOptions()) ?>
 
-    <?= $form->field($model, 'responsive')->dropDownList(Menu::responsiveOptions(), ['class' => 'select2']) ?>
+    <?= $form->field($model, 'responsive')->dropDownList(Menu::responsiveOptions()) ?>
 
     <h2 id="responsive-utilities-classes">Available classes</h2>
     <div class="table-responsive">
@@ -119,7 +119,7 @@ use core\models\Menu;
             </tbody>
         </table>
     </div>
-
+    <br/>
     <div class="form-actions text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
