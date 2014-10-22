@@ -43,23 +43,6 @@ class History extends ActiveRecord
     }
 
     /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'url' => 'Url',
-            'status' => 'Status',
-            'update_time' => 'Update Time',
-            'update_by' => 'Update By',
-            'create_time' => 'Create Time',
-            'create_by' => 'Create By',
-        ];
-    }
-
-    /**
      * @return \yii\db\ActiveQuery
      */
     public function getCreateBy()

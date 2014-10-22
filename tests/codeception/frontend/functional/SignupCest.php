@@ -39,7 +39,7 @@ class SignupCest
 
     /**
      *
-     * @param \codeception_frontend\FunctionalTester $I
+     * @param \tests\codeception\frontend\FunctionalTester $I
      * @param \Codeception\Scenario $scenario
      */
     public function testUserSignup($I, $scenario)
