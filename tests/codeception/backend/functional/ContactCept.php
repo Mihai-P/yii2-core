@@ -32,6 +32,15 @@ $I->dontSee('No results found.');
 
 $model = Contact::findOne(['email' => 'Frodo.Baggins@Shire.com']);
 $page->testActivateDeactivate($model);
+
+$I->amGoingTo('test the bulk assign to tags');
+$page = ContactPage::openBy($I);
+$I->submitForm('#assign-tags-form', ['Contact' => [
+    'tags' => 'Orc,Wraith',
+]]);
+$model = Contact::findOne(['email' => 'Frodo.Baggins@Shire.com']);
+\PHPUnit_Framework_Assert::assertTrue(count($model->modelTags)==2);
+
 $page->testUpdate($model);
 $page->testPdf($model);
 $page->testView($model);
