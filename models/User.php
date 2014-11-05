@@ -130,7 +130,6 @@ class User extends ActiveRecord implements IdentityInterface
 
 			['email', 'filter', 'filter' => 'trim'],
 			['email', 'email'],
-			['email', 'exist', 'message' => 'There was an error sending the email.', 'on' => 'requestPasswordResetToken'],
 
             [['firstname', 'lastname', 'email'], 'required'],
 
@@ -140,9 +139,7 @@ class User extends ActiveRecord implements IdentityInterface
 
             [['auth_key'], 'string', 'max' => 128],
 
-            [['new_password'], 'compare', 'on' => ['update'], 'operator' => '=='],
             [['new_password', 'new_password_repeat'], 'validatePasswordInput'],
-            [['new_password', 'new_password_repeat'], 'required', 'on' => ['resetPassword']],
 		];
 	}
 
