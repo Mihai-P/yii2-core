@@ -94,21 +94,23 @@ AppAsset::register($this);
     </div>
     <div class="page-container container-fluid">
         <!-- Sidebar -->
-        <div class="sidebar collapse">
+        <div class="sidebar">
             <ul class="navigation">
 <?php        
     $menus = AdminMenu::find()->with('adminMenus')->where('AdminMenu_id IS NULL')->active()->orderBy('order ASC')->all();
     foreach($menus as $menu) {
+        Yii::info('Processing ' . $menu->name);
         $submenus = [];
         foreach($menu->adminMenus as $submenu)
             if(Yii::$app->user->checkAccess($submenu->ap))
                 $submenus[] = '<li><a href="'.$submenu->url.'">'.$submenu->name . '</a></li>';
 
         if(Yii::$app->user->checkAccess($menu->ap)) {
+            Yii::info('Show Menu ' . $menu->name);
             if(count($submenus)) {
                 echo '
                     <li>
-                        <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> '.$menu->name . '</a>
+                        <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> ' . $menu->name . '</a>
                         <ul style="display: none;">'.implode('', $submenus).'</ul>
                     </li>';
             } else {
