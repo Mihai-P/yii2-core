@@ -143,18 +143,6 @@ class User extends ActiveRecord implements IdentityInterface
 		];
 	}
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        return [
-            'profile' => ['email', 'password'],
-            'resetPassword' => ['new_password', 'new_password_repeat'],
-            'requestPasswordResetToken' => ['email'],
-        ] + parent::scenarios();
-    }
-
     public function validatePasswordInput()
     {
         if($this->isNewRecord && (empty($this->new_password) || empty($this->new_password_repeat)))  {
