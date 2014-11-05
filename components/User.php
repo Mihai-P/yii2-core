@@ -48,7 +48,6 @@ class User extends BaseUser
         parent::afterLogin($identity, $cookieBased, $duration);
 		$this->identity->setScenario(self::EVENT_AFTER_LOGIN);
 		$this->identity->setAttribute('name', $this->identity->name);
-		$this->identity->save(false);
 		$r = new DbManager;
 		$r->revokeAll($this->identity->id);
 		$role = $r->getRole($this->identity->Group_id);
