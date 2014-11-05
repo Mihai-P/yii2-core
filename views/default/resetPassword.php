@@ -31,8 +31,8 @@ $this->title = \Yii::t('core.user', 'Login');
             <div class="panel-heading"><h6 class="panel-title"><i class="fa fa-user"></i> Reset Password</h6></div>
             <div class="panel-body">
             	<p>Please enter your desired password below.</p>
-				<?= $form->field($model, 'new_password', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]); ?>
-				<?= $form->field($model, 'new_password_repeat', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password_repeat')]); ?>
+				<?= $form->field($model, 'password', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password')]); ?>
+				<?= $form->field($model, 'password_repeat', ['template' => '<div class="form-group has-feedback">{label}{input}{hint}{error}<i class="fa fa-lock form-control-feedback"></i></div>'])->passwordInput(['placeholder' => $model->getAttributeLabel('password_repeat')]); ?>
 
 				<div class="form-group">
 					<div class="text-center">

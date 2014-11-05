@@ -392,7 +392,7 @@ CREATE TABLE `User` (
   `Group_id` int(11) DEFAULT NULL,
   `type` varchar(255) NOT NULL DEFAULT 'Contact',
   `password` varchar(255) DEFAULT NULL,
-  `password_reset_token` varchar(32) DEFAULT NULL,
+  `password_reset_token` varchar(64) DEFAULT NULL,
   `auth_key` varchar(128) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `firstname` varchar(255) DEFAULT NULL,

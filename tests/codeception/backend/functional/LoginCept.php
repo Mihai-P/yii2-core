@@ -40,12 +40,12 @@ $I->click('Reset');
 $I->see('Email cannot be blank.', '.help-block');
 
 $I->amGoingTo('try to reset the password with an incorrect email address');
-$I->fillField('input[name="Administrator[email]"]', 'Frodo@biti.ro');
+$I->fillField('input[name="PasswordResetRequestForm[email]"]', 'Frodo@biti.ro');
 $I->click('Reset');
-$I->see('There was an error sending the email.');
+$I->see('There was an error sending the email.', '.help-block');
 
 $I->amGoingTo('try to reset the password with a correct email address');
-$I->fillField('input[name="Administrator[email]"]', 'webmaster@2ezweb.com.au');
+$I->fillField('input[name="PasswordResetRequestForm[email]"]', 'webmaster@2ezweb.com.au');
 $I->click('Reset');
 $I->see('Check your email for further instructions.');
 
@@ -59,16 +59,16 @@ $I->see('Reset Password');
 $I->amGoingTo('try to change the actual password but not entering anything');
 $resetPasswordPage->submit('');
 $I->see('Password cannot be blank.');
-$I->see('Repeat Password cannot be blank.');
+$I->see('Password Repeat cannot be blank.');
 
 $I->amGoingTo('try to change the actual password but repeating it properly');
-$resetPasswordPage->submit('Frodo', 'Baggins');
-$I->see('You have to repeat the password.');
+$resetPasswordPage->submit('Aragorn', 'Baggins');
+$I->see('Password must be repeated exactly.');
 
 $I->amGoingTo('try to change the actual password but repeating it properly');
-$resetPasswordPage->submit('Frodo', 'Frodo');
+$resetPasswordPage->submit('Aragorn', 'Aragorn');
 $I->see('New password was saved.');
-$loginPage->login(LoginPage::$username, 'Frodo');
+$loginPage->login(LoginPage::$username, 'Aragorn');
 $I->expectTo('see that user is logged');
 $I->see('My Yii Application');
 $I->click('Logout');

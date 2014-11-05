@@ -5,8 +5,9 @@ namespace core\controllers;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use yii\web\HttpException;
-use yii\base\Security;
+use core\models\PasswordResetRequestForm;
+use core\models\ResetPasswordForm;
+use yii\filters\AccessControl;
 use core\models\LoginForm;
 use core\models\Administrator;
 use core\models\Email;
@@ -24,7 +25,7 @@ class DefaultController extends Controller
 	{
 		return [
 			'access' => [
-				'class' => \yii\filters\AccessControl::className(),
+				'class' => AccessControl::className(),
 				'only' => ['logout'],
 				'rules' => [
 					[
@@ -105,67 +106,33 @@ class DefaultController extends Controller
 
 	public function actionRequestPasswordReset()
 	{
-		$this->layout = '@core/views/layouts/login';
-		$model = new Administrator();
-		$model->scenario = 'requestPasswordResetToken';
-		if ($model->load($_POST) && $model->validate()) {
-			if ($this->sendPasswordResetEmail($model->email)) {
-				Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
-				return $this->goHome();
-			} else {
-				Yii::$app->getSession()->setFlash('danger', 'There was an error sending the email.');
-			}
-		} 
-		return $this->render('requestPasswordResetToken', [
-			'model' => $model,
-		]);
+        $model = new PasswordResetRequestForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail()) {
+                Yii::$app->getSession()->setFlash('success', 'Check your email for further instructions.');
+                return $this->goHome();
+            } else {
+                Yii::$app->getSession()->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+            }
+        }
+        return $this->render('requestPasswordResetToken', [
+            'model' => $model,
+        ]);
 	}
 
-	public function actionResetPassword($token)
-	{
-		$this->layout = '@core/views/layouts/login';
-		$model = Administrator::findOne([
-			'password_reset_token' => $token,
-			'status' => Administrator::STATUS_ACTIVE,
-		]);
-
-		if (!$model) {
-			throw new BadRequestHttpException('Wrong password reset token.');
-		}
-
-		$model->scenario = 'resetPassword';
-		if ($model->load($_POST) && $model->save()) {
-			Yii::$app->getSession()->setFlash('success', 'New password was saved.');
-			$this->setLoginAttempts(0); //if login is successful, reset the attempts
-			return $this->goHome();
-		}
-		$model->password = null;
-		return $this->render('resetPassword', [
-			'model' => $model,
-		]);
-	}
-
-	private function sendPasswordResetEmail($email)
-	{
-		$user = Administrator::findOne([
-			'status' => Administrator::STATUS_ACTIVE,
-			'email' => $email,
-		]);
-
-		if (!$user) {
-			return false;
-		}
-
-		$user->password_reset_token = md5(Yii::$app->getSecurity()->generateRandomKey());
-		if ($user->save(false)) {
-			Email::create()
-				->html($this->renderPartial('/emails/passwordResetToken', ['user' => $user]))
-				->subject("Reset Password")
-				->to(['email' => $user->email, 'name'=> $user->name])
-				->send();
-			return true;
-		}
-
-		return false;
-	}
+    public function actionResetPassword($token)
+    {
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+            Yii::$app->getSession()->setFlash('success', 'New password was saved.');
+            return $this->goHome();
+        }
+        return $this->render('resetPassword', [
+            'model' => $model,
+        ]);
+    }
 }

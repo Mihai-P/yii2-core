@@ -1,7 +1,8 @@
 <?php
-namespace frontend\models;
+namespace core\models;
 
-use common\models\User;
+use Yii;
+use core\models\Administrator;
 use yii\base\Model;
 
 /**
@@ -21,9 +22,9 @@ class PasswordResetRequestForm extends Model
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'exist',
-                'targetClass' => '\common\models\User',
-                'filter' => ['status' => User::STATUS_ACTIVE],
-                'message' => 'There is no user with such email.'
+                'targetClass' => Administrator::className(),
+                'filter' => ['status' => User::STATUS_ACTIVE, 'type' => 'Administrator'],
+                'message' => 'There was an error sending the email.'
             ],
         ];
     }
@@ -36,22 +37,27 @@ class PasswordResetRequestForm extends Model
     public function sendEmail()
     {
         /* @var $user User */
-        $user = User::findOne([
-            'status' => User::STATUS_ACTIVE,
+        $user = Administrator::find()->where([
+            'status' => Administrator::STATUS_ACTIVE,
             'email' => $this->email,
-        ]);
+        ])->one();
 
         if ($user) {
-            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            if (!Administrator::isPasswordResetTokenValid($user->password_reset_token)) {
                 $user->generatePasswordResetToken();
             }
 
             if ($user->save()) {
-                return \Yii::$app->mailer->compose('passwordResetToken', ['user' => $user])
-                    ->setFrom([\Yii::$app->params['supportEmail'] => \Yii::$app->name . ' robot'])
-                    ->setTo($this->email)
-                    ->setSubject('Password reset for ' . \Yii::$app->name)
+                Email::create()
+                    ->html(Yii::$app->view->renderFile('@core/views/emails/passwordResetToken.php', ['user' => $user]))
+                    ->subject("Reset Password")
+                    ->to(['email' => $user->email, 'name'=> $user->name])
                     ->send();
+
+                return true;
+            } else {
+                print_r($user->getErrors());
+                die();
             }
         }
 

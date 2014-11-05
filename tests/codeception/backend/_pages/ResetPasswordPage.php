@@ -18,8 +18,8 @@ class ResetPasswordPage extends BasePage
      */
     public function submit($password, $repeat_password = '')
     {
-        $this->actor->fillField('input[name="Administrator[new_password]"]', $password);
-        $this->actor->fillField('input[name="Administrator[new_password_repeat]"]', $repeat_password ?: $password);
+        $this->actor->fillField('input[name="ResetPasswordForm[password]"]', $password);
+        $this->actor->fillField('input[name="ResetPasswordForm[password_repeat]"]', $repeat_password ?: $password);
         $this->actor->click('Reset');
     }    
 }

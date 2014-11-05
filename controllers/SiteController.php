@@ -3,12 +3,7 @@
 namespace core\controllers;
 
 use Yii;
-use yii\web\BadRequestHttpException;
-use yii\web\HttpException;
-use yii\base\Security;
-use core\models\LoginForm;
-use core\models\Administrator;
-use core\models\Email;
+use yii\filters\AccessControl;
 use core\components\Controller;
 
 class SiteController extends Controller
@@ -24,7 +19,7 @@ class SiteController extends Controller
 	{
 		return [
 			'access' => [
-				'class' => \yii\filters\AccessControl::className(),
+				'class' => AccessControl::className(),
 				'only' => ['index'],
 				'rules' => [
 					[
@@ -36,10 +31,26 @@ class SiteController extends Controller
 			],
 		];
 	}
-
+    public function beforeAction($event)
+    {
+        if(Yii::$app->user->isGuest) {
+            $this->layout = '@core/views/layouts/login';
+        } else {
+            $this->layout = static::FORM_LAYOUT;
+        }
+        return true && parent::beforeAction($event);
+    }
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+                'view' => 'error'
+            ],
+        ];
+    }
 	public function actionIndex()
 	{
-		$this->layout = static::FORM_LAYOUT;
 		return $this->render('index', []);
 	}
 }
