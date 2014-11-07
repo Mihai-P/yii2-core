@@ -22,6 +22,7 @@
         "yiisoft/yii2": "dev-master",
         "tez/yii2-brain-theme": "dev-master",
         "mihaildev/yii2-elfinder": "*",
+        "mihaildev/yii2-ckeditor": "dev-master",
 		"nickcv/yii2-mandrill": "*",
 		"sammaye/yii2-audittrail": "dev-master",
 		"creocoder/yii2-nested-set-behavior": "*",
@@ -30,8 +31,7 @@
 		"robregonm/yii2-pdf": "dev-master",
 		"goodby/csv": "*",
 		"nickcv/yii2-mandrill": "*",
-        "2amigos/yii2-editable-widget" : "*",
-        "2amigos/yii2-ckeditor-widget" : "*"
+        "2amigos/yii2-editable-widget" : "*"
     },	
 	"autoload": {
 		"psr-4": {
