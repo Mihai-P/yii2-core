@@ -1,5 +1,8 @@
 <?php
-	echo $form->field($model, 'content')->textarea(['class' => 'editor']);
-	echo $form->field($model->object('SuccessMessage'), 'content')->textInput(['name' => 'Object[SuccessMessage]', 'id' => 'Object-SuccessMessage']);
-    //echo $form->field($model, 'content')->widget(theme\widgets\ImageButton\ImageButtonWidget::className());
-    //echo $form->field($model->object('Button'), 'content')->widget(theme\widgets\ImageButton\ImageButtonWidget::className(), ['options' => ['id' => 'object-button', 'name' => 'Object[Button]']])->hint('Hello World !!!');
+use mihaildev\ckeditor\CKEditor;
+use mihaildev\elfinder\ElFinder;
+
+echo $form->field($model, 'content')->widget(CKEditor::className(),[
+    'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['preset' => 'standard', 'inline' => false]),
+]);
+echo $form->field($model->object('SuccessMessage'), 'content')->textInput(['name' => 'Object[SuccessMessage]', 'id' => 'Object-SuccessMessage']);

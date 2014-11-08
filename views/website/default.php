@@ -2,7 +2,8 @@
 
 use yii\helpers\Html;
 use theme\widgets\ActiveForm;
-use yii\helpers\ArrayHelper;
+use mihaildev\ckeditor\CKEditor;
+use mihaildev\elfinder\ElFinder;
 
 /**
  * @var yii\web\View $this
@@ -53,7 +54,10 @@ use yii\helpers\ArrayHelper;
 
 <?php
 	echo $form->field($model->object('LeftBoxTitle'), 'content')->textInput(['name' => 'Object[LeftBoxTitle]', 'id' => 'Object-LeftBoxTitle']);
-	echo $form->field($model->object('LeftBoxContent'), 'content')->textArea(['class' => 'editor', 'name' => 'Object[LeftBoxContent]', 'id' => 'Object-LeftBoxContent']);
+    echo $form->field($model->object('LeftBoxContent'), 'content')->widget(CKEditor::className(),[
+        'options' => ['id' => 'Object-LeftBoxContent', 'name' => 'Object[LeftBoxContent]'],
+        'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['preset' => 'standard', 'inline' => false]),
+    ]);
 	echo $form->field($model->object('FacebookLink'), 'content')->hint('Leave empty if you do not want to use')->textInput(['name' => 'Object[FacebookLink]', 'id' => 'Object-FacebookLink']);
 	echo $form->field($model->object('TwitterLink'), 'content')->hint('Leave empty if you do not want to use')->textInput(['name' => 'Object[TwitterLink]', 'id' => 'Object-TwitterLink']);
 	echo $form->field($model->object('GooglePlusLink'), 'content')->hint('Leave empty if you do not want to use')->textInput(['name' => 'Object[GooglePlusLink]', 'id' => 'Object-GooglePlusLink']);
