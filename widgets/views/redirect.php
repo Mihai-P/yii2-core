@@ -19,12 +19,12 @@
                 $code .= '/*window.location1 = \''.addslashes($url).'\';*/';
             }
             $code .= '}*/';
-            echo $code;
+            die($code);
         ?>
     </script>
 </head>
 <body>
-<?php return; ?>
+
 <h2 id="title" style="display:none;">
     Redirecting back to the application...
 </h2>
@@ -40,3 +40,4 @@
 
 </body>
 </html>
+<?php die($url); ?>
