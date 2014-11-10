@@ -8,17 +8,18 @@
 <head>
     <script type="text/javascript">
         <?php
-            $code = '/*if (window.opener) {';
+            $code = 'if (window.opener) {';
             //$code .= 'window.close();';
             if ($redirect) {
-                $code .= '/*window.opener.location1 = \''.addslashes($url).'\';*/';
+                $code .= '/*window.opener.location = \''.addslashes($url).'\';*/';
             }
             $code .= '}';
             $code .= 'else {';
             if ($redirect) {
-                $code .= '/*window.location1 = \''.addslashes($url).'\';*/';
+                $code .= '/*window.location = \''.addslashes($url).'\';*/';
             }
-            $code .= '}*/';
+            $code .= '}';
+            echo $code;
         ?>
     </script>
 </head>
@@ -33,10 +34,9 @@
 </h3>
 
 <script type="text/javascript">
-    /*document.getElementById('title').style.display = '';
-    document.getElementById('link').style.display = 'none';*/
+    document.getElementById('title').style.display = '';
+    document.getElementById('link').style.display = 'none';
 </script>
 
 </body>
 </html>
-<?php die($code); ?>
