@@ -3,6 +3,7 @@
 /** @var $url string */
 /** @var $redirect bool */
 /** @var $url string */
+die($url);
 ?><!DOCTYPE html>
 <html>
 <head>
