@@ -9,15 +9,13 @@
     <script type="text/javascript">
         <?php
             $code = 'if (window.opener) {';
-            //$code .= 'window.close();';
+            $code .= 'window.close();';
             if ($redirect) {
-                $code .= 'alert("HAS OPENER");';
                 $code .= 'window.opener.location = \''.addslashes($url).'\';';
             }
             $code .= '}';
             $code .= 'else {';
             if ($redirect) {
-                $code .= 'alert("NO OPENER");';
                 $code .= 'window.location = \''.addslashes($url).'\';';
             }
             $code .= '}';
