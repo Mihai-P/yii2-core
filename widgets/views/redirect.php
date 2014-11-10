@@ -35,10 +35,10 @@
     <a href="<?php echo $url; ?>">Click here to return to the application.</a>
 </h3>
 
-<script type="text/javascript">
+<!--script type="text/javascript">
     document.getElementById('title').style.display = '';
     document.getElementById('link').style.display = 'none';
-</script>
+</script-->
 
 </body>
 </html>

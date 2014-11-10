@@ -1,6 +1,6 @@
 <?php
 /**
- * AuthRedirectWidget class file.
+ * RedirectWidget class file.
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  * @license http://www.opensource.org/licenses/bsd-license.php
@@ -13,9 +13,8 @@ use yii\helpers\ArrayHelper;
 use yii\base\Widget;
 
 /**
- * The EAuthRedirectWidget widget displays the redirect page after returning from provider.
+ * The RedirectWidget widget displays the redirect page after returning from provider.
  *
- * @package application.extensions.eauth
  */
 class RedirectWidget extends Widget
 {
