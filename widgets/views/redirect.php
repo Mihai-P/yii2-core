@@ -24,7 +24,7 @@
     </script>
 </head>
 <body>
-
+<?php die(); ?>
 <h2 id="title" style="display:none;">
     Redirecting back to the application...
 </h2>
