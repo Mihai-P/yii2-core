@@ -10,6 +10,7 @@ namespace core\widgets;
 
 use \Yii;
 use yii\helpers\ArrayHelper;
+use yii\base\Widget;
 
 /**
  * The EAuthRedirectWidget widget displays the redirect page after returning from provider.
