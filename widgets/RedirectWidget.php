@@ -45,8 +45,7 @@ class RedirectWidget extends Widget
 	 */
 	public function run()
 	{
-        die($this->url);
-		echo $this->render($this->view,
+		return $this->render($this->view,
 			ArrayHelper::merge(array(
 				'id' => $this->getId(),
 				'url' => $this->url,
