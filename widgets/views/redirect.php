@@ -6,9 +6,9 @@
 ?><!DOCTYPE html>
 <html>
 <head>
-    <scr1ipt type="text/javascript">
+    <script type="text/javascript">
         <?php
-            $code = 'if (window.opener) {';
+            $code = '/*if (window.opener) {';
             //$code .= 'window.close();';
             if ($redirect) {
                 $code .= 'window.opener.location1 = \''.addslashes($url).'\';';
@@ -18,7 +18,7 @@
             if ($redirect) {
                 $code .= 'window.location1 = \''.addslashes($url).'\';';
             }
-            $code .= '}';
+            $code .= '}*/';
             echo $code;
         ?>
     </script>
