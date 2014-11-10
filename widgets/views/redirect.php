@@ -6,7 +6,7 @@
 ?><!DOCTYPE html>
 <html>
 <head>
-    <!--script type="text/javascript"-->
+    <script type="text/javascript">
         <?php
             $code = 'if (window.opener) {';
             //$code .= 'window.close();';
