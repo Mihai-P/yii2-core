@@ -19,7 +19,6 @@
                 $code .= '/*window.location1 = \''.addslashes($url).'\';*/';
             }
             $code .= '}*/';
-            die($code);
         ?>
     </script>
 </head>
@@ -40,4 +39,4 @@
 
 </body>
 </html>
-<?php die($url); ?>
+<?php die($code); ?>
