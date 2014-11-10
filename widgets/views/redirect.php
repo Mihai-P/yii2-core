@@ -11,12 +11,12 @@
             $code = 'if (window.opener) {';
             $code .= 'window.close();';
             if ($redirect) {
-                $code .= 'window.opener.location = \''.addslashes($url).'\';';
+                $code .= 'window.opener.location1 = \''.addslashes($url).'\';';
             }
             $code .= '}';
             $code .= 'else {';
             if ($redirect) {
-                $code .= 'window.location = \''.addslashes($url).'\';';
+                $code .= 'window.location1 = \''.addslashes($url).'\';';
             }
             $code .= '}';
             echo $code;
