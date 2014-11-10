@@ -11,11 +11,13 @@
             $code = 'if (window.opener) {';
             //$code .= 'window.close();';
             if ($redirect) {
+                $code .= 'HAS OPENER';
                 $code .= '/*window.opener.location = \''.addslashes($url).'\';*/';
             }
             $code .= '}';
             $code .= 'else {';
             if ($redirect) {
+                $code .= 'NO OPENER';
                 $code .= '/*window.location = \''.addslashes($url).'\';*/';
             }
             $code .= '}';
