@@ -3,7 +3,6 @@
 /** @var $url string */
 /** @var $redirect bool */
 /** @var $url string */
-die($url);
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +11,12 @@ die($url);
             $code = '/*if (window.opener) {';
             //$code .= 'window.close();';
             if ($redirect) {
-                $code .= 'window.opener.location1 = \''.addslashes($url).'\';';
+                $code .= '/*window.opener.location1 = \''.addslashes($url).'\';*/';
             }
             $code .= '}';
             $code .= 'else {';
             if ($redirect) {
-                $code .= 'window.location1 = \''.addslashes($url).'\';';
+                $code .= '/*window.location1 = \''.addslashes($url).'\';*/';
             }
             $code .= '}*/';
             echo $code;
@@ -35,8 +34,8 @@ die($url);
 </h3>
 
 <script type="text/javascript">
-    document.getElementById('title').style.display = '';
-    document.getElementById('link').style.display = 'none';
+    /*document.getElementById('title').style.display = '';
+    document.getElementById('link').style.display = 'none';*/
 </script>
 
 </body>
