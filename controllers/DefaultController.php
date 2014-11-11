@@ -16,6 +16,11 @@ use core\models\LoginForm;
  */
 class DefaultController extends Controller
 {
+	/**
+	 * @var \core\Module
+	 */
+	public $module;
+
 	private $loginAttemptsVar = '__LoginAttemptsCount';
 
 	public function behaviors()
