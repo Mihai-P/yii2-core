@@ -21,16 +21,25 @@ class DefaultController extends Controller
 	 */
 	public $module;
 
-	private $loginAttemptsVar = '__LoginAttemptsCount';
+    /**
+     * @var int the number of login attempts done.
+     */
+
+    private $loginAttemptsVar = '__LoginAttemptsCount';
 
 	public function behaviors()
 	{
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				'only' => ['logout'],
+				//'only' => ['logout', 'login', 'request-password-reset', 'reset-password'],
 				'rules' => [
-					[
+                    [
+                        'actions' => ['login', 'request-password-reset', 'reset-password'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                    [
 						'actions' => ['logout'],
 						'allow' => true,
 						'roles' => ['@'],
@@ -65,7 +74,7 @@ class DefaultController extends Controller
 		} else {
             $this->layout = self::MAIN_LAYOUT;
 		}
-        return true;
+        return parent::beforeAction($event);
     }
 
     /**
@@ -75,22 +84,21 @@ class DefaultController extends Controller
      */
 	public function actionLogin()
 	{
-		if (!\Yii::$app->user->isGuest) {
-			$this->goHome();
-		}
-
 		$model = new LoginForm();
 		//make the captcha required if the unsuccessful attempts are more of thee
 		if ($this->getLoginAttempts() >= $this->module->attemptsBeforeCaptcha) {
 			$model->scenario = 'withCaptcha';
 		}
 
-		if ($model->load($_POST) and $model->login()) {
-			$this->setLoginAttempts(0); //if login is successful, reset the attempts
-			return $this->goBack();
+        if(Yii::$app->request->post()) {
+            if($model->load($_POST) && $model->login()) {
+                $this->setLoginAttempts(0); //if login is successful, reset the attempts
+                return $this->goBack();
+            } else {
+                //if login is not successful, increase the attempts
+                $this->setLoginAttempts($this->getLoginAttempts() + 1);
+            }
 		}
-		//if login is not successful, increase the attempts
-		$this->setLoginAttempts($this->getLoginAttempts() + 1);
 
 		return $this->render('login', [
 			'model' => $model,
