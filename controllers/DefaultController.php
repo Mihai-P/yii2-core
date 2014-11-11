@@ -16,11 +16,6 @@ use core\models\LoginForm;
  */
 class DefaultController extends Controller
 {
-	/**
-	 * @var \core\Module
-	 */
-	public $module;
-
 	private $loginAttemptsVar = '__LoginAttemptsCount';
 
 	public function behaviors()
@@ -61,9 +56,9 @@ class DefaultController extends Controller
     public function beforeAction($event)
     {
 		if(Yii::$app->user->isGuest) {
-			$this->layout = '@core/views/layouts/login';
+			$this->layout = self::LOGIN_LAYOUT;
 		} else {
-			$this->layout = '@core/views/layouts/main';
+            $this->layout = self::MAIN_LAYOUT;
 		}
         return true;
     }
@@ -75,7 +70,6 @@ class DefaultController extends Controller
      */
 	public function actionLogin()
 	{
-		$this->layout = '@core/views/layouts/login';
 		if (!\Yii::$app->user->isGuest) {
 			$this->goHome();
 		}
