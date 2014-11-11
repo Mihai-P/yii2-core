@@ -23,6 +23,7 @@ class Controller extends \yii\web\Controller
     const PRINT_LAYOUT = '@core/views/layouts/print';
     const SIMPLE_LAYOUT = '@core/views/layouts/simple';
     const SIDEBAR_LAYOUT = '@core/views/layouts/sidebar';
+    const LOGIN_LAYOUT = '@core/views/layouts/login';
     /**
      * @event Event an event that is triggered after a record is inserted.
      */

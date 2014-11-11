@@ -57,7 +57,6 @@ class Administrator extends User implements IdentityInterface
         }
 
         return $rules;
-
     }
 
     /**

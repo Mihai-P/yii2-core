@@ -4,14 +4,16 @@ namespace core\controllers;
 
 use Yii;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+use core\components\Controller;
 use core\models\PasswordResetRequestForm;
 use core\models\ResetPasswordForm;
 use yii\filters\AccessControl;
 use core\models\LoginForm;
-use core\models\Administrator;
-use core\models\Email;
 
+/**
+ * Class DefaultController
+ * @package core\controllers
+ */
 class DefaultController extends Controller
 {
 	/**
@@ -52,6 +54,10 @@ class DefaultController extends Controller
 		];
 	}
 
+    /**
+     * @param \yii\base\Action $event
+     * @return bool
+     */
     public function beforeAction($event)
     {
 		if(Yii::$app->user->isGuest) {
@@ -62,6 +68,11 @@ class DefaultController extends Controller
         return true;
     }
 
+    /**
+     * Shows the login form
+     *
+     * @return string|\yii\web\Response
+     */
 	public function actionLogin()
 	{
 		$this->layout = '@core/views/layouts/login';
@@ -70,7 +81,6 @@ class DefaultController extends Controller
 		}
 
 		$model = new LoginForm();
-
 		//make the captcha required if the unsuccessful attempts are more of thee
 		if ($this->getLoginAttempts() >= $this->module->attemptsBeforeCaptcha) {
 			$model->scenario = 'withCaptcha';
@@ -88,23 +98,39 @@ class DefaultController extends Controller
 		]);
 	}
 
-	private function getLoginAttempts()
+    /**
+     * @return int
+     */
+    private function getLoginAttempts()
 	{
 		return Yii::$app->getSession()->get($this->loginAttemptsVar, 0);
 	}
 
-	private function setLoginAttempts($value)
+    /**
+     * @param $value - the number of login attempts
+     */
+    private function setLoginAttempts($value)
 	{
 		Yii::$app->getSession()->set($this->loginAttemptsVar, $value);
 	}
 
-	public function actionLogout()
+    /**
+     * Logs an Admin out
+     *
+     * @return \yii\web\Response
+     */
+    public function actionLogout()
 	{
 		Yii::$app->user->logout();
 		return $this->goHome();
 	}
 
-	public function actionRequestPasswordReset()
+    /**
+     * Shows the request reset password form
+     *
+     * @return string|\yii\web\Response
+     */
+    public function actionRequestPasswordReset()
 	{
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -119,6 +145,14 @@ class DefaultController extends Controller
             'model' => $model,
         ]);
 	}
+
+    /**
+     * Allows an Administrator with the correct token to update the password
+     *
+     * @param string $token
+     * @throws BadRequestHttpException
+     * @return string|\yii\web\Response
+     */
 
     public function actionResetPassword($token)
     {

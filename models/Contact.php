@@ -49,8 +49,28 @@ class Contact extends User
      */
     public function rules()
     {
+        $rules =  ArrayHelper::merge(
+            [
+                ['type', 'default', 'value' => 'Contact'],
+
+                [['login_attempts'], 'integer'],
+
+                [['phone', 'mobile'], 'safe'],
+                [['phone', 'mobile', 'validation_key'], 'string', 'max' => 255],
+                [['tags'], 'safe'],
+            ],
+            parent::rules()
+        );
+
+        return $rules;
+    }
+    /**
+     * @inheritdoc
+
+    public function rules()
+    {
         return [
-            [['Group_id', 'login_attempts', 'update_by', 'create_by'], 'integer'],
+            [['login_attempts', 'update_by', 'create_by'], 'integer'],
             [['email', 'firstname', 'lastname'], 'required'],
             [['email'], 'email'],
             [['tags', 'update_time', 'create_time'], 'safe'],
@@ -59,6 +79,20 @@ class Contact extends User
             [['auth_key'], 'string', 'max' => 128],
             [['password_reset_token'], 'string', 'max' => 32]
         ];
+    }
+     */
+
+    public function validatePasswordInput()
+    {
+        if($this->isNewRecord && (empty($this->new_password) || empty($this->new_password_repeat)))  {
+            $this->addError('new_password', 'The password is required.');
+            $this->addError('new_password_repeat', 'The password is required.');
+            return;
+        }
+        if($this->new_password != $this->new_password_repeat) {
+            $this->addError('new_password', 'You have to repeat the password.');
+            $this->addError('new_password_repeat', 'You have to repeat the password.');
+        }
     }
 
     /**
@@ -111,28 +145,4 @@ class Contact extends User
                 return $query->where('Contact_Tag.status = "active"');
             });
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function beforeSave($insert)
-    {
-        if (parent::beforeSave($insert)) {
-            $this->name = $this->firstname . ' ' . $this->lastname;
-            if (!empty($this->password_repeat)) {
-                $this->password = md5($this->password_repeat);
-            } else {
-                unset($this->password);
-            }
-            if ($this->isNewRecord) {
-                $this->auth_key = Yii::$app->getSecurity()->generateRandomKey();
-            }
-            if ($this->getScenario() !== WebUser::EVENT_AFTER_LOGIN) {
-                $this->setAttribute('update_time', new Expression('CURRENT_TIMESTAMP'));
-            }
-
-            return true;
-        }
-        return false;
-    }    
 }
