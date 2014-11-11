@@ -8,6 +8,8 @@ CMS Module is the start for a CMS built on Yii 2. It uses the advance yii2 templ
 
 ## Installation
 
+Install the advanced yii2 template. You can find the instructions here: https://github.com/yiisoft/yii2-app-advanced
+
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run
@@ -114,7 +116,7 @@ Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module')
 Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
 ```
 
-Define the fontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview.
+Define the fontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview. Change to match your domain
 ```php
 return [
 ...
@@ -123,7 +125,7 @@ return [
 ];
 ```
 
-In your common/config/params.php define the mandrill details and the logo for the notification
+In your common/config/params.php define the mandrill details and the logo for the notification. Change to your details.
 ```php
     'mandrill'=>[
         'key' => 'xxxx', 
@@ -156,6 +158,21 @@ Auth module is released under the BSD-3 License. See the bundled `LICENSE.md` fo
 ## URLs
 
 * Login: `yourhost/core/default/login`
+Username: webmaster@2ezweb.com.au
+Password: admin
 * Logout: `yourhost/core/default/logout`
 * Reset Password: `yourhost/core/default/request-password-reset`
 * User management: `yourhost/core/administrator/`
+
+## Tests
+go to vendor/tez/yii2-cms-module/tests/codeception/backend/
+run
+```codecept build```
+
+to initialize the tests. Then run
+```codecept run functional```
+to run the actual tests.
+
+You can run
+```codecept run functional --coverage-html```
+to get the code coverage. You can find the coverage in vendor/tez/yii2-cms-module/tests/codeception/backend/_output/coverage/
