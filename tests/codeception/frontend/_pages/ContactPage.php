@@ -10,7 +10,7 @@ use yii\codeception\BasePage;
  */
 class ContactPage extends BasePage
 {
-    public $route = 'site/contact';
+    public $route = '/contact';
 
     /**
      * @param array $contactData
