@@ -8,27 +8,27 @@ CMS Module is the start for a CMS built on Yii 2. It uses the advance yii2 templ
 
 ## Installation
 
+### Step 1
 Install the advanced yii2 template. You can find the instructions here: https://github.com/yiisoft/yii2-app-advanced
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+### Step 2
+Install the module. The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
 Either run
-
 ```
 $ php composer.phar require tez/yii2-cms-module "dev-master"
 ```
 
 or add
-
 ```
 "tez/yii2-cms-module": "dev-master"
 ```
-
 to the require section of your `composer.json` file.
 
 ## Usage
 
 Once the extension is installed, modify the backend\config\main.php application configuration to include:
+
 
 ```php
 return [
@@ -88,7 +88,11 @@ return [
 
 ```
 
-Use the new crud generator, put in the backend/config/main-local.php
+Use the new crud generator, replace in the backend/config/main-local.php the part with
+```php
+$config['modules']['gii'] = 'yii\gii\Module';
+```
+with
 ```php
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
@@ -108,6 +112,7 @@ Use the new crud generator, put in the backend/config/main-local.php
 Copy .htaccess from vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
 ```bash
 cp vendor/tez/yii2-cms-module/.htaccess backend/web/
+cp vendor/tez/yii2-cms-module/.htaccess frontend/web/
 ```
 
 In common/config/bootstrap add 
@@ -116,23 +121,27 @@ Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module')
 Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
 ```
 
-Define the fontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview. Change to match your domain
+Define the frontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview. Change to match your domain
 ```php
 return [
 ...
-    'fontend-url' => 'http://frontend.yii2/',
+    'frontend-url' => 'http://frontend.yii2/',
 ...
 ];
 ```
 
 In your common/config/params.php define the mandrill details and the logo for the notification. Change to your details.
 ```php
+return [
+...
     'mandrill'=>[
         'key' => 'xxxx', 
         'from_email' => 'admin@.....', 
         'from_name' => 'No Reply'
     ],
     'logo' => 'http://2ezweb.net/themes/default/images/logo.png', // the logo will be merged into the email notification.
+...
+];
 ```
 
 In backend\assets\AppAsset.php the depend section should look like this
@@ -165,6 +174,7 @@ Password: admin
 * User management: `yourhost/core/administrator/`
 
 ## Tests
+In
 go to vendor/tez/yii2-cms-module/tests/codeception/backend/
 run
 ```codecept build```

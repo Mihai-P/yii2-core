@@ -32,7 +32,7 @@ class DefaultController extends Controller
 		return [
 			'access' => [
 				'class' => AccessControl::className(),
-				//'only' => ['logout', 'login', 'request-password-reset', 'reset-password'],
+				'only' => ['logout', 'login', 'request-password-reset', 'reset-password'],
 				'rules' => [
                     [
                         'actions' => ['login', 'request-password-reset', 'reset-password'],
