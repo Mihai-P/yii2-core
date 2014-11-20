@@ -56,8 +56,7 @@ class PasswordResetRequestForm extends Model
 
                 return true;
             } else {
-                print_r($user->getErrors());
-                die();
+                return false;
             }
         }
 

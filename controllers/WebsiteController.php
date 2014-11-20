@@ -10,6 +10,7 @@ use core\components\Controller;
  */
 class WebsiteController extends Controller
 {
+    var $hasView = true;
     var $MainModel = 'core\models\Website';
     var $MainModelSearch = 'core\models\WebsiteSearch';
 
@@ -26,8 +27,7 @@ class WebsiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterUpdate($model);
-            Yii::$app->getSession()->setFlash('success', 'The changes have been saved.');
-            return $this->redirect(['update', 'id' => $model->id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         } else {
             if($model->template) {
                 return $this->render($model->template, [
@@ -40,6 +40,7 @@ class WebsiteController extends Controller
             }
         }
     }
+
 
     public function afterCreate($model) {
         $model->saveObjects();
