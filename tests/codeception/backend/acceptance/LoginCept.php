@@ -17,6 +17,7 @@ $I->expectTo('see validations errors');
 $I->see('Email cannot be blank.', '.help-block');
 $I->see('Password cannot be blank.', '.help-block');
 
+/*
 $I->amGoingTo('try to login with wrong credentials');
 $I->expectTo('see validations errors');
 $loginPage->login('Frodo@biti.ro', 'wrong');
@@ -85,3 +86,4 @@ $loginPage->logMeIn();
 $I->expectTo('see that user is logged');
 $I->see('My Yii Application');
 $I->click('Logout');
+*/
