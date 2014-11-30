@@ -5,6 +5,7 @@ namespace core\models;
 use Yii;
 use yii\helpers\ArrayHelper;
 use core\components\ObjectsBehavior;
+use core\components\SeoBehavior;
 use core\components\ActiveRecord;
 use yii\helpers\StringHelper;
 
@@ -74,11 +75,14 @@ class Website extends ActiveRecord
             [
                 'objects' => [
                     'class' => ObjectsBehavior::className(),
-                ]
+                ],
+                'seo' => [
+                    'class' => SeoBehavior::className(),
+                ],
             ],
             parent::behaviors()
         );
-    }    
+    }
 
     /**
      * get the details of a website
