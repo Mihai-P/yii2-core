@@ -102,17 +102,17 @@ AppAsset::register($this);
         $submenus = [];
         foreach($menu->adminMenus as $submenu)
             if(Yii::$app->user->checkAccess($submenu->ap))
-                $submenus[] = '<li><a href="'.$submenu->url.'">'.$submenu->name . '</a></li>';
+                $submenus[] = '<li><a href="'.$submenu->url.'">'.($submenu->icon ? '<i class="fa '.$submenu->icon.'"></i> ' : '') . $submenu->name . '</a></li>';
 
         if(Yii::$app->user->checkAccess($menu->ap)) {
             if(count($submenus)) {
                 echo '
                     <li>
-                        <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> ' . $menu->name . '</a>
+                        <a href="#" class="expand level-closed">'.($menu->icon ? '<i class="fa '.$menu->icon.'"></i> ' : '<i class="fa fa-align-justify"></i>') . $menu->name . ' <i class="fa pull-right fa-align-justify"></i></a>
                         <ul style="display: none;">'.implode('', $submenus).'</ul>
                     </li>';
             } else {
-                echo '<li><a href="'.$menu->url.'"><i class="fa fa-bar-chart-o"></i> '.$menu->name.'</a></li>';
+                echo '<li><a href="'.$menu->url.'">'.($menu->icon ? '<i class="fa '.$menu->icon.'"></i> ' : '<i class="fa fa-align-justify"></i>') . $menu->name.'</a></li>';
             }
         }
     }
