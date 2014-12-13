@@ -41,7 +41,7 @@ AppAsset::register($this);
                     </button>
                 </div>
                 <div class="pull-left picture hidden-xs">
-                    <img src="http://farmfresh.2ezweb.com.au/files/images/Misc/logo.png" height="30" />
+                    <img src="<?=Yii::$app->assetManager->getPublishedUrl('@theme/assets')?>/images/yii2.png" height="36" />
                 </div>
 
                 <ul class="nav navbar-nav navbar-left-custom pull-right">
