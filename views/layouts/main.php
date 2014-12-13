@@ -40,18 +40,11 @@ AppAsset::register($this);
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
+                <div class="pull-left picture hidden-xs">
+                    <img src="http://farmfresh.2ezweb.com.au/files/images/Misc/logo.png" height="30" />
+                </div>
 
-                <ul class="nav navbar-nav navbar-left-custom">
-                    <li class="user dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <span><?= Yii::$app->user->getIdentity()->name?></span>
-                            <i class="caret"></i>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                            <li><?= Html::a('<i class="fa fa-mail-forward"></i> Logout', ['/core/default/logout'])?></li>
-                        </ul>
-                    </li>
+                <ul class="nav navbar-nav navbar-left-custom pull-right">
                     <li><a class="nav-icon sidebar-toggle"><i class="fa fa-bars"></i></a></li>
                 </ul>
             </div>
@@ -60,7 +53,50 @@ AppAsset::register($this);
                     'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                 ]) ?>
             </div>
-            <ul class="nav navbar-nav navbar-right collapse" id="navbar-right">
+            <ul class="nav navbar-nav navbar-right" id="navbar-right">
+                <li class="dropdown notifications-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-warning"></i>
+                        <span>Warnings</span>
+                        <span class="label label-warning">10</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="header">You have 10 notifications</li>
+                        <li>
+                            <!-- inner menu: contains the actual data -->
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 200px;">
+                                <ul class="menu" style="overflow: hidden; width: 100%; height: 200px;">
+                                    <li>
+                                        <a href="#">
+                                            <i class="ion ion-ios7-people info"></i> 5 new members joined today
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-warning danger"></i> Very long description here that may not fit into the page and may cause design problems
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-users warning"></i> 5 new members joined
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">
+                                            <i class="ion ion-ios7-cart success"></i> 25 sales made
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="ion ion-ios7-person danger"></i> You changed your username
+                                        </a>
+                                    </li>
+                                </ul><div class="slimScrollBar" style="width: 3px; position: absolute; top: 43px; opacity: 0.4; display: none; border-radius: 0px; z-index: 99; right: 1px; height: 156.862745098039px; background: rgb(0, 0, 0);"></div><div class="slimScrollRail" style="width: 3px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 0px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div></div>
+                        </li>
+                        <li class="footer"><a href="#">View all</a></li>
+                    </ul>
+                </li>
 <?php
                 $history = History::find()->where('create_by = "'.Yii::$app->user->id.'"')->orderBy('create_time DESC')->groupBy('url')->limit(10)->all();
                 if(count($history)) {
@@ -69,7 +105,7 @@ AppAsset::register($this);
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-comments"></i>
                         <span>History</span>
-                        <strong class="label label-danger"><?= count($history);?></strong>
+                        <strong class="label label-success"><?= count($history);?></strong>
                     </a>
                     <ul class="dropdown-menu">
 <?php
@@ -81,8 +117,17 @@ AppAsset::register($this);
                 </li>
 <?php                 
                 }
-?>                
-
+?>
+                <li class="user dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span><?= Yii::$app->user->getIdentity()->name?></span>
+                        <i class="caret"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                        <li><?= Html::a('<i class="fa fa-mail-forward"></i> Logout', ['/core/default/logout'])?></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="/core/default/logout">
                         <i class="fa fa-mail-forward"></i>
@@ -117,65 +162,10 @@ AppAsset::register($this);
         }
     }
 ?>            
-                <!--li class="active"><a href="index.html"><i class="fa fa-laptop"></i> Dashboard</a></li>
-                <li><a href="charts.html"><i class="fa fa-bar-chart-o"></i> Graphs and charts</a></li>
-                <li>
-                    <a href="#" class="expand level-closed"><i class="fa fa-align-justify"></i> Form components</a>
-                    <ul style="display: none;">
-                        <li><a href="form_components.html">Form components</a></li>
-                        <li><a href="form_validation.html">Form validation</a></li>
-                        <li><a href="wysiwyg.html">WYSIWYG editor</a></li>
-                        <li><a href="form_layouts.html">Form layouts</a></li>
-                        <li><a href="form_grid.html">Inputs grid</a></li>
-                        <li><a href="file_uploader.html">Multiple file uploader</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="expand level-closed"><i class="fa fa-tasks"></i> Interface components</a>
-                    <ul style="display: none;">
-                        <li><a href="visuals.html">Visuals &amp; notifications</a></li>
-                        <li><a href="navs.html">Navs &amp; navbars</a></li>
-                        <li><a href="panel_options.html">Panels</a></li>
-                        <li><a href="icons.html">Icons <span class="label label-danger">190</span></a></li>
-                        <li><a href="buttons.html">Buttons</a></li>
-                        <li><a href="content_grid.html">Content grid</a></li>
-                    </ul>
-                </li>
-                <li><a href="typography.html"><i class="fa fa-text-height"></i> Typography</a></li>
-                <li><a href="gallery.html"><i class="fa fa-picture-o"></i> Gallery</a></li>
-                <li>
-                    <a href="#" class="expand level-closed"><i class="fa fa-table"></i> Tables</a>
-                    <ul style="display: none;">
-                        <li><a href="tables_static.html">Static tables</a></li>
-                        <li><a href="tables_data.html">Data tables</a></li>
-                        <li><a href="tables_custom.html">Custom tables</a></li>
-                        <li><a href="tables_data_advanced.html">Advanced data tables</a></li>
-                    </ul>
-                </li>
-                <li><a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a></li>
-                <li><a href="#" class="expand level-closed"><i class="fa fa-warning"></i> Error pages <span class="label label-warning">6</span></a>
-                    <ul style="display: none;">
-                        <li><a href="403.html">403 page</a></li>
-                        <li><a href="404.html">404 page</a></li>
-                        <li><a href="405.html">405 page</a></li>
-                        <li><a href="500.html">500 page</a></li>
-                        <li><a href="503.html">503 page</a></li>
-                        <li><a href="offline.html">Website is offline</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" class="expand level-closed"><i class="fa fa-copy"></i> Blank pages <span class="label label-warning">6</span></a>
-                    <ul style="display: none;">
-                        <li><a href="blank_fixed_navbar.html">Fixed navbar</a></li>
-                        <li><a href="blank_static_navbar.html">Static navbar</a></li>
-                        <li><a href="blank_collapsed_sidebar.html">Collapsed sidebar</a></li>
-                        <li><a href="blank_full_width.html">Full width page</a></li>
-                    </ul>
-                </li-->
             </ul>
         </div>
         <!-- /sidebar -->
 
-    
         <!-- Page content -->
         <div class="page-content" style="padding-top">
             <?= $content ?>
