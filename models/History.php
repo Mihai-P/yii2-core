@@ -34,8 +34,8 @@ class History extends ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'url'], 'required'],
-            [['status'], 'string'],
+            [['name', 'url', 'type'], 'required'],
+            [['status', 'type'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['update_by', 'create_by'], 'integer'],
             [['name', 'url'], 'string', 'max' => 255]

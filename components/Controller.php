@@ -290,7 +290,8 @@ class Controller extends \yii\web\Controller
             $url_components[2] = trim(preg_replace("([A-Z])", " $0", $url_components[2]), " ");
 
             $history = new History;
-            $history->name = $model->{$historyField} . ' (' . $url_components[2] . ')';
+            $history->name = $model->{$historyField};
+            $history->type = $url_components[2];
             $history->url = Url::toRoute(['update', 'id' => $model->id]);
             $history->save();
         }
