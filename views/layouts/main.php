@@ -29,6 +29,7 @@ AppAsset::register($this);
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <div class="navbar-header">
+
                 <div class="hidden-lg pull-right">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-right">
                         <span class="sr-only">Toggle navigation</span>
@@ -40,11 +41,20 @@ AppAsset::register($this);
                         <i class="fa fa-bars"></i>
                     </button>
                 </div>
-                <div class="pull-left picture hidden-xs">
-                    <img src="<?=Yii::$app->assetManager->getPublishedUrl('@theme/assets')?>/images/yii2.png" height="36" />
-                </div>
 
-                <ul class="nav navbar-nav navbar-left-custom pull-right">
+                <ul class="nav navbar-nav navbar-left-custom">
+                    <li class="user dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="glyphicon glyphicon-user"></i>
+                            <span><?= Yii::$app->user->getIdentity()->name?></span>
+                            <i class="caret"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
+                            <li><?= Html::a('<i class="fa fa-mail-forward"></i> Logout', ['/core/default/logout'])?></li>
+                        </ul>
+                    </li>
+
                     <li><a class="nav-icon sidebar-toggle"><i class="fa fa-bars"></i></a></li>
                 </ul>
             </div>
@@ -118,16 +128,6 @@ AppAsset::register($this);
 <?php                 
                 }
 ?>
-                <li class="user dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        <span><?= Yii::$app->user->getIdentity()->name?></span>
-                        <i class="caret"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-                        <li><?= Html::a('<i class="fa fa-mail-forward"></i> Logout', ['/core/default/logout'])?></li>
-                    </ul>
-                </li>
                 <li>
                     <a href="/core/default/logout">
                         <i class="fa fa-mail-forward"></i>
