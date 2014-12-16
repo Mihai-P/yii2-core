@@ -150,40 +150,36 @@ DateTimePickerAsset::register($this);
 ?>
 <?php
                 $bookmarks = Bookmark::find()->where('create_by = "'.Yii::$app->user->id.'"')->andWhere('status = "active"')->orderBy('(reminder IS NULL), reminder ASC')->limit(10)->all();
-                if(count($bookmarks)) {
-                    $bookmarkList = '';
-                    $counter = 0;
-                    foreach($bookmarks as $bookmark) {
-                        $icon = '<i class="fa fa-bookmark"></i>';
-                        switch ($bookmark->typeIcon) {
-                            case 'reminder':
-                                $icon = '<i class="fa fa-clock-o"></i>';
-                                break;
-                            case 'passed-reminder':
-                                $icon = '<i class="fa fa-exclamation-triangle text-danger"></i>';
-                                break;
-                        }
-                        $bookmarkList .= '<li>' . Html::a($icon . $bookmark->name, $bookmark->url) . '</li>';
-                        if($bookmark->hasExpired())
-                            $counter ++;
+                $bookmarkList = '';
+                $counter = 0;
+                foreach($bookmarks as $bookmark) {
+                    $icon = '<i class="fa fa-bookmark"></i>';
+                    switch ($bookmark->typeIcon) {
+                        case 'reminder':
+                            $icon = '<i class="fa fa-clock-o"></i>';
+                            break;
+                        case 'passed-reminder':
+                            $icon = '<i class="fa fa-exclamation-triangle text-danger"></i>';
+                            break;
                     }
-                    ?>
-                    <li class="dropdown notifications-menu has-plus">
-                        <a class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-bookmark"></i>
-                            <span>Bookmarks</span>
-                            <?php if($counter) { ?>
-                            <strong class="label label-danger"><?= $counter;?></strong>
-                            <?php } ?>
-                        </a>
-                        <ul class="dropdown-menu bookmarks">
-                            <?= $bookmarkList?>
-                        </ul>
-
-                    </li>
-                <?php
+                    $bookmarkList .= '<li>' . Html::a($icon . $bookmark->name, $bookmark->url) . '</li>';
+                    if($bookmark->hasExpired())
+                        $counter ++;
                 }
-?>
+                ?>
+                <li class="dropdown notifications-menu has-plus">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bookmark"></i>
+                        <span>Bookmarks</span>
+                        <?php if($counter) { ?>
+                        <strong class="label label-danger"><?= $counter;?></strong>
+                        <?php } ?>
+                    </a>
+                    <ul class="dropdown-menu bookmarks">
+                        <?= $bookmarkList?>
+                    </ul>
+
+                </li>
                 <li class="is-plus">
                     <a href="#add-bookmark" data-toggle="modal"><i class="fa fa-plus-square"></i> </a>
                 </li>

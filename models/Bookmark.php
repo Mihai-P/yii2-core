@@ -64,10 +64,10 @@ class Bookmark extends \core\components\ActiveRecord
     public function getTypeIcon()
     {
         if($this->reminder) {
-            if(strtotime($this->reminder) >= time()) {
-                return 'reminder';
-            } else {
+            if($this->hasExpired()) {
                 return 'passed-reminder';
+            } else {
+                return 'reminder';
             }
         } else {
             return 'bookmark';
@@ -77,7 +77,9 @@ class Bookmark extends \core\components\ActiveRecord
     public function hasExpired()
     {
         if($this->reminder) {
-            if(strtotime($this->reminder) >= time()) {
+            $now = new \DateTime(null, new \DateTimeZone('Australia/Sydney'));
+            $reminder = new \DateTime($this->reminder, new \DateTimeZone('Australia/Sydney'));
+            if($reminder >= $now) {
                 return false;
             } else {
                 return true;
