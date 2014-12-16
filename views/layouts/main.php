@@ -8,9 +8,12 @@ use yii\widgets\Breadcrumbs;
 use core\models\History;
 use core\models\Bookmark;
 use theme\widgets\ActiveForm;
+use theme\widgets\Pjax;
+use yii\helpers\Url;
 
 use kartik\datetime\DateTimePickerAsset;
 use kartik\datetime\DateTimePicker;
+use yii\widgets\ActiveFormAsset;
 
 /**
  * @var \yii\web\View $this
@@ -18,6 +21,7 @@ use kartik\datetime\DateTimePicker;
  */
 AppAsset::register($this);
 DateTimePickerAsset::register($this);
+ActiveFormAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -143,6 +147,7 @@ DateTimePickerAsset::register($this);
                                 </li>';
                     }
 ?>
+                        <li class="footer"><a href="#">View all</a></li>
                     </ul>
                 </li>
 <?php                 
@@ -162,12 +167,12 @@ DateTimePickerAsset::register($this);
                             $icon = '<i class="fa fa-exclamation-triangle text-danger"></i>';
                             break;
                     }
-                    $bookmarkList .= '<li>' . Html::a($icon . $bookmark->name, $bookmark->url) . '</li>';
+                    $bookmarkList .= '<li>' . Html::a($icon . $bookmark->name, $bookmark->url, ['class' => 'col-md-11', 'data-pjax' => "0"]) . Html::a('<i class="fa fa-edit"></i>', '#add-bookmark', ['data-details' => Url::toRoute(['/core/bookmarks/details', 'id' => $bookmark->id]), 'data-pjax' => '0', 'class' => "edit-bookmark col-md-1", 'data-toggle' => "modal", 'data-pjax' => "0"]) . '</li>';
                     if($bookmark->hasExpired())
                         $counter ++;
                 }
                 ?>
-                <li class="dropdown notifications-menu has-plus">
+                <li class="dropdown bookmarks-menu has-plus">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bookmark"></i>
                         <span>Bookmarks</span>
@@ -175,13 +180,15 @@ DateTimePickerAsset::register($this);
                         <strong class="label label-danger"><?= $counter;?></strong>
                         <?php } ?>
                     </a>
-                    <ul class="dropdown-menu bookmarks">
-                        <?= $bookmarkList?>
-                    </ul>
-
+                    <?php /*Pjax::begin(['options' => ['id'=>'bookmark-list']]); */?>
+                        <ul class="dropdown-menu bookmarks">
+                            <?= $bookmarkList?>
+                            <li class="footer"><a href="#">View all</a></li>
+                        </ul>
+                    <?php /*Pjax::end(); */?>
                 </li>
                 <li class="is-plus">
-                    <a href="#add-bookmark" data-toggle="modal"><i class="fa fa-plus-square"></i> </a>
+                    <a href="#add-bookmark" class="add-bookmark" data-toggle="modal"><i class="fa fa-plus-square"></i> </a>
                 </li>
                 <li>
                     <a href="/core/default/logout">
@@ -262,6 +269,7 @@ DateTimePickerAsset::register($this);
             ]);
             ?>
             <div class="modal-body has-padding">
+                <?= Html::activeHiddenInput($bookmark, 'id') ?>
                 <?= $form->field($bookmark, 'name')->textInput(['data-default' => $bookmark->name]) ?>
                 <?= $form->field($bookmark, 'url')->textInput(['data-default' => $bookmark->url]) ?>
                 <?= $form->field($bookmark, 'reminder')->widget(DateTimePicker::classname(), [
@@ -286,33 +294,3 @@ DateTimePickerAsset::register($this);
 <!-- /form modal -->
 
 <?php $this->endPage() ?>
-
-<?php
-$script = <<<EOD
-$( document ).on( "click", "a.add-bookmark", function(event) {
-    event.preventDefault();
-    $("#add-bookmark form").resetToDefault();
-});
-$('#add-bookmark').on('submit','form#bookmark',function(e){
-    e.preventDefault();
-    self = $(this);
-    $.ajax({
-        url: self.attr("action"),
-        type: "POST",
-        dataType: "json",
-        data: self.serialize(),
-        success: function( response ) {
-            if(response.success) {
-                self.closest('.popup_wrap').find('button.close').trigger('click');
-            } else {
-                $.growl.error({ message: response.message });
-            }
-        }
-    });
-});
-
-EOD;
-$this->registerJs($script);
-
-
-
