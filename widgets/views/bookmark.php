@@ -9,7 +9,9 @@ use theme\widgets\Pjax;
         <a class="dropdown-toggle" data-toggle="dropdown">
             <i class="fa fa-bookmark"></i>
             <span>Bookmarks</span>
+            <?php if($counter) { ?>
             <strong class="label label-danger"><?= $counter;?></strong>
+            <?php } ?>
         </a>
 
             <?= ListView::widget([

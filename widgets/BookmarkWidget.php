@@ -24,7 +24,7 @@ class BookmarkWidget extends Widget
         return $this->render('bookmark',
             [
                 'criteria' => $criteria,
-                'counter' => 5,
+                'counter' => Bookmark::find()->where('create_by = "'.Yii::$app->user->id.'"')->andWhere('status = "active"')->andWhere('reminder IS NOT NULL')->andWhere('reminder < NOW()')->limit(10)->count(),
             ]
         );
     }
