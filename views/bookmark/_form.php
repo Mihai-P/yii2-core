@@ -28,9 +28,7 @@ use kartik\datetime\DateTimePicker;
         ]
     ]);?>
 
-    <?= $form->field($model, 'description')->textarea(['class' => 'editor']) ?>
-
-    <?= $form->field($model, 'order')->textInput() ?>
+    <?= $form->field($model, 'description')->textarea() ?>
 
     <div class="form-actions text-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
