@@ -42,6 +42,5 @@ class AuditTrailWidget extends Widget
         return $this->render('auditTrail',
             ['criteria' => $criteria]
         );
-
     }
 }

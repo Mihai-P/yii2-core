@@ -14,6 +14,7 @@ use yii\helpers\Url;
 use kartik\datetime\DateTimePickerAsset;
 use kartik\datetime\DateTimePicker;
 use yii\widgets\ActiveFormAsset;
+use core\widgets\BookmarkWidget;
 
 /**
  * @var \yii\web\View $this
@@ -147,49 +148,12 @@ ActiveFormAsset::register($this);
                                 </li>';
                     }
 ?>
-                        <li class="footer"><a href="#">View all</a></li>
                     </ul>
                 </li>
 <?php                 
                 }
 ?>
-<?php
-                $bookmarks = Bookmark::find()->where('create_by = "'.Yii::$app->user->id.'"')->andWhere('status = "active"')->orderBy('(reminder IS NULL), reminder ASC')->limit(10)->all();
-                $bookmarkList = '';
-                $counter = 0;
-                foreach($bookmarks as $bookmark) {
-                    $icon = '<i class="fa fa-bookmark"></i>';
-                    switch ($bookmark->typeIcon) {
-                        case 'reminder':
-                            $icon = '<i class="fa fa-clock-o"></i>';
-                            break;
-                        case 'passed-reminder':
-                            $icon = '<i class="fa fa-exclamation-triangle text-danger"></i>';
-                            break;
-                    }
-                    $bookmarkList .= '<li>' . Html::a($icon . $bookmark->name, $bookmark->url, ['class' => 'col-md-11', 'data-pjax' => "0"]) . Html::a('<i class="fa fa-edit"></i>', '#add-bookmark', ['data-details' => Url::toRoute(['/core/bookmarks/details', 'id' => $bookmark->id]), 'data-pjax' => '0', 'class' => "edit-bookmark col-md-1", 'data-toggle' => "modal", 'data-pjax' => "0"]) . '</li>';
-                    if($bookmark->hasExpired())
-                        $counter ++;
-                }
-                ?>
-                <li class="dropdown bookmarks-menu has-plus">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bookmark"></i>
-                        <span>Bookmarks</span>
-                        <?php if($counter) { ?>
-                        <strong class="label label-danger"><?= $counter;?></strong>
-                        <?php } ?>
-                    </a>
-                    <?php /*Pjax::begin(['options' => ['id'=>'bookmark-list']]); */?>
-                        <ul class="dropdown-menu bookmarks">
-                            <?= $bookmarkList?>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    <?php /*Pjax::end(); */?>
-                </li>
-                <li class="is-plus">
-                    <a href="#add-bookmark" class="add-bookmark" data-toggle="modal"><i class="fa fa-plus-square"></i> </a>
-                </li>
+                <?= BookmarkWidget::widget()?>
                 <li>
                     <a href="/core/default/logout">
                         <i class="fa fa-mail-forward"></i>

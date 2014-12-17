@@ -23,6 +23,9 @@ class BookmarkController extends Controller
                 'save' => [
                     'class' => 'core\components\SaveAction',
                 ],
+                'details' => [
+                    'class' => 'core\components\DetailsAction',
+                ],
             ],
             parent::actions()
         );
@@ -38,7 +41,7 @@ class BookmarkController extends Controller
                 'access' => [
                     'rules' => [
                         [
-                            'actions' => ['save'], // Define specific actions
+                            'actions' => ['save', 'details'], // Define specific actions
                             'allow' => true, // Has access
                             'roles' => ['create::' . $this->getCompatibilityId()],
                         ],
