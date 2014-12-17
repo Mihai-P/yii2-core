@@ -5,16 +5,15 @@ use yii\bootstrap\Nav;
 use core\models\AdminMenu;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use core\models\History;
 use core\models\Bookmark;
 use theme\widgets\ActiveForm;
-use theme\widgets\Pjax;
 use yii\helpers\Url;
 
 use kartik\datetime\DateTimePickerAsset;
 use kartik\datetime\DateTimePicker;
 use yii\widgets\ActiveFormAsset;
 use core\widgets\BookmarkWidget;
+use core\widgets\HistoryWidget;
 
 /**
  * @var \yii\web\View $this
@@ -122,37 +121,7 @@ ActiveFormAsset::register($this);
                         <li class="footer"><a href="#">View all</a></li>
                     </ul>
                 </li-->
-<?php
-                $history = History::find()->where('create_by = "'.Yii::$app->user->id.'"')->orderBy('create_time DESC')->groupBy('url')->limit(10)->all();
-                if(count($history)) {
-?>
-                <li class="history-menu">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-comments"></i>
-                        <span>History</span>
-                        <strong class="label label-success"><?= count($history);?></strong>
-                    </a>
-                    <ul class="dropdown-menu">
-<?php
-                    foreach($history as $link) {
-                        $now = new DateTime(null, new DateTimeZone('Australia/Sydney'));
-                        $date = new DateTime($link->create_time, new DateTimeZone('Australia/Sydney'));
-                        echo '
-                                <li>
-                                    <a href="'.$link->url.'">
-                                        <h4>'.$link->name.'
-                                            <small class="pull-right"><i class="fa fa-clock-o"></i> '.Yii::$app->formatter->asRelativeTime($date, $now). '</small>
-                                        </h4>
-                                        <p>'.$link->type.'</p>
-                                    </a>
-                                </li>';
-                    }
-?>
-                    </ul>
-                </li>
-<?php                 
-                }
-?>
+                <?= HistoryWidget::widget()?>
                 <?= BookmarkWidget::widget()?>
                 <li>
                     <a href="/core/default/logout">
