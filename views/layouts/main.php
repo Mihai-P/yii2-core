@@ -8,6 +8,7 @@ use yii\widgets\Breadcrumbs;
 use core\models\Bookmark;
 use theme\widgets\ActiveForm;
 use yii\helpers\Url;
+use core\components\Helpers;
 
 use kartik\datetime\DateTimePickerAsset;
 use kartik\datetime\DateTimePicker;
@@ -69,9 +70,20 @@ ActiveFormAsset::register($this);
                 </ul>
             </div>
             <div class="col-md-3 hidden-xs hidden-sm hidden-md">
-                <?= Breadcrumbs::widget([
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                ]) ?>
+                <?php
+                    if(isset($this->params['breadcrumbs'])) {
+                        array_walk($this->params['breadcrumbs'], function(&$value, &$key) {
+                            if(!is_array($value)) {
+                                $value = Helpers::summary($value, 40);
+                            } elseif(isset($value['label'])) {
+                                $value['label'] = Helpers::summary($value['label'], 40);
+                            }
+                        });
+                        echo Breadcrumbs::widget([
+                            'links' => $this->params['breadcrumbs']
+                        ]);
+                    }
+                 ?>
             </div>
             <ul class="nav navbar-nav navbar-right" id="navbar-right">
                 <!--li class="dropdown messages-menu">

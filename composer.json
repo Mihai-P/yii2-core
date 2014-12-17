@@ -30,7 +30,8 @@
 		"robregonm/yii2-pdf": "dev-master",
 		"goodby/csv": "*",
 		"nickcv/yii2-mandrill": "*",
-        "2amigos/yii2-editable-widget" : "*"
+        "2amigos/yii2-editable-widget" : "*",
+		"kartik-v/yii2-widgets": "dev-master"
     },	
 	"autoload": {
 		"psr-4": {

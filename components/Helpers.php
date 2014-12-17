@@ -36,4 +36,24 @@ class Helpers
 
 		return '<span id="'.$id.'">[javascript protected email address]</span>'.$script;
 	}
+
+	/**
+	 * Get the first x chars from a string. If the string is bigger it pads it with ...
+	 *
+	 * Credits to http://www.maurits.vdschee.nl/php_hide_email/
+	 *
+	 * @param string $str the string
+	 * @param integer $limit the number of characters
+	 * @param boolean $strip should we string tags or not
+	 * @return string
+	 */
+
+	public static function summary($str, $limit=100, $strip = false) {
+		$str = ($strip == true) ? strip_tags($str) : $str;
+		if (strlen ($str) > $limit) {
+			$str = substr ($str, 0, $limit - 3);
+			return (substr ($str, 0, strrpos ($str, ' ')) . '...');
+		}
+		return trim($str);
+	}
 }
