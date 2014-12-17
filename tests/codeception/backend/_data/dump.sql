@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Nov 29, 2014 at 01:08 PM
+-- Generation Time: Dec 18, 2014 at 08:09 AM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `AdminMenu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `AdminMenu_id` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
+  `icon` varchar(255) DEFAULT NULL,
   `internal` varchar(255) NOT NULL,
   `url` varchar(255) DEFAULT NULL,
   `ap` text,
@@ -48,18 +49,18 @@ CREATE TABLE IF NOT EXISTS `AdminMenu` (
 -- Dumping data for table `AdminMenu`
 --
 
-INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `internal`, `url`, `ap`, `order`, `show_mobile`, `status`, `update_time`, `update_by`, `create_time`, `create_by`) VALUES
-(1, NULL, 'Dashboard', 'dashboard', '/', '', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(2, NULL, 'Administrators', 'Administrators', '', 'read::Group', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(3, 2, 'Groups', 'GroupController', '/core/Group/admin/', 'read::Group', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(4, 2, 'Administrators', 'AdministratorController', '/core/Administrator/admin/', 'read::Administrator', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(5, NULL, 'Contacts', 'ContactController', '/core/Contact/admin/', 'read::Contact', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(6, NULL, 'Website', 'Website', '', 'update::Website', 3, '1', 'active', NULL, NULL, NULL, NULL),
-(7, 6, 'Website', 'WebsiteController', '/core/website/view?id=1', 'update::Website', 4, '1', 'active', NULL, NULL, NULL, NULL),
-(8, 6, 'Menus', 'MenuController', '/core/Menu/admin/', 'read::Menu', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(9, 6, 'Pages', 'PageController', '/core/Page/admin/', 'read::Page', 3, '1', 'active', NULL, NULL, NULL, NULL),
-(10, NULL, 'Tags', 'TagController', '/core/Tag/admin/', 'read::Tag', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(11, 6, 'Page Templates', 'PageTemplateController', '/core/PageTemplate/admin/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL);
+INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `icon`, `internal`, `url`, `ap`, `order`, `show_mobile`, `status`, `update_time`, `update_by`, `create_time`, `create_by`) VALUES
+(1, NULL, 'Dashboard', 'fa-laptop', 'dashboard', '/', '', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(2, NULL, 'Administrators', 'fa-group', 'Administrators', '', 'read::Group', 2, '1', 'active', NULL, NULL, NULL, NULL),
+(3, 2, 'Groups', NULL, 'GroupController', '/core/Group/admin/', 'read::Group', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(4, 2, 'Administrators', NULL, 'AdministratorController', '/core/Administrator/admin/', 'read::Administrator', 2, '1', 'active', NULL, NULL, NULL, NULL),
+(5, NULL, 'Contacts', 'fa-user', 'ContactController', '/core/Contact/admin/', 'read::Contact', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(6, NULL, 'Website', 'fa-desktop', 'Website', '', 'update::Website', 3, '1', 'active', NULL, NULL, NULL, NULL),
+(7, 6, 'Website', NULL, 'WebsiteController', '/core/website/view?id=1', 'update::Website', 4, '1', 'active', NULL, NULL, NULL, NULL),
+(8, 6, 'Menus', NULL, 'MenuController', '/core/Menu/admin/', 'read::Menu', 2, '1', 'active', NULL, NULL, NULL, NULL),
+(9, 6, 'Pages', NULL, 'PageController', '/core/Page/admin/', 'read::Page', 3, '1', 'active', NULL, NULL, NULL, NULL),
+(10, NULL, 'Tags', 'fa-tags', 'TagController', '/core/Tag/admin/', 'read::Tag', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(11, 6, 'Page Templates', NULL, 'PageTemplateController', '/core/PageTemplate/admin/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -372,7 +373,8 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m141017_024247_alter_Menu_add_responsive', 1417226888),
 ('m141104_234654_alte_User_table', 1417226888),
 ('m141119_124900_insert_auth_Website_read', 1417226888),
-('m141119_132507_update_AdminMenu_website', 1417226888);
+('m141119_132507_update_AdminMenu_website', 1417226888),
+('m141212_222648_alter_AdminMenu_icon', 1418850545);
 
 -- --------------------------------------------------------
 
