@@ -51,6 +51,7 @@ class SiteController extends Controller
     }
 	public function actionIndex()
 	{
+		$this->layout = self::MAIN_LAYOUT;
 		return $this->render('index', []);
 	}
 }
