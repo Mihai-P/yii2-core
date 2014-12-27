@@ -2,7 +2,7 @@
 	"name": "tez/yii2-cms-module",
 	"description": "Yii 2 Small CMS Module",
 	"keywords": ["yii2", "cms"],
-	"type": "yii2-module",
+	"type": "yii2-extension",
 	"license": "BSD-3-Clause",
 	"support": {
 		"issues": "https://github.com/Mihai-P/yii2-core/issues?state=open",
