@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'create_time',
             // 'create_by',
             ['class' => 'theme\widgets\StatusColumn'],
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'theme\widgets\ActionColumn'],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
