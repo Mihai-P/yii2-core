@@ -12,7 +12,6 @@ $I->wantTo('test the contact list');
 
 $page = ContactPage::openBy($I);
 $I->see('Contacts', 'h6');
-$I->see('No results found.');
 
 $I->amGoingTo('add a new record.');
 $I->click('Add new');
@@ -28,7 +27,6 @@ $I->amGoingTo('submit the form without errors.');
 $I->fillField('input[name="Contact[email]"]', 'Frodo.Baggins@Shire.com');
 $I->click('Create');
 $I->see('Contacts', 'h6');
-$I->dontSee('No results found.');
 
 $model = Contact::findOne(['email' => 'Frodo.Baggins@Shire.com']);
 $page->testActivateDeactivate($model);
