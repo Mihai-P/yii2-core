@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'buttons' => $this->context->bulkButtons(),
         <?= !empty($generator->searchModelClass) ? "'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n"; ?>
-            ['class' => 'theme\widgets\CheckboxColumn'],
+            ['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'theme\widgets\IdColumn'],
             ['class' => 'theme\widgets\NameColumn', 'hasView' => $this->context->hasView],
 <?php

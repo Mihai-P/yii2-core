@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use theme\widgets\GridView;
 use theme\widgets\Pjax;
 use core\models\Contact;
-use theme\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 /**
  * @var yii\web\View $this
  * @var core\models\ContactSearch $searchModel
@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'buttons' => $this->context->bulkButtons(),
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'theme\widgets\CheckboxColumn'],
+            ['class' => 'yii\grid\CheckboxColumn'],
             ['class' => 'theme\widgets\IdColumn'],
             ['class' => 'theme\widgets\NameColumn', 'hasView' => $this->context->hasView],
             ['class' => 'theme\widgets\StatusColumn'],

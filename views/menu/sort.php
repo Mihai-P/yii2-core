@@ -2,7 +2,7 @@
 use yii\widgets\ListView;
 use kartik\sortable\Sortable;
 use yii\helpers\Html;
-use theme\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 $this->title = 'Order Menus';
 $this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];

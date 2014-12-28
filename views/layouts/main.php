@@ -6,7 +6,7 @@ use core\models\AdminMenu;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use core\models\Bookmark;
-use theme\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use core\components\Helpers;
 

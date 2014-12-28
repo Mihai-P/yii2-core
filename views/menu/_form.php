@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use theme\widgets\ActiveForm;
+use yii\bootstrap\ActiveForm;
 use core\models\Menu;
 
 /**

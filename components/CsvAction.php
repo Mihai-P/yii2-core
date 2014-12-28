@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Action;
 use Goodby\CSV\Export\Standard\Exporter;
 use Goodby\CSV\Export\Standard\ExporterConfig;
+use yii\web\Response;
 
 
 /**
@@ -54,7 +55,8 @@ class CsvAction extends Action
         $exporter = new Exporter($config);
         $result = $query->asArray()->all();
         $fields = $this->fields;
-        $values = array_map(function () use ($fields) {
+        $values = array_map(function ($ar) use ($fields) {
+        //$values = array_map(function () use ($fields) {
             $return = [];
             foreach($fields as $field) {
                 $keyString = "['" . str_replace('.', "']['", $field) . "']"; 
@@ -62,8 +64,32 @@ class CsvAction extends Action
             }
             return $return;
         }, $result);
-        Yii::$app->response->getHeaders()->set('Content-Type', 'application/csv');
-        Yii::$app->response->getHeaders()->set('Content-Disposition', 'attachment; filename="'.$this->controller->getCompatibilityId().'.csv"');
-        $exporter->export('php://output', array_merge([$this->fields], $values));
+        if(isset($_GET['test'])) {
+            return json_encode(array_merge([$this->fields], $values));
+        } else {
+            $this->setHttpHeaders('csv', $this->controller->getCompatibilityId(), 'text/plain');
+            $exporter->export('php://output', array_merge([$this->fields], $values));
+        }
+    }
+
+
+    /**
+     * Sets the HTTP headers needed by file download action.
+     */
+    protected function setHttpHeaders($type, $name, $mime, $encoding = 'utf-8')
+    {
+        Yii::$app->response->format = Response::FORMAT_RAW;
+        if (strstr($_SERVER["HTTP_USER_AGENT"], "MSIE") == false) {
+            header("Cache-Control: no-cache");
+            header("Pragma: no-cache");
+        } else {
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Pragma: public");
+        }
+        header("Expires: Sat, 26 Jul 1979 05:00:00 GMT");
+        header("Content-Encoding: {$encoding}");
+        header("Content-Type: {$mime}; charset={$encoding}");
+        header("Content-Disposition: attachment; filename={$name}.{$type}");
+        header("Cache-Control: max-age=0");
     }
 }
