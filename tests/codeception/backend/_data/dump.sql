@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2014 at 08:09 AM
+-- Generation Time: Dec 18, 2014 at 08:43 AM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `AdminMenu` (
   `create_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `AdminMenu_ibfk_1` (`AdminMenu_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `AdminMenu`
@@ -60,7 +60,8 @@ INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `icon`, `internal`, `url`
 (8, 6, 'Menus', NULL, 'MenuController', '/core/Menu/admin/', 'read::Menu', 2, '1', 'active', NULL, NULL, NULL, NULL),
 (9, 6, 'Pages', NULL, 'PageController', '/core/Page/admin/', 'read::Page', 3, '1', 'active', NULL, NULL, NULL, NULL),
 (10, NULL, 'Tags', 'fa-tags', 'TagController', '/core/Tag/admin/', 'read::Tag', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(11, 6, 'Page Templates', NULL, 'PageTemplateController', '/core/PageTemplate/admin/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL);
+(11, 6, 'Page Templates', NULL, 'PageTemplateController', '/core/PageTemplate/admin/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL),
+(12, NULL, 'Bookmarks', 'fa-bookmark', 'BookmarkController', '/core/bookmark/', 'read::Bookmark', 1, '1', 'active', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -133,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `AuthItem` (
 INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`, `rule_name`, `created_at`, `updated_at`) VALUES
 ('1', 1, '', NULL, 'N;', NULL, NULL, NULL),
 ('create::Administrator', 0, 'create Administrator', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:14:"Administrators";}', NULL, NULL, NULL),
+('create::Bookmark', 0, 'create Bookmark', NULL, 'a:2:{s:6:"module";s:8:"Bookmark";s:10:"controller";s:9:"Bookmarks";}', NULL, NULL, NULL),
 ('create::Contact', 0, 'create Contact', NULL, 'a:2:{s:6:"module";s:8:"Contacts";s:10:"controller";s:8:"Contacts";}', NULL, NULL, NULL),
 ('create::Group', 0, 'create Group', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:6:"Groups";}', NULL, NULL, NULL),
 ('create::Menu', 0, 'create Menu', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:5:"Menus";}', NULL, NULL, NULL),
@@ -140,6 +142,7 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`, `rule_
 ('create::PageTemplate', 0, 'create PageTemplate', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:14:"Page Templates";}', NULL, NULL, NULL),
 ('create::Tag', 0, 'create Tag', NULL, 'a:2:{s:6:"module";s:4:"Tags";s:10:"controller";s:4:"Tags";}', NULL, NULL, NULL),
 ('delete::Administrator', 0, 'delete Administrator', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:14:"Administrators";}', NULL, NULL, NULL),
+('delete::Bookmark', 0, 'delete Bookmark', NULL, 'a:2:{s:6:"module";s:8:"Bookmark";s:10:"controller";s:9:"Bookmarks";}', NULL, NULL, NULL),
 ('delete::Contact', 0, 'delete Contact', NULL, 'a:2:{s:6:"module";s:8:"Contacts";s:10:"controller";s:8:"Contacts";}', NULL, NULL, NULL),
 ('delete::Group', 0, 'delete Group', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:6:"Groups";}', NULL, NULL, NULL),
 ('delete::Menu', 0, 'delete Menu', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:5:"Menus";}', NULL, NULL, NULL),
@@ -147,6 +150,7 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`, `rule_
 ('delete::PageTemplate', 0, 'delete PageTemplate', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:14:"Page Templates";}', NULL, NULL, NULL),
 ('delete::Tag', 0, 'delete Tag', NULL, 'a:2:{s:6:"module";s:4:"Tags";s:10:"controller";s:4:"Tags";}', NULL, NULL, NULL),
 ('read::Administrator', 0, 'read Administrator', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:14:"Administrators";}', NULL, NULL, NULL),
+('read::Bookmark', 0, 'read Bookmark', NULL, 'a:2:{s:6:"module";s:8:"Bookmark";s:10:"controller";s:9:"Bookmarks";}', NULL, NULL, NULL),
 ('read::Contact', 0, 'read Contact', NULL, 'a:2:{s:6:"module";s:8:"Contacts";s:10:"controller";s:8:"Contacts";}', NULL, NULL, NULL),
 ('read::Group', 0, 'read Group', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:6:"Groups";}', NULL, NULL, NULL),
 ('read::Menu', 0, 'read Menu', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:5:"Menus";}', NULL, NULL, NULL),
@@ -156,6 +160,7 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`, `rule_
 ('read::Website', 0, 'read Website', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:8:"Websites";}', NULL, NULL, NULL),
 ('update own::Administrator', 0, 'update own Administrator', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:14:"Administrators";}', NULL, NULL, NULL),
 ('update::Administrator', 0, 'update Administrator', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:14:"Administrators";}', NULL, NULL, NULL),
+('update::Bookmark', 0, 'update Bookmark', NULL, 'a:2:{s:6:"module";s:8:"Bookmark";s:10:"controller";s:9:"Bookmarks";}', NULL, NULL, NULL),
 ('update::Contact', 0, 'update Contact', NULL, 'a:2:{s:6:"module";s:8:"Contacts";s:10:"controller";s:8:"Contacts";}', NULL, NULL, NULL),
 ('update::Group', 0, 'update Group', NULL, 'a:2:{s:6:"module";s:14:"Administrators";s:10:"controller";s:6:"Groups";}', NULL, NULL, NULL),
 ('update::Menu', 0, 'update Menu', NULL, 'a:2:{s:6:"module";s:7:"Website";s:10:"controller";s:5:"Menus";}', NULL, NULL, NULL),
@@ -183,6 +188,7 @@ CREATE TABLE IF NOT EXISTS `AuthItemChild` (
 
 INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('1', 'create::Administrator'),
+('1', 'create::Bookmark'),
 ('1', 'create::Contact'),
 ('1', 'create::Group'),
 ('1', 'create::Menu'),
@@ -190,6 +196,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('1', 'create::PageTemplate'),
 ('1', 'create::Tag'),
 ('1', 'delete::Administrator'),
+('1', 'delete::Bookmark'),
 ('1', 'delete::Contact'),
 ('1', 'delete::Group'),
 ('1', 'delete::Menu'),
@@ -197,6 +204,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('1', 'delete::PageTemplate'),
 ('1', 'delete::Tag'),
 ('1', 'read::Administrator'),
+('1', 'read::Bookmark'),
 ('1', 'read::Contact'),
 ('1', 'read::Group'),
 ('1', 'read::Menu'),
@@ -206,6 +214,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('1', 'read::Website'),
 ('1', 'update own::Administrator'),
 ('1', 'update::Administrator'),
+('1', 'update::Bookmark'),
 ('1', 'update::Contact'),
 ('1', 'update::Group'),
 ('1', 'update::Menu'),
@@ -213,6 +222,28 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('1', 'update::PageTemplate'),
 ('1', 'update::Tag'),
 ('1', 'update::Website');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Bookmark`
+--
+
+CREATE TABLE IF NOT EXISTS `Bookmark` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `url` varchar(255) NOT NULL,
+  `reminder` datetime DEFAULT NULL,
+  `description` text,
+  `order` int(11) DEFAULT '1000',
+  `status` varchar(255) NOT NULL DEFAULT 'active',
+  `update_time` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `Bookmark_create_by` (`create_by`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -293,6 +324,7 @@ INSERT INTO `Group` (`id`, `name`, `status`, `update_time`, `update_by`, `create
 CREATE TABLE IF NOT EXISTS `History` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
   `url` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'active',
   `update_time` datetime DEFAULT NULL,
@@ -374,7 +406,9 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m141104_234654_alte_User_table', 1417226888),
 ('m141119_124900_insert_auth_Website_read', 1417226888),
 ('m141119_132507_update_AdminMenu_website', 1417226888),
-('m141212_222648_alter_AdminMenu_icon', 1418850545);
+('m141212_222648_alter_AdminMenu_icon', 1418850545),
+('m141215_005019_create_Bookmark_table', 1418852632),
+('m141215_230052_alter_History_table', 1418852632);
 
 -- --------------------------------------------------------
 
@@ -634,6 +668,12 @@ ALTER TABLE `AdminMenu`
 ALTER TABLE `AuthItemChild`
   ADD CONSTRAINT `AuthItemChild_ibfk_2` FOREIGN KEY (`child`) REFERENCES `AuthItem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `AuthItemChild_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `AuthItem` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Bookmark`
+--
+ALTER TABLE `Bookmark`
+  ADD CONSTRAINT `Bookmark_create_by` FOREIGN KEY (`create_by`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Contact_Tag`
