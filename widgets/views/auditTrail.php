@@ -16,14 +16,6 @@ use yii\data\ActiveDataProvider;
                 return $model->user ? $model->user->name : "";
             }
         ],
-        [
-            'attribute' => 'model',
-            'value' => function($model, $index, $widget){
-                $p = explode('\\', $model->model);
-                return end($p);
-            }
-        ],
-        'model_id',
         'action',
         [
             'label' => 'Field',

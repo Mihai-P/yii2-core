@@ -6,6 +6,7 @@ use Yii;
 use yii\web\IdentityInterface;
 use core\components\ActiveRecord;
 use yii\base\NotSupportedException;
+use core\models\Notification;
 
 /**
  * This is the model class for table "User".
@@ -237,5 +238,13 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotifications()
+    {
+        return Notification::find()->join('LEFT JOIN', 'NotificationUser', ['Notification.id' => 'NotificationUser.Notification_id'])->distinct()->where(['NotificationUser.User_id' => $this->id]);
     }
 }

@@ -57,7 +57,7 @@ class PageSearch extends Page
 
         if($this->keyword) {
             if(preg_match("/[A-Za-z]+/", $this->keyword) == true) {
-                $query->andFilterWhere(['like', 'LOWER(name)', strtolower($this->keyword)]);
+                $query->andFilterWhere(['like', 'CONCAT_WS(" ", LOWER(name), LOWER(url))', strtolower($this->keyword)]);
             } else {
                 $query->andFilterWhere(['id' => $this->keyword]);
             }            
