@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2014 at 08:43 AM
+-- Generation Time: Jan 01, 2015 at 10:40 AM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -52,15 +52,15 @@ CREATE TABLE IF NOT EXISTS `AdminMenu` (
 INSERT INTO `AdminMenu` (`id`, `AdminMenu_id`, `name`, `icon`, `internal`, `url`, `ap`, `order`, `show_mobile`, `status`, `update_time`, `update_by`, `create_time`, `create_by`) VALUES
 (1, NULL, 'Dashboard', 'fa-laptop', 'dashboard', '/', '', 1, '1', 'active', NULL, NULL, NULL, NULL),
 (2, NULL, 'Administrators', 'fa-group', 'Administrators', '', 'read::Group', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(3, 2, 'Groups', NULL, 'GroupController', '/core/Group/admin/', 'read::Group', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(4, 2, 'Administrators', NULL, 'AdministratorController', '/core/Administrator/admin/', 'read::Administrator', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(5, NULL, 'Contacts', 'fa-user', 'ContactController', '/core/Contact/admin/', 'read::Contact', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(3, 2, 'Groups', NULL, 'GroupController', '/core/group/', 'read::Group', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(4, 2, 'Administrators', NULL, 'AdministratorController', '/core/administrator/', 'read::Administrator', 2, '1', 'active', NULL, NULL, NULL, NULL),
+(5, NULL, 'Contacts', 'fa-user', 'ContactController', '/core/contact/', 'read::Contact', 1, '1', 'active', NULL, NULL, NULL, NULL),
 (6, NULL, 'Website', 'fa-desktop', 'Website', '', 'update::Website', 3, '1', 'active', NULL, NULL, NULL, NULL),
 (7, 6, 'Website', NULL, 'WebsiteController', '/core/website/view?id=1', 'update::Website', 4, '1', 'active', NULL, NULL, NULL, NULL),
-(8, 6, 'Menus', NULL, 'MenuController', '/core/Menu/admin/', 'read::Menu', 2, '1', 'active', NULL, NULL, NULL, NULL),
-(9, 6, 'Pages', NULL, 'PageController', '/core/Page/admin/', 'read::Page', 3, '1', 'active', NULL, NULL, NULL, NULL),
-(10, NULL, 'Tags', 'fa-tags', 'TagController', '/core/Tag/admin/', 'read::Tag', 1, '1', 'active', NULL, NULL, NULL, NULL),
-(11, 6, 'Page Templates', NULL, 'PageTemplateController', '/core/PageTemplate/admin/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL),
+(8, 6, 'Menus', NULL, 'MenuController', '/core/menu/', 'read::Menu', 2, '1', 'active', NULL, NULL, NULL, NULL),
+(9, 6, 'Pages', NULL, 'PageController', '/core/page/', 'read::Page', 3, '1', 'active', NULL, NULL, NULL, NULL),
+(10, NULL, 'Tags', 'fa-tags', 'TagController', '/core/tag/', 'read::Tag', 1, '1', 'active', NULL, NULL, NULL, NULL),
+(11, 6, 'Page Templates', NULL, 'PageTemplateController', '/core/page-template/', 'read::PageTemplate', 4, '1', 'active', NULL, NULL, NULL, NULL),
 (12, NULL, 'Bookmarks', 'fa-bookmark', 'BookmarkController', '/core/bookmark/', 'read::Bookmark', 1, '1', 'active', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
