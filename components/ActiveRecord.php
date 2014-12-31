@@ -24,9 +24,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
     ];
 
 
-    public function getStatus($status = null)
+    public function getNiceStatus()
     {
-        return Yii::t('core.user', $this->statuses[$status]);
+        return Yii::t('core.user', $this->statuses[$this->status]);
     }
 
     /**
