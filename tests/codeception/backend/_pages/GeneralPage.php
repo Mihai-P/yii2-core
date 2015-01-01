@@ -59,6 +59,12 @@ class GeneralPage extends BasePage
         $this->actor->see($model->name);
     }
 
+	function testCsv($model) {
+		$this->actor->amGoingTo('test the csv action');
+		$this->actor->amOnPage(Yii::$app->getUrlManager()->createUrl([$this->route.'/csv', 'test' => 1]));
+		$this->actor->see($model->name);
+	}
+
     function testView($model) {
         $this->actor->amGoingTo('test the pdf action');
         $this->actor->amOnPage(Yii::$app->getUrlManager()->createUrl([$this->route.'/view', 'id' => $model->id]));
