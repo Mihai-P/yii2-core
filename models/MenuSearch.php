@@ -23,7 +23,7 @@ class MenuSearch extends Menu
     {
         return [
             [['keyword', 'name', 'internal', 'url', 'rel', 'target', 'ap', 'status', 'update_time', 'create_time'], 'safe'],
-            [['id', 'Menu_id', 'order', 'root', 'lft', 'rgt', 'level', 'update_by', 'create_by'], 'integer'],
+            [['id', 'Menu_id', 'order', 'root', 'lft', 'rgt', 'depth', 'update_by', 'create_by'], 'integer'],
         ];
     }
 
@@ -77,7 +77,7 @@ class MenuSearch extends Menu
             'root' => $this->root,
             'lft' => $this->lft,
             'rgt' => $this->rgt,
-            'level' => $this->level,
+            'depth' => $this->depth,
             'update_time' => $this->update_time,
             'update_by' => $this->update_by,
             'create_time' => $this->create_time,

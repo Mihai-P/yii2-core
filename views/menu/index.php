@@ -33,7 +33,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'header' => 'Name',
                 'format'=>'raw',
                 'value'=>function ($model, $key, $index, $widget) {
-                    return "<h".($model->level+3).">" . str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $model->level-1) . ($model->level>1 ? '↳' : '') . $model->name . "</h".($model->level+3).">";
+                    return "<h" . ($model->depth + 3) . ">" .
+                        str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $model->depth) .
+                        ($model->depth>0 ? '↳' : '') . $model->name .
+                        "</h".($model->depth+3).">";
                 },
             ],            
             'url',

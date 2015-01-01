@@ -3,8 +3,8 @@
 namespace core\models;
 
 use Yii;
-use core\components\CategoryQuery;
-use creocoder\behaviors\NestedSet;
+use core\components\TreeQuery;
+use creocoder\nestedsets\NestedSetsBehavior;
 use yii\helpers\ArrayHelper;
 use core\components\ActiveRecord;
 
@@ -24,7 +24,7 @@ use core\components\ActiveRecord;
  * @property string $root
  * @property string $lft
  * @property string $rgt
- * @property string $level
+ * @property integer $depth
  * @property string $status
  * @property string $update_time
  * @property integer $update_by
@@ -50,7 +50,7 @@ class Menu extends ActiveRecord
     public function rules()
     {
         return [
-            [['Menu_id', 'order', 'root', 'lft', 'rgt', 'level', 'update_by', 'create_by'], 'integer'],
+            [['Menu_id', 'order', 'root', 'lft', 'rgt', 'depth', 'update_by', 'create_by'], 'integer'],
             [['name'], 'required'],
             [['status'], 'string'],
             [['update_time', 'create_time'], 'safe'],
@@ -77,7 +77,7 @@ class Menu extends ActiveRecord
             'root' => 'Root',
             'lft' => 'Lft',
             'rgt' => 'Rgt',
-            'level' => 'Level',
+            'depth' => 'Depth',
             'status' => 'Status',
             'update_time' => 'Update Time',
             'update_by' => 'Update By',
@@ -107,17 +107,29 @@ class Menu extends ActiveRecord
         return ArrayHelper::merge(
             [
                 'nestedSet' => [
-                    'class' => NestedSet::className(),
-                    'hasManyRoots' => true
+                    'class' => NestedSetsBehavior::className(),
+                    //'hasManyRoots' => true
                 ]
             ],
             parent::behaviors()
         );
     }
-    
-    public static function createQuery()
+
+    public function transactions()
     {
-        return new CategoryQuery(['modelClass' => get_called_class()]);
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    public static function deleteAll($condition = '', $params = [])
+    {
+        return self::updateAll(['status' => self::STATUS_DELETED], $condition);
+    }
+
+    public static function find()
+    {
+        return new TreeQuery(get_called_class());
     }
 
     /**

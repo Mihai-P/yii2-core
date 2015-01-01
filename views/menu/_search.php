@@ -60,7 +60,7 @@ $menus = Menu::find()->addOrderBy('root')->addOrderBy('lft')->all();
 foreach ($menus as $n => $menu)
 {
     if($menu->lft+1 != $menu->rgt)
-        echo '<option value="'.$menu->id.'" '.($model->Menu_id==$menu->id ? 'SELECTED' : '').'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $menu->level-1) . '↳' . $menu->name.'</option>';
+        echo '<option value="'.$menu->id.'" '.($model->Menu_id==$menu->id ? 'SELECTED' : '').'>'.str_repeat("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;", $menu->depth) . '↳' . $menu->name.'</option>';
 }
 ?>                
                 </select>

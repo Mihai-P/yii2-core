@@ -67,7 +67,7 @@ class MenuController extends Controller
                 foreach($_POST[$modelName] as $key => $id) {
                     $record = $this->findModel($id);
                     $record->sort_order = $key+1;
-                    $record->saveNode();
+                    $record->save();
                 }
             } else {
                 $parent = $this->findModel($_GET['Menu_id']);
@@ -126,7 +126,7 @@ class MenuController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if(empty($model->Menu_id)) {
-                $model->saveNode();
+                $model->makeRoot();
             } else {
                 $parent_node = Menu::findOne($model->Menu_id);
                 $model->appendTo($parent_node);
@@ -177,7 +177,7 @@ class MenuController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->deleteNode();
+        $this->findModel($id)->deleteWithDescendants();
         if(Yii::$app->request->getIsAjax()) {
             \Yii::$app->response->format = 'json';
             return ['success' => true];
@@ -194,7 +194,7 @@ class MenuController extends Controller
     {
         if(isset($_POST['items'])) {
             foreach($_POST['items'] as $id) {
-                $this->findModel($id)->deleteNode();
+                $this->findModel($id)->deleteWithDescendants();
             }
         }
     }
