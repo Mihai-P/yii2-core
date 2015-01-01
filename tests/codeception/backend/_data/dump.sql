@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2015 at 10:40 AM
+-- Generation Time: Jan 01, 2015 at 11:35 AM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -408,7 +408,9 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m141119_132507_update_AdminMenu_website', 1417226888),
 ('m141212_222648_alter_AdminMenu_icon', 1418850545),
 ('m141215_005019_create_Bookmark_table', 1418852632),
-('m141215_230052_alter_History_table', 1418852632);
+('m141215_230052_alter_History_table', 1418852632),
+('m141226_004400_alter_User_table_Group_id', 1420072515),
+('m141229_221228_create_Notification_table', 1420072515);
 
 -- --------------------------------------------------------
 
@@ -427,6 +429,69 @@ CREATE TABLE IF NOT EXISTS `Note` (
   `create_time` datetime DEFAULT NULL,
   `create_by` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Notification`
+--
+
+CREATE TABLE IF NOT EXISTS `Notification` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `internal_type` varchar(255) NOT NULL DEFAULT 'Contact',
+  `type` varchar(255) NOT NULL DEFAULT 'info',
+  `all` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'active',
+  `update_time` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `NotificationRead`
+--
+
+CREATE TABLE IF NOT EXISTS `NotificationRead` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Notification_id` int(11) NOT NULL,
+  `User_id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'active',
+  `update_time` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `NotificationRead_Notification_id` (`Notification_id`),
+  KEY `NotificationRead_User_id` (`User_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `NotificationUser`
+--
+
+CREATE TABLE IF NOT EXISTS `NotificationUser` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Notification_id` int(11) NOT NULL,
+  `User_id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT 'active',
+  `update_time` datetime DEFAULT NULL,
+  `update_by` int(11) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `create_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `NotificationUser_Notification_id` (`Notification_id`),
+  KEY `NotificationUser_User_id` (`User_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -541,6 +606,26 @@ CREATE TABLE IF NOT EXISTS `Tag` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user`
+--
+
+CREATE TABLE IF NOT EXISTS `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `auth_key` varchar(32) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
+  `password_reset_token` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `role` smallint(6) NOT NULL DEFAULT '10',
+  `status` smallint(6) NOT NULL DEFAULT '10',
+  `created_at` int(11) NOT NULL,
+  `updated_at` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `User`
 --
 
@@ -575,26 +660,6 @@ CREATE TABLE IF NOT EXISTS `User` (
 
 INSERT INTO `User` (`id`, `Group_id`, `type`, `password`, `password_reset_token`, `auth_key`, `name`, `firstname`, `lastname`, `picture`, `email`, `phone`, `mobile`, `validation_key`, `login_attempts`, `status`, `update_time`, `update_by`, `create_time`, `create_by`) VALUES
 (1, 1, 'Administrator', '$2y$13$urIOkFrYLekr55J97kmX/eIHSm3kSP0NrvAaCgNdAG91cRQhNximG', NULL, 'YCrxodub8SMQLrBV-Q5MKeclbAoCJ7XT', 'Firstname Lastname', 'Firstname', 'Lastname', NULL, 'webmaster@2ezweb.com.au', NULL, NULL, NULL, 0, 'active', NULL, NULL, NULL, NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `user`
---
-
-CREATE TABLE IF NOT EXISTS `user` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `auth_key` varchar(32) NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
-  `password_reset_token` varchar(255) DEFAULT NULL,
-  `email` varchar(255) NOT NULL,
-  `role` smallint(6) NOT NULL DEFAULT '10',
-  `status` smallint(6) NOT NULL DEFAULT '10',
-  `created_at` int(11) NOT NULL,
-  `updated_at` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -695,6 +760,20 @@ ALTER TABLE `Menu`
   ADD CONSTRAINT `Menu_Menu_id` FOREIGN KEY (`Menu_id`) REFERENCES `Menu` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `NotificationRead`
+--
+ALTER TABLE `NotificationRead`
+  ADD CONSTRAINT `NotificationRead_User_id` FOREIGN KEY (`User_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `NotificationRead_Notification_id` FOREIGN KEY (`Notification_id`) REFERENCES `Notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `NotificationUser`
+--
+ALTER TABLE `NotificationUser`
+  ADD CONSTRAINT `NotificationUser_User_id` FOREIGN KEY (`User_id`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `NotificationUser_Notification_id` FOREIGN KEY (`Notification_id`) REFERENCES `Notification` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `Page`
 --
 ALTER TABLE `Page`
@@ -704,7 +783,7 @@ ALTER TABLE `Page`
 -- Constraints for table `User`
 --
 ALTER TABLE `User`
-  ADD CONSTRAINT `User_Group_id` FOREIGN KEY (`Group_id`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE SET NULL;
+  ADD CONSTRAINT `User_Group_id` FOREIGN KEY (`Group_id`) REFERENCES `Group` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

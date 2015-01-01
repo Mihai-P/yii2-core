@@ -3,6 +3,7 @@
 namespace core\models;
 
 use Yii;
+use yii\db\Expression;
 use yii\web\IdentityInterface;
 use core\components\ActiveRecord;
 use yii\base\NotSupportedException;
@@ -245,6 +246,36 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getNotifications()
     {
-        return Notification::find()->join('LEFT JOIN', 'NotificationUser', ['Notification.id' => 'NotificationUser.Notification_id'])->distinct()->where(['NotificationUser.User_id' => $this->id]);
+        return Notification::find()
+            ->join('LEFT JOIN', 'NotificationUser', ['Notification.id' => new Expression('NotificationUser.Notification_id')])
+            ->distinct()
+            ->where([
+                'and',
+                'Notification.status = :status',
+                [
+                    'or',
+                    'NotificationUser.User_id = :User_id',
+                    [
+                        'and',
+                        'Notification.all = 1',
+                        'Notification.internal_type = :internal_type',
+                    ]
+                ],
+                [
+                    'or',
+                    'Notification.start_date IS NULL',
+                    'Notification.start_date <= CURDATE()',
+                ],
+                [
+                    'or',
+                    'Notification.end_date IS NULL',
+                    'Notification.end_date >= CURDATE()',
+                ]
+            ], [
+                    ':internal_type' => $this->formName(),
+                    ':status' => self::STATUS_ACTIVE,
+                    ':User_id' => $this->id,
+                ]
+            );
     }
 }
