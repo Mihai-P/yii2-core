@@ -17,7 +17,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     const STATUS_INACTIVE = 'inactive';
     const STATUS_ACTIVE = 'active';
 
-    private $statuses = [
+    public $statuses = [
         self::STATUS_DELETED => 'Deleted',
         self::STATUS_INACTIVE => 'Inactive',
         self::STATUS_ACTIVE => 'Active',
