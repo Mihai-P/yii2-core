@@ -24,7 +24,7 @@
         "mihaildev/yii2-elfinder": "*",
         "mihaildev/yii2-ckeditor": "dev-master",
 		"sammaye/yii2-audittrail": "dev-master",
-		"creocoder/yii2-nested-set-behavior": "*",
+		"creocoder/yii2-nested-sets": "*",
 		"FortAwesome/Font-Awesome": "*",
 		"kartik-v/yii2-sortable": "dev-master",
 		"robregonm/yii2-pdf": "dev-master",
