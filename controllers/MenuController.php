@@ -104,7 +104,7 @@ class MenuController extends Controller
         } else {
             $model->status = "active";
         }
-        $model->saveNode(false);
+        $model->save(false);
         if(Yii::$app->request->getIsAjax()) {
             Yii::$app->response->format = 'json';
             return ['success' => true];
@@ -126,10 +126,12 @@ class MenuController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if(empty($model->Menu_id)) {
+                Yii::info('Making the new node as root');
                 $model->makeRoot();
             } else {
                 $parent_node = Menu::findOne($model->Menu_id);
                 $model->appendTo($parent_node);
+                Yii::info('Making the new node as a child of ' . $parent_node->id);
             }
             $this->saveHistory($model, $this->historyField);
             return $this->redirect(['index']);
@@ -155,10 +157,10 @@ class MenuController extends Controller
             $current_model = $this->findModel($id);
             if($current_model->Menu_id != $model->Menu_id){
                 $parent_node = Menu::findOne($model->Menu_id);
-                $model->saveNode(false);
+                $model->save(false);
                 $model->moveAsLast($parent_node);
             } else {
-                $model->saveNode(false);
+                $model->save(false);
             }
 
             $this->saveHistory($model, $this->historyField);
