@@ -3,7 +3,7 @@
 namespace core\models;
 
 use Yii;
-use core\components\TreeQuery;
+use core\components\NestedQuery;
 use creocoder\nestedsets\NestedSetsBehavior;
 use yii\helpers\ArrayHelper;
 use core\components\ActiveRecord;
@@ -129,7 +129,7 @@ class Menu extends ActiveRecord
 
     public static function find()
     {
-        return new TreeQuery(get_called_class());
+        return new NestedQuery(get_called_class());
     }
 
     /**
