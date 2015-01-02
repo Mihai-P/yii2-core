@@ -159,8 +159,6 @@ class MenuController extends Controller
             if($current_model->Menu_id != $model->Menu_id){
                 if($model->Menu_id) {
                     $parent_node = Menu::findOne($model->Menu_id);
-                    Yii::info('NESTED SET: Moving the node to another parent');
-                    //$model->save(false);
                     $model->appendTo($parent_node);
                 } else {
                     $model->makeRoot();
