@@ -108,7 +108,7 @@ class Menu extends ActiveRecord
             [
                 'nestedSet' => [
                     'class' => NestedSetsBehavior::className(),
-                    //'treeAttribute' => 'root'
+                    'treeAttribute' => 'root'
                 ]
             ],
             parent::behaviors()

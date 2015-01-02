@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2015 at 11:35 AM
+-- Generation Time: Jan 02, 2015 at 01:26 PM
 -- Server version: 5.5.40-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.5
 
@@ -355,7 +355,7 @@ CREATE TABLE IF NOT EXISTS `Menu` (
   `root` int(11) unsigned DEFAULT NULL,
   `lft` int(11) unsigned NOT NULL,
   `rgt` int(11) unsigned NOT NULL,
-  `level` int(11) unsigned NOT NULL,
+  `depth` int(11) unsigned NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT 'active',
   `update_time` datetime DEFAULT NULL,
   `update_by` int(11) DEFAULT NULL,
@@ -410,7 +410,8 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 ('m141215_005019_create_Bookmark_table', 1418852632),
 ('m141215_230052_alter_History_table', 1418852632),
 ('m141226_004400_alter_User_table_Group_id', 1420072515),
-('m141229_221228_create_Notification_table', 1420072515);
+('m141229_221228_create_Notification_table', 1420072515),
+('m150101_080751_alter_Menu', 1420165562);
 
 -- --------------------------------------------------------
 

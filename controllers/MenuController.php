@@ -73,7 +73,7 @@ class MenuController extends Controller
                 $parent = $this->findModel($_GET['Menu_id']);
                 foreach($_POST[$modelName] as $key => $id) {
                     $record = $this->findModel($id);
-                    $record->moveAsLast($parent);
+                    $record->appendTo($parent);
                 }
             }
             return $this->redirect(['index']);
@@ -131,6 +131,7 @@ class MenuController extends Controller
             } else {
                 $parent_node = Menu::findOne($model->Menu_id);
                 $model->appendTo($parent_node);
+
                 Yii::info('Making the new node as a child of ' . $parent_node->id);
             }
             $this->saveHistory($model, $this->historyField);
@@ -156,9 +157,14 @@ class MenuController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $current_model = $this->findModel($id);
             if($current_model->Menu_id != $model->Menu_id){
-                $parent_node = Menu::findOne($model->Menu_id);
-                $model->save(false);
-                $model->moveAsLast($parent_node);
+                if($model->Menu_id) {
+                    $parent_node = Menu::findOne($model->Menu_id);
+                    Yii::info('NESTED SET: Moving the node to another parent');
+                    //$model->save(false);
+                    $model->appendTo($parent_node);
+                } else {
+                    $model->makeRoot();
+                }
             } else {
                 $model->save(false);
             }
