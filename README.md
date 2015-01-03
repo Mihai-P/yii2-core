@@ -8,22 +8,30 @@ CMS Module is the start for a CMS built on Yii 2. It uses the advance yii2 templ
 
 ## Installation
 
+### Note
+How you run composer depends on how you have it installed.  I usually install it as /usr/local/bin/composer so I can
+just run "composer" from the command line.  You may need to run "php composer.phar" instead.
+
 ### Step 1
 Install the advanced yii2 template. You can find the instructions here: https://github.com/yiisoft/yii2-app-advanced
+
+In a nutshell, the following commands are required:
+
+```
+composer global require "fxp/composer-asset-plugin:1.0.0-beta4" 
+composer create-project --prefer-dist --stability=dev yiisoft/yii2-app-advanced advanced
+cd advanced
+init --env=Production
+```
 
 ### Step 2
 Install the module. The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-Either run
+Run
 ```
-$ php composer.phar require tez/yii2-cms-module "dev-master"
+composer update
+composer require tez/yii2-cms-module "dev-master"
 ```
-
-or add
-```
-"tez/yii2-cms-module": "dev-master"
-```
-to the require section of your `composer.json` file.
 
 ## Usage
 
