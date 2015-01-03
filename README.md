@@ -39,6 +39,7 @@ composer require tez/yii2-cms-module "dev-master"
 Once the extension is installed, modify the backend\config\main.php application configuration to include:
 
 
+
 ```php
 return [
 	'modules' => [
@@ -97,6 +98,11 @@ return [
 
 ```
 
+### Note
+
+I have done this via just keeping a modified version of the file in deploy/backend+config+main.php
+It can be copied into place by running vendor/tez/yii2-cms-module/appconfig.sh
+
 Use the new crud generator, replace in the backend/config/main-local.php the part with
 ```php
 $config['modules']['gii'] = 'yii\gii\Module';
@@ -118,6 +124,11 @@ with
     ];    
 ```
 
+### Note
+
+This line doesn't exist if you are working from Production.  It's there in development only.  Are
+the added lines required in production and if so where do they go?
+
 Copy .htaccess from vendor/tez/yii2-cms-module to frontend/web/ and to backend/web/
 ```bash
 cp vendor/tez/yii2-cms-module/.htaccess backend/web/
@@ -130,6 +141,10 @@ Yii::setAlias('core', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-cms-module')
 Yii::setAlias('theme', dirname(dirname(__DIR__)) . '/vendor/tez/yii2-brain-theme');
 ```
 
+### Note
+
+I have done this by keeping a copy of the modified file in deploy/ as above.
+
 Define the frontend-url in backend/config/params.php and/or backend/config/params-local.php. This is for the file picker preview. Change to match your domain
 ```php
 return [
@@ -138,6 +153,11 @@ return [
 ...
 ];
 ```
+
+### Note
+
+Please define what actually needs doing here.  Do both files need modifying or just the one
+and in that case which one?  Are you seriously hard coding URLs into the config?
 
 In your common/config/params.php define the mandrill details and the logo for the notification. Change to your details.
 ```php
@@ -153,6 +173,10 @@ return [
 ];
 ```
 
+### Note
+
+Really?  Hard coded URLs again?  Needs to be fixed.
+
 In backend\assets\AppAsset.php the depend section should look like this
 ```php
     public $depends = [
@@ -163,11 +187,19 @@ In backend\assets\AppAsset.php the depend section should look like this
     ];
 ```
 
+### Note
+
+I have kept a copy of the modified file as before.
+
 Run migrations:
 
 ```bash
 $ php yii migrate/up --migrationPath=@core/migrations
 ```
+
+### Note
+
+Nope, doesn't work.  What else is required here?
 
 ## License
 
