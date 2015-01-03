@@ -27,7 +27,8 @@ init --env=Production
 ### Step 2
 Install the module. The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
-Run
+From within the "advanced" directory you created above, run these commands:
+
 ```
 composer update
 composer require tez/yii2-cms-module "dev-master"
