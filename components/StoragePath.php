@@ -10,7 +10,8 @@ use Yii;
 use yii\helpers\ArrayHelper;
 use mihaildev\elfinder\BasePath;
 
-class FrontendPath extends BasePath {
+class StoragePath extends BasePath {
+
     public $path;
 
     public $name = 'Root';
@@ -21,26 +22,10 @@ class FrontendPath extends BasePath {
 
     public $access = ['read' => '*', 'write' => '*'];
 
-    public function getUrl(){
-        if(empty($this->url)) {
-            return Yii::getAlias('@web/'.trim($this->path,'/'));
-        } else {
-            return $this->url;
-        }
-    }
-
-    public function getRealPath(){
-        $path = Yii::getAlias('@webroot/'.trim($this->path,'/'));
-        if(!is_dir($path))
-            mkdir($path, 0777, true);
-
-        return $path;
-    }
-
     public function getRoot(){
         $options['driver'] = $this->driver;
-        $options['path'] = $this->getRealPath();
-        $options['URL'] = $this->getUrl();
+        $options['path'] = $this->path;
+        $options['URL'] = $this->url;
         $options['defaults'] = $this->getDefaults();
         $options['alias'] = $this->getAlias();
         $options['mimeDetect'] = 'internal';
