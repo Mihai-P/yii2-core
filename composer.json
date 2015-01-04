@@ -20,7 +20,6 @@
 	],
     "require": {
         "yiisoft/yii2": "dev-master",
-        "tez/yii2-brain-theme": "dev-master",
         "mihaildev/yii2-elfinder": "*",
         "mihaildev/yii2-ckeditor": "dev-master",
 		"sammaye/yii2-audittrail": "dev-master",
