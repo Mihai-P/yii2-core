@@ -62,9 +62,9 @@ return [
             'disabledCommands' => ['netmount'],
             'roots' => [
                 [
-                    'class' => 'core\components\FrontendPath',
-                    'path' => '../../frontend/web/files/images',
-                    'url' => 'http://frontend.yii2/files/images',
+                    'class' => 'core\components\StoragePath',
+                    'path' => '../../storage',
+                    'url' => '/storage',
                     'name'  => 'Public'
                 ],
             ]
