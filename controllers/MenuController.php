@@ -183,7 +183,7 @@ class MenuController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->deleteWithDescendants();
+        $this->findModel($id)->deleteWithChildren();
         if(Yii::$app->request->getIsAjax()) {
             \Yii::$app->response->format = 'json';
             return ['success' => true];
@@ -200,7 +200,7 @@ class MenuController extends Controller
     {
         if(isset($_POST['items'])) {
             foreach($_POST['items'] as $id) {
-                $this->findModel($id)->deleteWithDescendants();
+                $this->findModel($id)->deleteWithChildren();
             }
         }
     }
