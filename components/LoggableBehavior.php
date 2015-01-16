@@ -1,10 +1,28 @@
 <?php
+/**
+ * LoggableBehavior extends sammaye\audittrail\LoggableBehavior
+ *
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ */
 
 namespace core\components;
 
 use Yii;
 use yii\db\ActiveRecord;
 
+/**
+ * LoggableBehavior extends sammaye\audittrail\LoggableBehavior
+ *
+ * This provides default logging actions after Insert, Update and Delete.
+ *
+ * @link http://www.yiiframework.com/
+ * @copyright Copyright (c) 2008 Yii Software LLC
+ * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ */
 class LoggableBehavior extends sammaye\audittrail\LoggableBehavior
 {
     private $_oldattributes = array();

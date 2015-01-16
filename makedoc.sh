@@ -14,20 +14,33 @@ DESTDIR=./documents
 # Find apigen, either in the path or as a local phar file
 #
 if [ -f apigen.phar ]; then
-    APIGEN="php apigen.phar generate"
+    APIGEN="php apigen.phar"
 
 else
     APIGEN=`which apigen`
     if [ ! -f "$APIGEN" ]; then
-        echo "apigen is not installed in the path or locally, please install it"
-        echo "see http://www.apigen.org/"
-        exit 1
+        
+        # Search for phpdoc if apigen is not found.
+        if [ -f phpDocumentor.phar ]; then
+            PHPDOC="php phpDocumentor.phar"
+        
+        else
+            PHPDOC=`which phpdoc`
+            if [ ! -f "$PHPDOC" ]; then
+                echo "Neither apigen nor phpdoc is installed in the path or locally, please install one of them"
+                echo "see http://www.apigen.org/ or http://www.phpdoc.org/"
+                exit 1
+            fi
+        fi
     fi
+fi
+
+#
+# As of version 4 of apigen need to use the generate subcommand
+#
+if [ ! -z "$APIGEN" ]; then
     APIGEN="$APIGEN generate"
 fi
-#
-# TODO: Search for phpdoc if apigen is not found.
-#
 
 #
 # Without any arguments this builds the entire system documentation,
@@ -43,17 +56,31 @@ if [ -z "$1" ]; then
     fi
 
     #
-    # Build the apigen command in a file.
+    # Build the apigen/phpdoc command in a file.
     #
-    echo "$APIGEN --php --tree --title '$APPNAME API Documentation' --destination $DESTDIR/main \\" > $CMDFILE
-    cat dirlist.cache | while read dir; do
-        echo "--source $dir \\" >> $CMDFILE
-    done
-    echo "" >> $CMDFILE
+    if [ ! -z "$APIGEN" ]; then
+        echo "$APIGEN --php --tree --title '$APPNAME API Documentation' --destination $DESTDIR/main \\" > $CMDFILE
+        cat dirlist.cache | while read dir; do
+            echo "--source $dir \\" >> $CMDFILE
+        done
+        echo "" >> $CMDFILE
+    
+    elif [ ! -z "$PHPDOC" ]; then
+        echo "$PHPDOC --sourcecode --title '$APPNAME API Documentation' --target $DESTDIR/main --directory \\" > $CMDFILE
+        cat dirlist.cache | while read dir; do
+            echo "${dir},\\" >> $CMDFILE
+        done
+        echo "" >> $CMDFILE
+    
+    else
+        "Neither apigen nor phpdoc are found, how did I get here?"
+        exit 1
+    fi
 
     #
     # Run the apigen command
     #
+    rm -rf $DESTDIR/main
     mkdir -p $DESTDIR/main
     . ./$CMDFILE
     
@@ -87,14 +114,27 @@ elif [ "$1" = "makecache" ]; then
     echo "Filter source directories"
     mkdir -p $DESTDIR/tmp
     cat dirlist.app dirlist.vendor | while read dir; do
-        $APIGEN --quiet --title "Test please ignore" \
-            --source $dir \
-            --destination $DESTDIR/tmp && (
-                echo "Including $dir"
-                echo $dir >> dirlist.cache
-            ) || (
-                echo "Excluding $dir"
-            )
+        if [ ! -z "$APIGEN" ]; then
+            $APIGEN --quiet --title "Test please ignore" \
+                --source $dir \
+                --destination $DESTDIR/tmp && (
+                    echo "Including $dir"
+                    echo $dir >> dirlist.cache
+                ) || (
+                    echo "Excluding $dir"
+                )
+        
+        elif [ ! -z "$PHPDOC" ]; then
+            $PHPDOC --quiet --title "Test please ignore" \
+                --directory $dir \
+                --target $DESTDIR/tmp && (
+                    echo "Including $dir"
+                    echo $dir >> dirlist.cache
+                ) || (
+                    echo "Excluding $dir"
+                )
+
+        fi
     done
     echo "Documentation cache dirlist.cache built OK"
     

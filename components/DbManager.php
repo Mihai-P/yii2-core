@@ -1,5 +1,7 @@
 <?php
 /**
+ * DbManager represents an authorization manager that stores authorization information in database.
+ *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/

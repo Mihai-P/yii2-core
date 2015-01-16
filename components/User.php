@@ -1,5 +1,6 @@
 <?php
 /**
+ * User is the class for the "user" application component that manages the user authentication status.
  *
  * @author Ricardo Obregón <ricardo@obregon.co>
  * @created 24/11/13 07:40 PM

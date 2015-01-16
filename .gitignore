@@ -1,4 +1,5 @@
 .directory
+/vendor/
 
 # API documentation
 documents/

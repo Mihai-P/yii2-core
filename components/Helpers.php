@@ -1,8 +1,11 @@
 <?php
 /**
+ * Helpers
+ *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 
 namespace core\components;
@@ -10,7 +13,7 @@ namespace core\components;
 /**
  * Helpers
  *
- * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ * This class is indicative of poor software design.
  */
 class Helpers
 {

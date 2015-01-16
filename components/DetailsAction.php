@@ -1,8 +1,11 @@
 <?php
 /**
+ * DetailsAction displays application errors using a specified view.
+ *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 
 namespace core\components;
@@ -28,7 +31,6 @@ use yii\base\Action;
  * }
  * ```
  *
- * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class DetailsAction extends Action
 {

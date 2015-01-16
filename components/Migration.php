@@ -1,12 +1,16 @@
 <?php
+/**
+ * Migration provides some default starting data.
+ */
 
 namespace core\components;
 
 use yii\db\Query;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+
 /**
- * FaqController implements the CRUD actions for Faq model.
+ * Migration provides some default starting data.
  */
 class Migration extends \yii\db\Migration
 {
