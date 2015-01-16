@@ -12,6 +12,12 @@ class Module extends \yii\base\Module
      */
     public $rememberMeTime = 2592000; // 30 days
 
+	/**
+	 * @var int
+	 * @desc Records per page
+	 */
+	public $recordsPerPage = 25; // 30 days
+
     public $pageTemplates = [
         [
             'file' => '_simple',

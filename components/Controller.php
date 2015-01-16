@@ -157,7 +157,7 @@ class Controller extends \yii\web\Controller
     {
         /* setting the default pagination for the page */
         if (!Yii::$app->session->get($this->MainModel . 'Pagination')) {
-            Yii::$app->session->set($this->MainModel . 'Pagination', 10);
+            Yii::$app->session->set($this->MainModel . 'Pagination', Yii::$app->getModule('core')->recordsPerPage);
         }
         $savedQueryParams = Yii::$app->session->get($this->MainModel . 'QueryParams');
         if (count($savedQueryParams)) {
