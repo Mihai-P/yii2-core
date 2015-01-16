@@ -1,0 +1,6 @@
+.directory
+/vendor/
+
+# API documentation
+documents/
+dirlist.*

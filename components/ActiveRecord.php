@@ -1,4 +1,11 @@
 <?php
+/**
+ * ActiveRecord extends the Yii\db\ActiveRecord class.
+ *
+ * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ * @since 2.0
+ */
 namespace core\components;
 
 use Yii;
@@ -6,10 +13,22 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use core\components\HistoryBehavior;
 use yii\db\BaseActiveRecord;
-use sammaye\audittrail\LoggableBehavior;
+use core\components\LoggableBehavior;
 use yii\db\Expression;
 use yii\db\StaleObjectException;
 
+/**
+ * ActiveRecord extends the Yii\db\ActiveRecord class.
+ *
+ * This extends the Yii\db\ActiveRecord class with the following CMS
+ * specific functionality:
+ *
+ * * All records have one additional attribute, being "status".
+ * * Non-deleted records are always marked as "active" or "inactive", with "active"
+ *   being the default.
+ * * Records are never actually deleted, they are just marked with the status "deleted".
+ * * Record changes are audited.
+ */
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {

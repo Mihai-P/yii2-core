@@ -1,6 +1,6 @@
 <?php
 /**
- * RedirectWidget class file.
+ * BookmarkWidget class file.
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  * @license http://www.opensource.org/licenses/bsd-license.php
@@ -13,7 +13,7 @@ use yii\base\Widget;
 use core\models\Bookmark;
 
 /**
- * The RedirectWidget widget displays the redirect page after returning from provider.
+ * The BookmarkWidget widget displays something ...
  *
  */
 class BookmarkWidget extends Widget

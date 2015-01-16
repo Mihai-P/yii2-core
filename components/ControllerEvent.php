@@ -1,8 +1,12 @@
 <?php
 /**
+ * ControllerEvent represents the information available in [[Controller::EVENT_AFTER_CREATE]] and [[Controller::EVENT_AFTER_UPDATE]].
+ *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ * @since 2.0
  */
 
 namespace core\components;
@@ -11,9 +15,6 @@ use yii\base\Event;
 
 /**
  * ControllerEvent represents the information available in [[Controller::EVENT_AFTER_CREATE]] and [[Controller::EVENT_AFTER_UPDATE]].
- *
- * @author Mihai Petrescu <mihai.petrescu@gmail.com>
- * @since 2.0
  */
 class ControllerEvent extends Event
 {

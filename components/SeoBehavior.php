@@ -1,4 +1,9 @@
 <?php
+/**
+ * SeoBehaviour allows tag management to controllers
+ *
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ */
 namespace core\components;
 
 use Yii;
@@ -11,8 +16,6 @@ use yii\helpers\StringHelper;
  *
  * in the view at the top you should do a
  * $this->params['seo'] = $model->getSeoTags();
- *
- * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class SeoBehavior extends Behavior
 {

@@ -1,4 +1,11 @@
 <?php
+/**
+ * Controller implements the CRUD actions for the model.
+ *
+ * @license http://www.yiiframework.com/license/
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ * @since 2.0
+ */
 
 namespace core\components;
 
@@ -7,8 +14,19 @@ use yii\web\NotFoundHttpException;
 use yii\helpers\Url;
 use core\models\History;
 use \yii\filters\AccessControl;
+
 /**
  * Controller implements the CRUD actions for the model.
+ *
+ * This class implements some basic default actions for a standard back end
+ * CMS controller that is used for standard CRUD editing of a single model
+ * used in the CMS.
+ *
+ * * An "index" action which lists all of the records, with filtering and
+ *   pagination.
+ * * View, Create, Update and Delete actions.
+ * * Modifying record statuses -- setting records to active or inactive.
+ * * Bulk and individual record actions.
  */
 class Controller extends \yii\web\Controller
 {
@@ -157,7 +175,7 @@ class Controller extends \yii\web\Controller
     {
         /* setting the default pagination for the page */
         if (!Yii::$app->session->get($this->MainModel . 'Pagination')) {
-            Yii::$app->session->set($this->MainModel . 'Pagination', 10);
+            Yii::$app->session->set($this->MainModel . 'Pagination', Yii::$app->getModule('core')->recordsPerPage);
         }
         $savedQueryParams = Yii::$app->session->get($this->MainModel . 'QueryParams');
         if (count($savedQueryParams)) {

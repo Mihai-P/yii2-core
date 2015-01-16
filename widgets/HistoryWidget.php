@@ -1,6 +1,6 @@
 <?php
 /**
- * RedirectWidget class file.
+ * HistoryWidget class file.
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  * @license http://www.opensource.org/licenses/bsd-license.php
@@ -14,7 +14,7 @@ use core\models\History;
 use yii\caching\DbDependency;
 
 /**
- * The RedirectWidget widget displays the redirect page after returning from provider.
+ * The HistoryWidget widget displays some history from a history table.
  *
  */
 class HistoryWidget extends Widget

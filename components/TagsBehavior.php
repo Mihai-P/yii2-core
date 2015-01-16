@@ -1,4 +1,9 @@
 <?php
+/**
+ * TagsBehaviour allows tag management to controllers
+ *
+ * @author Mihai Petrescu <mihai.petrescu@gmail.com>
+ */
 namespace core\components;
 
 use Yii;
@@ -42,10 +47,6 @@ use yii\db\Expression;
  *              return $query->where('Yyy_Tag.status = "active"');
  *      });
  * }
- *
- *
- *
- * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  */
 class TagsBehavior extends Behavior
 {

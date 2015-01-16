@@ -1,6 +1,6 @@
 <?php
 /**
- * RedirectWidget class file.
+ * AuditTrailWidget class file.
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  * @license http://www.opensource.org/licenses/bsd-license.php
@@ -13,8 +13,7 @@ use yii\base\Widget;
 use sammaye\audittrail\AuditTrail;
 
 /**
- * The RedirectWidget widget displays the redirect page after returning from provider.
- *
+ * The AuditTrailWidget widget displays the audit trail for a model.
  */
 class AuditTrailWidget extends Widget
 {

@@ -1,40 +1,40 @@
 {
-	"name": "tez/yii2-cms-module",
-	"description": "Yii 2 Small CMS Module",
-	"keywords": ["yii2", "cms"],
-	"type": "yii2-extension",
-	"license": "BSD-3-Clause",
-	"support": {
-		"issues": "https://github.com/Mihai-P/yii2-core/issues?state=open",
-		"forum": "http://www.yiiframework.com/forum/",
-		"wiki": "http://www.yiiframework.com/wiki/",
-		"source": "https://github.com/Mihai-P/yii2-core"
-	},
-	"authors": [
-		{
-			"name": "Mihai-P",
-			"email": "mihai@2ezweb.com.au",
-			"homepage": "http://2ezweb.com.au",
-			"role": "Author"
-		}
-	],
+    "name": "tez/yii2-cms-module",
+    "description": "Yii 2 Small CMS Module",
+    "keywords": ["yii2", "cms"],
+    "type": "yii2-extension",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/Mihai-P/yii2-core/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "source": "https://github.com/Mihai-P/yii2-core"
+    },
+    "authors": [
+        {
+            "name": "Mihai-P",
+            "email": "mihai@2ezweb.com.au",
+            "homepage": "http://2ezweb.com.au",
+            "role": "Author"
+        }
+    ],
     "require": {
         "yiisoft/yii2": "dev-master",
         "mihaildev/yii2-elfinder": "*",
         "mihaildev/yii2-ckeditor": "dev-master",
-		"sammaye/yii2-audittrail": "dev-master",
-		"creocoder/yii2-nested-sets": "*",
-		"FortAwesome/Font-Awesome": "*",
-		"kartik-v/yii2-sortable": "dev-master",
-		"robregonm/yii2-pdf": "dev-master",
-		"goodby/csv": "*",
-		"nickcv/yii2-mandrill": "*",
+        "sammaye/yii2-audittrail": "dev-master",
+        "creocoder/yii2-nested-sets": "*",
+        "FortAwesome/Font-Awesome": "*",
+        "kartik-v/yii2-sortable": "dev-master",
+        "robregonm/yii2-pdf": "dev-master",
+        "goodby/csv": "*",
+        "nickcv/yii2-mandrill": "*",
         "2amigos/yii2-editable-widget" : "*",
-		"kartik-v/yii2-widgets": "dev-master"
-    },	
-	"autoload": {
-		"psr-4": {
-			"core\\": ""
-		}
-	}
+        "kartik-v/yii2-widgets": "dev-master"
+    },  
+    "autoload": {
+        "psr-4": {
+            "core\\": ""
+        }
+    }
 }

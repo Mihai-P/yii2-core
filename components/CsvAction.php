@@ -1,5 +1,7 @@
 <?php
 /**
+ * CsvAction displays application errors using a specified view.
+ *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/

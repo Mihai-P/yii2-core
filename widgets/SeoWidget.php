@@ -1,6 +1,6 @@
 <?php
 /**
- * RedirectWidget class file.
+ * SeoWidget class file.
  *
  * @author Mihai Petrescu <mihai.petrescu@gmail.com>
  * @license http://www.opensource.org/licenses/bsd-license.php
@@ -12,7 +12,7 @@ use \Yii;
 use yii\base\Widget;
 
 /**
- * The RedirectWidget widget displays the redirect page after returning from provider.
+ * The SeoWidget widget displays some SEO tags which probably have no effect<strike></strike>.
  *
  */
 class SeoWidget extends Widget
