@@ -1,6 +1,6 @@
 <?php
 
-namespace sammaye\audittrail;
+namespace core\components;
 
 use Yii;
 use yii\db\ActiveRecord;

@@ -6,7 +6,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use core\components\HistoryBehavior;
 use yii\db\BaseActiveRecord;
-use sammaye\audittrail\LoggableBehavior;
+use core\components\LoggableBehavior;
 use yii\db\Expression;
 use yii\db\StaleObjectException;
 
