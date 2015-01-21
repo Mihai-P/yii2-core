@@ -32,10 +32,20 @@ use yii\db\StaleObjectException;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {
+    /**
+     * These statuses are used to indicate a record status in the database.
+     *
+     * @var string
+     */
     const STATUS_DELETED = 'deleted';
     const STATUS_INACTIVE = 'inactive';
     const STATUS_ACTIVE = 'active';
 
+    /**
+     * These statuses are used to display a record status in a view.
+     *
+     * @var array
+     */
     public $statuses = [
         self::STATUS_DELETED => 'Deleted',
         self::STATUS_INACTIVE => 'Inactive',
@@ -43,13 +53,19 @@ class ActiveRecord extends \yii\db\ActiveRecord
     ];
 
 
+    /**
+     * Returns the translated version of the current status.
+     *
+     * @return string
+     */
     public function getNiceStatus()
     {
         return Yii::t('app', $this->statuses[$this->status]);
     }
 
     /**
-     * Marks an ActiveRecord as deleted in the database
+     * Marks an ActiveRecord as deleted in the database.
+     *
      * @return integer|boolean the number of rows deleted, or false if the deletion is unsuccessful for some reason.
      * Note that it is possible the number of rows deleted is 0, even though the deletion execution is successful.
      * @throws StaleObjectException
