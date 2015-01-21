@@ -1,6 +1,6 @@
 <?php
 /**
- * Helpers
+ * StringHelper adds some additional functionality to the Yii StringHelper class
  *
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -11,17 +11,19 @@
 namespace core\components;
 
 /**
- * Helpers
+ * StringHelper adds some additional functionality to the Yii StringHelper class
  *
- * This class is indicative of poor software design.
+ * This class adds some additional string functions to the Yii StringHelper
+ * class, mostly aimed at displaying HTML data in particular ways.
+ *
+ * @see \yii\helpers\StringHelper
  */
-class Helpers
+class StringHelper extends \yii\helpers\StringHelper
 {
 	/**
 	 * Protects the email from bots
      *
-	 * Credits to http://www.maurits.vdschee.nl/php_hide_email/
-	 *
+	 * @reference http://www.maurits.vdschee.nl/php_hide_email/
 	 * @param string $email the email address
 	 * @return string 
 	 */	
@@ -43,20 +45,15 @@ class Helpers
 	/**
 	 * Get the first x chars from a string. If the string is bigger it pads it with ...
 	 *
-	 * Credits to http://www.maurits.vdschee.nl/php_hide_email/
-	 *
+	 * @see truncate
 	 * @param string $str the string
 	 * @param integer $limit the number of characters
-	 * @param boolean $strip should we string tags or not
+	 * @param boolean $strip should we strip tags or not
 	 * @return string
 	 */
 
 	public static function summary($str, $limit=100, $strip = false) {
 		$str = ($strip == true) ? strip_tags($str) : $str;
-		if (strlen ($str) > $limit) {
-			$str = substr ($str, 0, $limit - 3);
-			return (substr ($str, 0, strrpos ($str, ' ')) . '...');
-		}
-		return trim($str);
+		return static::truncate($str, $limit - 3, '...');
 	}
 }

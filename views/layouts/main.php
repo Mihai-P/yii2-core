@@ -8,7 +8,7 @@ use yii\widgets\Breadcrumbs;
 use core\models\Bookmark;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-use core\components\Helpers;
+use core\components\StringHelper;
 
 use kartik\datetime\DateTimePickerAsset;
 use kartik\datetime\DateTimePicker;
@@ -74,9 +74,9 @@ ActiveFormAsset::register($this);
                     if(isset($this->params['breadcrumbs'])) {
                         array_walk($this->params['breadcrumbs'], function(&$value, &$key) {
                             if(!is_array($value)) {
-                                $value = Helpers::summary($value, 40);
+                                $value = StringHelper::summary($value, 40);
                             } elseif(isset($value['label'])) {
-                                $value['label'] = Helpers::summary($value['label'], 40);
+                                $value['label'] = StringHelper::summary($value['label'], 40);
                             }
                         });
                         echo Breadcrumbs::widget([
