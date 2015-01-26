@@ -60,7 +60,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function getNiceStatus()
     {
-        return Yii::t('app', $this->statuses[$this->status]);
+        if(isset($this->statuses[$this->status])) {
+            return Yii::t('app', $this->statuses[$this->status]);
+        } else {
+            return Yii::t('app', ucwords($this->status));
+        }
+
     }
 
     /**
