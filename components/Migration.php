@@ -7,7 +7,6 @@ namespace core\components;
 
 use yii\db\Query;
 use yii\helpers\Inflector;
-use yii\helpers\StringHelper;
 
 /**
  * Migration provides some default starting data.

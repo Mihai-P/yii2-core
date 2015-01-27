@@ -9,7 +9,6 @@ namespace core\components;
 use Yii;
 use yii\base\Behavior;
 use core\models\Seo;
-use yii\helpers\StringHelper;
 
 /**
  * SeoBehaviour allows tag management to controllers

@@ -4,7 +4,6 @@ namespace core\components;
 use Yii;
 use yii\base\Behavior;
 use core\models\Object;
-use yii\helpers\StringHelper;
 
 class ObjectsBehavior extends Behavior
 {
