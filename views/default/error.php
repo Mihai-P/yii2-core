@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $handler \yii\web\ErrorHandler */
 ?>
 <div class="error-wrapper text-center">
-    <h1><?= Html::encode($code) ?></h1>
+<?php /*    <h1><?= Html::encode($code) ?></h1> */ ?>
     <h5><?= Html::encode($message) ?></h5>
 
     <!-- Error content -->
