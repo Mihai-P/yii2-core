@@ -103,6 +103,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
+        if(Yii::$app->id == 'app-console') {
+            return [];
+        }
         return [
             'blameable' => [
                 'class' => BlameableBehavior::className(),

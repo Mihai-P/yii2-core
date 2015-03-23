@@ -56,7 +56,7 @@ use mihaildev\elfinder\ElFinder;
 	echo $form->field($model->object('LeftBoxTitle'), 'content')->textInput(['name' => 'Object[LeftBoxTitle]', 'id' => 'Object-LeftBoxTitle']);
     echo $form->field($model->object('LeftBoxContent'), 'content')->widget(CKEditor::className(),[
         'options' => ['id' => 'Object-LeftBoxContent', 'name' => 'Object[LeftBoxContent]'],
-        'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['preset' => 'standard', 'inline' => false]),
+        'editorOptions' => ElFinder::ckeditorOptions('elfinder', ['preset' => 'full', 'inline' => false]),
     ]);
 	echo $form->field($model->object('FacebookLink'), 'content')->hint('Leave empty if you do not want to use')->textInput(['name' => 'Object[FacebookLink]', 'id' => 'Object-FacebookLink']);
 	echo $form->field($model->object('TwitterLink'), 'content')->hint('Leave empty if you do not want to use')->textInput(['name' => 'Object[TwitterLink]', 'id' => 'Object-TwitterLink']);

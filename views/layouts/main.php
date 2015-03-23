@@ -34,7 +34,7 @@ ActiveFormAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body>
+<body class="<?=(YII_ENV == 'dev' ? 'theme-dark' : 'theme-light')?>">
     <?php $this->beginBody() ?>
 <!-- Navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
