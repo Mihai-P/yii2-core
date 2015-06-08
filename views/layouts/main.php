@@ -176,6 +176,15 @@ ActiveFormAsset::register($this);
 
         <!-- Page content -->
         <div class="page-content" style="padding-top">
+<?php
+	$flashes = Yii::$app->getSession()->getAllFlashes();
+	if(count($flashes)) {
+		foreach($flashes as $type => $message) {
+			echo '<div class="bg-'.$type.' has-padding widget-inner">'.$message.'</div>';
+		}
+		Yii::$app->getSession()->removeAllFlashes();
+	}
+?>            
             <?= $content ?>
         </div>
     </div>
