@@ -5,12 +5,24 @@ use yii\bootstrap\Nav;
 use core\models\AdminMenu;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
+use core\models\Bookmark;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+use core\components\StringHelper;
+
+use kartik\datetime\DateTimePickerAsset;
+use kartik\datetime\DateTimePicker;
+use yii\widgets\ActiveFormAsset;
+use core\widgets\BookmarkWidget;
+use core\widgets\HistoryWidget;
 
 /**
  * @var \yii\web\View $this
  * @var string $content
  */
 AppAsset::register($this);
+DateTimePickerAsset::register($this);
+ActiveFormAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -22,25 +34,17 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="full-width">
+<body class="full-width <?=(YII_ENV == 'dev' ? 'theme-dark' : 'theme-light')?>">
     <?php $this->beginBody() ?>
-<!-- Navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-        </div>
-    </div>
-
-    <!-- Page container -->
     <div class="page-container container-fluid">
-    
-        <!-- Page content -->
-        <div class="page-content">
-        	<?= $content ?>
+        <div class="page-content" style="padding-top">
+            <?= $content ?>
         </div>
-        <!-- /page content -->
-
     </div>
+        
+
     <?php $this->endBody() ?>
 </body>
 </html>
+
 <?php $this->endPage() ?>
