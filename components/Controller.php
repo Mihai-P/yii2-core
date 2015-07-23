@@ -211,7 +211,7 @@ class Controller extends \yii\web\Controller
         $content = $this->render('pdf', [
             'dataProvider' => $this->dataProvider,
         ]);
-        if(isset($_GET['test'])) {
+        if (isset($_GET['test'])) {
             return $content;
         } else {
             $mpdf = new \mPDF();
@@ -275,10 +275,11 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterCreate($model);
-            if ($this->hasView)
+            if ($this->hasView) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            else
+            } else {
                 return $this->redirect(['index']);
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -328,10 +329,12 @@ class Controller extends \yii\web\Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->afterUpdate($model);
-            if ($this->hasView)
+
+            if ($this->hasView) {
                 return $this->redirect(['view', 'id' => $model->id]);
-            else
+            } else {
                 return $this->redirect(['index']);
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
