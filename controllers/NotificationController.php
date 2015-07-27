@@ -21,8 +21,8 @@ class NotificationController extends \yii\console\Controller
 
                 $template = ArrayHelper::remove($data, 'template');
                 if($template) {
-                    $result = \Yii::$app->mailer->compose('notificationOrderConfirmation', $data)
-                        ->setTo(['mihai.petrescu+5@gmail.com' => 'Mihai Petrescu'])
+                    $result = \Yii::$app->mailer->compose($template, $data)
+                        ->setTo([$email->to_email => $email->to_name])
                         ->send();
                 } else {
                     $result = false;
@@ -32,7 +32,7 @@ class NotificationController extends \yii\console\Controller
                 $result = \Yii::$app->mailer->compose()
                     ->setHtmlBody($email->html)
                     ->setFrom($email->from_email)
-                    ->setTo(['mihai.petrescu+5@gmail.com' => 'Mihai Petrescu'])
+                    ->setTo([$email->to_email => $email->to_name])
                     ->setSubject($email->subject)
                     ->send();
             }
