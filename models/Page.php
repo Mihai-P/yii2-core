@@ -18,6 +18,7 @@ use core\components\ActiveRecord;
  * @property string $h1
  * @property string $url
  * @property string $template
+ * @property string $sitemap
  * @property string $content
  * @property string $status
  * @property string $update_time
@@ -44,7 +45,7 @@ class Page extends ActiveRecord
     {
         return [
             [['PageTemplate_id', 'name'], 'required'],
-            [['h1', 'content', 'status'], 'string'],
+            [['h1', 'content', 'status', 'sitemap'], 'string'],
             [['update_time', 'create_time'], 'safe'],
             [['PageTemplate_id', 'update_by', 'create_by'], 'integer'],
             [['name', 'url', 'template'], 'string', 'max' => 255]
@@ -63,6 +64,7 @@ class Page extends ActiveRecord
             'url' => 'Url',
             'template' => 'Layout',
             'content' => 'Content',
+            'sitemap' => 'Show in sitemap',
             'status' => 'Status',
             'update_time' => 'Update Time',
             'update_by' => 'Update By',

@@ -20,6 +20,8 @@ use core\models\PageTemplate;
 
     <?= $form->field($model, 'url')->textInput(['maxlength' => 255]) ?>
 
+    <?= $form->field($model, 'sitemap', ['checkboxTemplate' => "<div class=\"inline-checkbox\"><div class=\"col-sm-2\">{label}</div>\n<div class=\"col-sm-10\">{input}{error}{hint}</div></div>"])->checkbox(['class' => 'styled']); ?>
+
     <?= $form->field($model, 'PageTemplate_id')->dropDownList(ArrayHelper::map(PageTemplate::find()->asArray()->all(), 'id', 'name'), ['prompt' => '', 'class' => 'select2']) ?>
 <?php
     if($model->isNewRecord && count(Yii::$app->getModule('core')->pageTemplates) > 1) {
