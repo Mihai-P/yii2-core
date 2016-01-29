@@ -72,7 +72,7 @@ class Group extends ActiveRecord
         parent::afterFind();
     }
 
-    public function afterSave()
+    public function afterSave($insert, $changedAttributes)
     {
         $auth = Yii::$app->authManager;
         $post = Yii::$app->request->post();
